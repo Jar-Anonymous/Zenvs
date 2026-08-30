@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>Zenvs · All-in-One Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            font-family: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f0ebe5;
+            --bg-card: rgba(255, 251, 247, 0.80);
+            --bg-card-solid: #faf6f0;
+            --text: #1a1716;
+            --text-muted: #6b6560;
+            --border: #1a1716;
+            --shadow: #1a1716;
+            --accent: #dc2626;
+            --accent-hover: #b91c1c;
+            --accent-glow: rgba(220, 38, 38, 0.35);
+            --card-hover: #f0ebe3;
+            --scrollbar: #d6cdc2;
+            --scrollbar-thumb: #1a1716;
+            --glow: rgba(220, 38, 38, 0.25);
+            --gradient-1: #dc2626;
+            --gradient-2: #f59e0b;
+            --gradient-3: #8b5cf6;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0d0d0d;
+            --bg-card: rgba(28, 28, 28, 0.92);
+            --bg-card-solid: #1a1a1a;
+            --text: #f5efe8;
+            --text-muted: #8a8480;
+            --border: #3a3a3a;
+            --shadow: #3a3a3a;
+            --accent: #ef4444;
+            --accent-hover: #dc2626;
+            --accent-glow: rgba(239, 68, 68, 0.30);
+            --card-hover: #2a2a2a;
+            --scrollbar: #2a2a2a;
+            --scrollbar-thumb: #5a5a5a;
+            --glow: rgba(239, 68, 68, 0.25);
+            --gradient-1: #ef4444;
+            --gradient-2: #f59e0b;
+            --gradient-3: #8b5cf6;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-y: auto;
+            transition: background 0.6s ease, color 0.6s ease;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(220, 38, 38, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: ambientPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes ambientPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        [data-theme="dark"] body::before {
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(239, 68, 68, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+        }
+
+        .dots-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.10;
+            background-image: radial-gradient(circle, var(--border) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            transition: 0.5s ease;
+        }
+
+        [data-theme="dark"] .dots-pattern { opacity: 0.05; }
+
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.08;
+            animation: floatParticle 20s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.08; }
+            90% { opacity: 0.08; }
+            100% { transform: translateY(-10vh) rotate(720deg) scale(1.2); opacity: 0; }
+        }
+
+        .neo-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 3px solid var(--border);
+            box-shadow: 10px 10px 0 var(--shadow), 0 0 60px var(--glow);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .neo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(220, 38, 38, 0.03), transparent, rgba(245, 158, 11, 0.03), transparent);
+            animation: cardShine 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes cardShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .neo-card:hover {
+            box-shadow: 14px 14px 0 var(--shadow), 0 0 80px var(--glow);
+            transform: translate(-4px, -4px) scale(1.005);
+        }
+
+        .neo-input {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 3px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            width: 100%;
+            transition: all 0.25s ease;
+            font-size: 1rem;
+        }
+
+        .neo-input:focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            box-shadow: 8px 8px 0 var(--shadow);
+            transform: translate(-3px, -3px);
+        }
+
+        .neo-input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .neo-btn {
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow), 0 0 40px var(--accent-glow);
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #faf6f0;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .neo-btn::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            filter: blur(20px);
+        }
+
+        .neo-btn:hover:not(:disabled)::after {
+            opacity: 0.6;
+        }
+
+        .neo-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--accent-hover), #d97706);
+            transform: translate(-4px, -4px) scale(1.02);
+            box-shadow: 10px 10px 0 var(--shadow), 0 0 60px var(--accent-glow);
+        }
+
+        .neo-btn:active {
+            transform: translate(5px, 5px) scale(0.98);
+            box-shadow: 0 0 0 var(--shadow);
+        }
+
+        .neo-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 6px 6px 0 var(--shadow);
+        }
+
+        .header-brutal {
+            background: var(--bg-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 4px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .brand-logo-img {
+            height: 44px;
+            width: auto;
+            filter: drop-shadow(2px 4px 0 var(--accent));
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .brand-logo-img:hover {
+            transform: scale(1.1) rotate(-4deg) translateY(-2px);
+        }
+
+        .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-text:hover {
+            transform: scale(1.05);
+        }
+
+        .hamburger-btn {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 0.5rem 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hamburger-btn:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .hamburger-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 var(--shadow);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 320px;
+            height: 100%;
+            background: var(--bg-card-solid);
+            border-right: 4px solid var(--border);
+            box-shadow: 12px 0 40px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 1.5rem 1.2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--border);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        .sidebar-brand span {
+            font-weight: 900;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-close {
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 0.3rem 0.8rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-close:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            border-radius: 12px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: var(--bg-card);
+            cursor: pointer;
+        }
+
+        .sidebar-nav a:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: #faf6f0;
+            box-shadow: 6px 6px 0 var(--shadow), 0 0 30px var(--accent-glow);
+        }
+
+        .sidebar-nav a i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 2px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* ===== SHARE MODAL ===== */
+        .share-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 99998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .share-overlay.active {
+            display: flex;
+            animation: overlayIn 0.4s ease forwards;
+        }
+
+        .share-modal {
+            background: var(--bg-card-solid);
+            border: 4px solid var(--border);
+            box-shadow: 20px 20px 0 var(--shadow);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .share-modal .share-logo {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 12px;
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 8px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-modal .share-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .share-modal h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .share-modal .share-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .share-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 8px;
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            border-radius: 12px;
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.65rem;
+            text-decoration: none;
+        }
+
+        .share-btn:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .share-btn i {
+            font-size: 1.6rem;
+        }
+
+        .share-btn .fa-whatsapp { color: #25D366; }
+        .share-btn .fa-tiktok { color: var(--text); }
+        .share-btn .fa-instagram { color: #E4405F; }
+        .share-btn .fa-facebook { color: #1877F2; }
+        .share-btn .fa-twitter { color: var(--text); }
+        .share-btn .fa-telegram { color: #0088cc; }
+        .share-btn .fa-copy { color: var(--accent); }
+        .share-btn .fa-envelope { color: #6b6560; }
+
+        .share-close-btn {
+            background: var(--border);
+            color: var(--bg-card);
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.7rem 2rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .share-close-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: var(--accent-hover);
+            color: white;
+        }
+
+        .native-share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.9rem 2rem;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #faf6f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-top: 4px;
+        }
+
+        .native-share-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: linear-gradient(135deg, var(--accent-hover), #d97706);
+        }
+
+        .native-share-btn i {
+            font-size: 1.2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 8px 0;
+        }
+
+        .nav-link {
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 0.5rem 1.2rem;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .nav-link:hover::before {
+            opacity: 0.08;
+        }
+
+        .nav-link:hover {
+            transform: translate(-4px, -4px) scale(1.03);
+            box-shadow: 8px 8px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: #faf6f0;
+            border-color: var(--border);
+            box-shadow: 6px 6px 0 var(--shadow), 0 0 30px var(--accent-glow);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-link.active::before { opacity: 0; }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            padding: 12px 0;
+        }
+
+        .platform-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 12px 6px;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+            cursor: default;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .platform-item:hover::before {
+            opacity: 0.06;
+        }
+
+        .platform-item i {
+            font-size: 1.8rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .platform-item span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .platform-item:hover {
+            transform: translate(-5px, -5px) scale(1.04);
+            box-shadow: 8px 8px 0 var(--shadow);
+        }
+
+        .platform-item:hover i {
+            transform: scale(1.2) rotate(-6deg) translateY(-2px);
+        }
+
+        .platform-item .fa-youtube { color: #FF0000; }
+        .platform-item .fa-tiktok { color: var(--text); }
+        .platform-item .fa-instagram { color: #E4405F; }
+        .platform-item .fa-facebook { color: #1877F2; }
+        .platform-item .fa-twitter { color: var(--text); }
+        .platform-item .fa-whatsapp { color: #25D366; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .info-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 1rem 0.8rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-item:hover::before {
+            opacity: 1;
+        }
+
+        .info-item:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0 var(--shadow);
+        }
+
+        .info-item i {
+            font-size: 1.8rem;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .info-item:hover i { transform: scale(1.15) rotate(-4deg); }
+
+        .info-item .title {
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 6px;
+        }
+        .info-item .desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .feat-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 3px solid var(--border);
+            box-shadow: 5px 5px 0 var(--shadow);
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feat-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 14px;
+        }
+
+        .feat-item:hover::before {
+            opacity: 0.05;
+        }
+
+        .feat-item:hover {
+            transform: translate(-5px, -5px) scale(1.03);
+            box-shadow: 10px 10px 0 var(--shadow);
+        }
+
+        .feat-item i {
+            font-size: 2rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feat-item:hover i {
+            transform: scale(1.2) rotate(-6deg) translateY(-3px);
+        }
+
+        .feat-item span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: block;
+            margin-top: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        .step-item:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: #faf6f0;
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .step-item:hover .step-number {
+            transform: scale(1.1) rotate(-4deg);
+        }
+
+        .step-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .step-text small {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .result-wrapper {
+            max-height: 460px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 6px;
+            -webkit-overflow-scrolling: touch;
+            max-height: 340px;
+        }
+
+        .result-scroll::-webkit-scrollbar { width: 8px; }
+        .result-scroll::-webkit-scrollbar-track { background: var(--scrollbar); border-radius: 8px; }
+        .result-scroll::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 8px; border: 2px solid var(--bg); }
+
+        ::-webkit-scrollbar { width: 10px; background: var(--scrollbar); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 8px; border: 2px solid var(--bg); }
+        ::-webkit-scrollbar-track { background: var(--scrollbar); border-radius: 8px; }
+
+        .preview-img {
+            border: 3px solid var(--border);
+            box-shadow: 5px 5px 0 var(--shadow);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .preview-img:hover {
+            transform: scale(1.03) rotate(-2deg);
+        }
+
+        .error-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border: 3px solid #dc2626;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+            color: #7f1d1d;
+            border-radius: 12px;
+            box-shadow: 4px 4px 0 #7f1d1d;
+        }
+
+        .dl-btn {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 3px solid var(--border);
+            box-shadow: 5px 5px 0 var(--shadow);
+            font-weight: 800;
+            color: var(--text);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 0.9rem 1.2rem;
+            width: 100%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dl-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .dl-btn:hover::before {
+            opacity: 0.06;
+        }
+
+        .dl-btn:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 var(--shadow);
+        }
+
+        .dl-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 9px 9px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .dl-btn-primary {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #1a1716;
+        }
+
+        .dl-btn-video {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: var(--border);
+        }
+
+        .dl-btn-audio {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-color: var(--border);
+        }
+
+        .reset-btn {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 3px solid var(--border);
+            box-shadow: 5px 5px 0 var(--shadow);
+            font-weight: 700;
+            padding: 1rem;
+            width: 100%;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .reset-btn:hover::before {
+            opacity: 0.06;
+        }
+
+        .reset-btn:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 var(--shadow);
+        }
+
+        .reset-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 9px 9px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            box-shadow: 3px 3px 0 var(--shadow);
+            border-radius: 8px;
+        }
+
+        .format-badge.hd { background: #28a745; color: white; }
+        .format-badge.sd { background: #ffc107; color: #1a1716; }
+        .format-badge.audio { background: #17a2b8; color: white; }
+
+        .btn-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .neo-loader {
+            border: 5px solid var(--border);
+            border-top: 5px solid var(--accent);
+            border-radius: 50%;
+            width: 2.8rem;
+            height: 2.8rem;
+            animation: spin 0.9s linear infinite;
+            display: inline-block;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 3px 3px 0 var(--shadow);
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+            border-radius: 8px;
+        }
+
+        .progress-container.active { display: block; }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            transition: width 0.4s ease;
+            animation: progressPulse 1.2s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes progressPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .skeleton {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 1rem;
+            margin-bottom: 10px;
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            border-radius: 12px;
+        }
+
+        .skeleton .thumb {
+            width: 80px;
+            height: 60px;
+            background: var(--text-muted);
+            opacity: 0.12;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .skeleton .line {
+            height: 12px;
+            background: var(--text-muted);
+            opacity: 0.08;
+            border: 1px solid var(--border);
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        .skeleton .line.w70 { width: 70%; }
+        .skeleton .line.w50 { width: 50%; }
+
+        @keyframes skeletonPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ===== TOAST MODAL ===== */
+        .toast-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .toast-overlay.active {
+            display: flex !important;
+            animation: overlayIn 0.4s ease forwards;
+        }
+
+        @keyframes overlayIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .toast-modal {
+            background: var(--bg-card-solid);
+            border: 4px solid var(--border);
+            box-shadow: 20px 20px 0 var(--shadow), 0 0 80px var(--accent-glow);
+            border-radius: 20px;
+            padding: 2.2rem 2rem 2rem;
+            max-width: 440px;
+            width: 100%;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            position: relative;
+            z-index: 100000;
+            text-align: center;
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.85) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .toast-modal .logo {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 14px;
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 8px;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            transition: transform 0.4s ease;
+        }
+
+        .toast-modal .logo:hover {
+            transform: scale(1.05) rotate(-3deg);
+        }
+
+        .toast-modal .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .toast-modal .step-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: #faf6f0;
+            padding: 2px 16px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .toast-modal h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .toast-modal p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .toast-modal .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .toast-modal .channel-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.8rem 2rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 0.95rem;
+            border-radius: 12px;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .toast-modal .channel-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: linear-gradient(135deg, #128C7E, #075E54);
+        }
+
+        .toast-modal .toast-btn {
+            background: var(--border);
+            color: var(--bg-card);
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.8rem 2.2rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-radius: 12px;
+            min-width: 100px;
+        }
+
+        .toast-modal .toast-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: var(--accent-hover);
+            color: white;
+        }
+
+        .toast-modal .toast-btn-secondary {
+            background: var(--bg-card);
+            color: var(--text);
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.8rem 2.2rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-radius: 12px;
+            min-width: 100px;
+        }
+
+        .toast-modal .toast-btn-secondary:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+
+        @media (max-width: 480px) {
+            .toast-modal {
+                padding: 1.6rem 1.2rem 1.4rem;
+                border-radius: 16px;
+                margin: 0 12px;
+            }
+            .toast-modal h2 { font-size: 1.1rem; }
+            .toast-modal p { font-size: 0.8rem; }
+            .toast-modal .logo { width: 60px; height: 60px; }
+            .toast-modal .btn-group { flex-direction: column; align-items: center; }
+            .toast-modal .toast-btn,
+            .toast-modal .toast-btn-secondary,
+            .toast-modal .channel-btn { width: 100%; text-align: center; min-width: unset; }
+            .share-grid { grid-template-columns: repeat(3, 1fr); }
+            .share-modal { padding: 1.5rem; }
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 0.4rem 0.9rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .theme-toggle:hover::before {
+            opacity: 0.06;
+        }
+
+        .theme-toggle:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--shadow);
+        }
+
+        .theme-toggle:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 var(--shadow);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 3px solid #d97706;
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 5px 5px 0 #d97706;
+            color: #78350f;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .warning-box i {
+            font-size: 1.4rem;
+            color: #d97706;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .warning-box .warn-text {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .warning-box .warn-text strong {
+            color: #92400e;
+        }
+
+        .main-container {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 0 16px 30px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-wrapper { display: flex; flex-direction: column; gap: 20px; }
+
+        .animate-fade-slide {
+            animation: fadeSlideUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.08s; opacity: 0; }
+        .delay-2 { animation-delay: 0.16s; opacity: 0; }
+        .delay-3 { animation-delay: 0.24s; opacity: 0; }
+        .delay-4 { animation-delay: 0.32s; opacity: 0; }
+        .delay-5 { animation-delay: 0.40s; opacity: 0; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow-ring {
+            position: relative;
+        }
+
+        .glow-ring::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
+            opacity: 0.15;
+            z-index: -1;
+            filter: blur(12px);
+        }
+
+        @media (max-width: 480px) {
+            .platform-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .info-item { padding: 0.6rem 0.4rem; }
+            .info-item i { font-size: 1.3rem; }
+            .info-item .title { font-size: 0.7rem; }
+            .info-item .desc { font-size: 0.6rem; }
+            .neo-btn { padding: 0.7rem 1.2rem; font-size: 0.85rem; border-radius: 10px; }
+            .feat-item i { font-size: 1.5rem; }
+            .feat-item span { font-size: 0.65rem; }
+            .nav-link { font-size: 0.6rem; padding: 0.35rem 0.7rem; border-radius: 8px; }
+            .header-brutal .flex { flex-wrap: wrap; gap: 4px; }
+            .step-text { font-size: 12px; }
+            .step-number { width: 30px; height: 30px; font-size: 12px; border-radius: 8px; }
+            .brand-text { font-size: 1.4rem; }
+            .brand-logo-img { height: 36px; }
+            .neo-card { border-radius: 12px; }
+            .neo-input { border-radius: 10px; font-size: 0.9rem; padding: 0.8rem 1rem; }
+            .dl-btn { border-radius: 10px; font-size: 0.8rem; padding: 0.7rem 1rem; }
+            .reset-btn { border-radius: 10px; font-size: 0.8rem; padding: 0.8rem; }
+            .theme-toggle { border-radius: 8px; padding: 0.3rem 0.7rem; font-size: 0.85rem; }
+            .hamburger-btn { font-size: 0.75rem; padding: 0.35rem 0.7rem; }
+            .sidebar { width: 280px; left: -300px; }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .platform-grid { grid-template-columns: repeat(3, 1fr); }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu .nav-link {
+                display: none;
+            }
+            .nav-menu .nav-link.mobile-visible {
+                display: inline-flex;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .hamburger-btn {
+                display: none;
+            }
+            .sidebar-overlay {
+                display: none !important;
+            }
+            .sidebar {
+                display: none !important;
+            }
+        }
+
+        .copy-success {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card-solid);
+            border: 3px solid var(--accent);
+            box-shadow: 8px 8px 0 var(--shadow);
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            color: var(--text);
+            z-index: 99999;
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        .copy-success.hidden {
+            display: none;
+        }
+
+        .info-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 99998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .info-modal-overlay.active {
+            display: flex;
+            animation: overlayIn 0.4s ease forwards;
+        }
+
+        .info-modal-box {
+            background: var(--bg-card-solid);
+            border: 4px solid var(--border);
+            box-shadow: 20px 20px 0 var(--shadow);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            text-align: center;
+        }
+
+        .info-modal-box .info-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .info-modal-box h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .info-modal-box p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .info-modal-box .info-close-btn {
+            background: var(--border);
+            color: var(--bg-card);
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.7rem 2rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .info-modal-box .info-close-btn:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: var(--accent-hover);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PARTICLES -->
+    <div class="particle-container" id="particleContainer"></div>
+    <div class="dots-pattern"></div>
+
+    <!-- HEADER -->
+    <header class="header-brutal">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between" style="height:68px;">
+            <a href="index.html" class="flex items-center gap-3 font-black tracking-tight" style="text-decoration:none;">
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo" class="brand-logo-img"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <span class="bg-[#dc2626] text-[#faf6f0] px-2 py-0.5 border-2 border-[#1a1716] shadow-[4px_4px_0_#1a1716] text-2xl flex items-center justify-center font-black rounded-lg" style="display:none;">Z</span>
+                <span class="brand-text">Zenvs</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSidebar()" class="hamburger-btn" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars"></i>
+                    <span class="hidden sm:inline">Menu</span>
+                </button>
+                <button onclick="toggleTheme()" class="theme-toggle text-sm flex items-center gap-1.5">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                    <span class="hidden sm:inline" style="font-weight:700;font-size:0.7rem;">Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
+                <span style="display:none;">Z</span>
+                <span>Zenvs</span>
+            </div>
+            <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="active"><i class="fa-solid fa-download"></i> Downloader</a>
+            <a href="berita.html"><i class="fa-solid fa-newspaper"></i> Berita</a>
+            <a href="info.html"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="fakedana.html"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
+            <a href="zenvs-ai.html"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
+            <hr class="sidebar-divider" />
+            <a onclick="openShareModal()"><i class="fa-solid fa-share-nodes" style="color:var(--accent);"></i> Bagikan Zenvs</a>
+            <a onclick="openChannelWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> Channel WhatsApp</a>
+            <a onclick="openAbout()"><i class="fa-solid fa-user-astronaut"></i> Tentang Pembuat</a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>© 2026 Zenvs · Made with ❤️</p>
+            <p style="font-size:0.65rem;margin-top:4px;">All-in-One Downloader</p>
+        </div>
+    </div>
+
+    <!-- SHARE MODAL -->
+    <div class="share-overlay" id="shareOverlay" onclick="if(event.target===this) closeShareModal()">
+        <div class="share-modal">
+            <div class="share-logo">
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo"
+                     onerror="this.style.display='none'; this.parentElement.textContent='Z'; this.parentElement.style.fontSize='36px'; this.parentElement.style.fontWeight='900';" />
+            </div>
+            <h3>Bagikan Zenvs</h3>
+            <p class="share-desc">
+                Ayo lihat dan gunakan <strong>Zenvs All-in-One Downloader</strong>!<br />
+                Download banyak video tanpa halangan, tanpa limit, dan tanpa iklan! 🚀
+            </p>
+
+            <button class="native-share-btn" onclick="nativeShare()">
+                <i class="fa-solid fa-share-nodes"></i> Bagikan via Aplikasi
+            </button>
+
+            <div style="margin: 16px 0 8px; color:var(--text-muted); font-size:0.75rem; font-weight:600;">— atau salin link —</div>
+
+            <div class="share-grid">
+                <button class="share-btn" onclick="copyLink()">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Salin</span>
+                </button>
+                <button class="share-btn" onclick="shareTo('whatsapp')">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>WA</span>
+                </button>
+                <button class="share-btn" onclick="shareTo('telegram')">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>Tele</span>
+                </button>
+                <button class="share-btn" onclick="shareTo('facebook')">
+                    <i class="fa-brands fa-facebook"></i>
+                    <span>FB</span>
+                </button>
+                <button class="share-btn" onclick="shareTo('twitter')">
+                    <i class="fa-brands fa-twitter"></i>
+                    <span>X</span>
+                </button>
+                <button class="share-btn" onclick="shareTo('email')">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Email</span>
+                </button>
+            </div>
+
+            <button class="share-close-btn" onclick="closeShareModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- INFO MODAL -->
+    <div class="info-modal-overlay" id="infoModal" onclick="if(event.target===this) closeInfoModal()">
+        <div class="info-modal-box">
+            <div class="info-icon" id="infoIcon">👨‍💻</div>
+            <h3 id="infoTitle">Tentang Pembuat</h3>
+            <p id="infoDesc">Zenvs dibuat oleh Jar, seorang Fullstack Developer.</p>
+            <button class="info-close-btn" onclick="closeInfoModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="main-container" style="padding-top:6px;">
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-download"></i> Downloader</a>
+            <a href="berita.html" class="nav-link"><i class="fa-solid fa-newspaper"></i> Berita</a>
+            <a href="info.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="fakedana.html" class="nav-link"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
+            <a href="zenvs-ai.html" class="nav-link"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
+            <a href="#" class="nav-link mobile-visible" onclick="toggleSidebar(); return false;" style="display:none;">
+                <i class="fa-solid fa-bars"></i> Menu
+            </a>
+        </div>
+    </div>
+
+    <!-- TOAST MODAL -->
+    <div id="toastOverlay" class="toast-overlay">
+        <div class="toast-modal" id="toastModal">
+            <div id="toastContent"></div>
+        </div>
+    </div>
+
+    <!-- COPY SUCCESS -->
+    <div id="copySuccess" class="copy-success hidden">
+        <i class="fa-solid fa-check-circle" style="color:#28a745;"></i> Link berhasil disalin!
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <div class="content-wrapper">
+
+            <!-- WARNING BOX -->
+            <div class="warning-box animate-fade-slide delay-1">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="warn-text">
+                    <strong>Peringatan Penting:</strong> Dilarang menggunakan layanan ini untuk mengunduh konten SARA, pornografi, kekerasan, atau konten ilegal lainnya. Gunakan dengan bijak dan patuhi hukum yang berlaku. Konten yang diunduh hanya untuk keperluan pribadi.
+                </div>
+            </div>
+
+            <!-- HERO -->
+            <div class="text-center animate-fade-slide delay-2">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight" style="color:var(--text);">
+                    Download dari <br class="sm:hidden" />
+                    <span class="gradient-text inline-block px-3 py-1 border-4 border-[#1a1716] shadow-[8px_8px_0_#1a1716] rounded-2xl bg-[var(--bg-card)] backdrop-blur-sm">
+                        Semua Sosial Media
+                    </span>
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl max-w-sm mx-auto font-bold mt-3" style="color:var(--text-muted);">
+                    YouTube, TikTok, Instagram, Facebook, Twitter, dan lainnya. Cukup satu link!
+                </p>
+            </div>
+
+            <!-- PLATFORM GRID -->
+            <div class="platform-grid animate-fade-slide delay-3">
+                <div class="platform-item"><i class="fa-brands fa-youtube"></i><span>YouTube</span></div>
+                <div class="platform-item"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></div>
+                <div class="platform-item"><i class="fa-brands fa-instagram"></i><span>IG</span></div>
+                <div class="platform-item"><i class="fa-brands fa-facebook"></i><span>FB</span></div>
+                <div class="platform-item"><i class="fa-brands fa-twitter"></i><span>X</span></div>
+                <div class="platform-item"><i class="fa-brands fa-whatsapp"></i><span>WA</span></div>
+            </div>
+
+            <!-- STEPS -->
+            <div class="neo-card p-4 animate-fade-slide delay-3">
+                <h3 class="font-black text-sm uppercase tracking-wider mb-3 flex items-center gap-2" style="color:var(--text-muted);">
+                    <i class="fa-solid fa-list-check text-[var(--accent)]"></i> Cara Pakai
+                </h3>
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        Salin link video dari platform favoritmu
+                        <small>YouTube, TikTok, Instagram, Facebook, Twitter, atau WhatsApp</small>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        Tempel link di kolom di bawah
+                        <small>Klik tombol "Rekat" atau paste manual (Ctrl+V)</small>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        Klik "Ambil" dan pilih kualitas
+                        <small>Pilih video HD, SD, atau audio MP3 sesuai kebutuhan</small>
+                    </div>
+                </div>
+                <div class="step-item" style="border-bottom:none;">
+                    <div class="step-number" style="background:linear-gradient(135deg,#28a745,#20c997);">✓</div>
+                    <div class="step-text">
+                        Download langsung! Tanpa watermark.
+                        <small>Gratis, cepat, dan aman</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INPUT -->
+            <div class="neo-card p-4 sm:p-5 w-full text-left animate-fade-slide delay-4">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <input type="text" id="urlInput" placeholder="Tempel link dari YouTube, TikTok, IG, dll..."
+                               class="neo-input text-sm sm:text-base" />
+                        <button onclick="pasteText()" type="button" class="absolute right-2 top-1/2 -translate-y-1/2"
+                                style="background:var(--bg-card);backdrop-filter:blur(12px);border:2px solid var(--border);box-shadow:4px 4px 0 var(--shadow);font-weight:700;padding:0.4rem 1rem;transition:all 0.25s;cursor:pointer;font-size:0.8rem;color:var(--text);border-radius:10px;">
+                            <i class="fa-solid fa-paste"></i> Rekat
+                        </button>
+                    </div>
+                    <button onclick="processDownload()" id="btnAction" class="neo-btn text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer flex-shrink-0">
+                        <i class="fa-solid fa-download"></i> Ambil
+                    </button>
+                </div>
+
+                <div id="errorBox" class="hidden mt-3 error-box text-sm flex items-center gap-3 text-left">
+                    <i class="fa-solid fa-circle-exclamation text-lg"></i>
+                    <span id="errorText">Pesan error...</span>
+                </div>
+
+                <div id="progressContainer" class="progress-container">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+
+                <div id="loading" class="hidden py-4 text-center">
+                    <div class="neo-loader"></div>
+                    <p class="text-sm font-bold mt-3" style="color:var(--text);">Sedang mengambil media...</p>
+                </div>
+
+                <div id="skeletonContainer" class="hidden">
+                    <div class="skeleton">
+                        <div class="thumb"></div>
+                        <div style="flex:1;">
+                            <div class="line w70"></div>
+                            <div class="line w50"></div>
+                            <div class="line w70"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton">
+                        <div class="thumb"></div>
+                        <div style="flex:1;">
+                            <div class="line w70"></div>
+                            <div class="line w50"></div>
+                            <div class="line w70"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULT -->
+            <div id="resultArea" class="hidden neo-card p-4 sm:p-5 text-left w-full">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex items-center gap-4" style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.8rem 1rem;border:3px solid var(--border);box-shadow:6px 6px 0 var(--shadow);border-radius:14px;">
+                        <img id="previewThumb" src="" referrerpolicy="no-referrer" alt="Thumbnail" class="w-20 h-24 sm:w-24 sm:h-32 md:w-28 md:h-36 object-cover preview-img flex-shrink-0 bg-[#d6cdc2]" onerror="this.onerror=null; this.src='https://placehold.co/120x160/1a1716/faf6f0?text=NO+COVER';">
+                        <div class="overflow-hidden flex-1 flex flex-col justify-center min-w-0">
+                            <span id="previewAuthor" class="text-sm sm:text-base font-extrabold block truncate mb-1.5" style="background:linear-gradient(135deg,#dc2626,#f59e0b);color:#faf6f0;padding:0.15rem 0.8rem;border:2px solid var(--border);box-shadow:4px 4px 0 var(--shadow);display:inline-block;width:fit-content;border-radius:8px;">@username</span>
+                            <p id="previewTitle" class="text-sm sm:text-base line-clamp-2 font-bold leading-relaxed" style="color:var(--text);">Judul video...</p>
+                            <p id="previewMeta" class="text-xs sm:text-sm font-medium mt-1" style="color:var(--text-muted);">Durasi: -- | Author: --</p>
+                        </div>
+                    </div>
+
+                    <div class="result-wrapper">
+                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2 flex-shrink-0" style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.35rem 1rem;border:2px solid var(--border);box-shadow:4px 4px 0 var(--shadow);display:inline-block;width:fit-content;color:var(--text);border-radius:10px;">
+                            <i class="fa-solid fa-download text-[var(--accent)]"></i> Pilihan Unduh
+                        </h3>
+                        <div id="contentList" class="result-scroll space-y-2.5"></div>
+                    </div>
+
+                    <button onclick="resetForm()" class="reset-btn cursor-pointer flex items-center justify-center gap-2 mt-1 text-sm sm:text-base">
+                        <i class="fa-solid fa-rotate-left"></i> Ambil Lagi
+                    </button>
+                </div>
+            </div>
+
+            <!-- INFO GRID -->
+            <div class="info-grid animate-fade-slide delay-5">
+                <div class="info-item">
+                    <i class="fa-solid fa-shield-halved text-[#dc2626]"></i>
+                    <span class="title">Tanpa Watermark</span>
+                    <span class="desc">Video bersih tanpa tanda air</span>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-bolt text-[#f59e0b]"></i>
+                    <span class="title">Super Cepat</span>
+                    <span class="desc">Proses instan dalam detik</span>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-mobile-screen" style="color:var(--text);"></i>
+                    <span class="title">Semua Perangkat</span>
+                    <span class="desc">Kompatibel HP & PC</span>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-music text-[#28a745]"></i>
+                    <span class="title">Audio MP3</span>
+                    <span class="desc">Ekstrak musik favoritmu</span>
+                </div>
+            </div>
+
+            <!-- FEATURES -->
+            <div id="featuresRow" class="grid grid-cols-3 gap-3 pt-1">
+                <div class="feat-item glow-ring">
+                    <i class="fa-solid fa-link" style="color:var(--accent);"></i>
+                    <span>Semua Platform</span>
+                </div>
+                <div class="feat-item glow-ring">
+                    <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
+                    <span>Super Cepat</span>
+                </div>
+                <div class="feat-item glow-ring">
+                    <i class="fa-solid fa-gem" style="color:var(--accent);"></i>
+                    <span>Gratis & Premium</span>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="pt-2 text-center text-xs sm:text-sm space-y-1.5 leading-tight border-t-2 border-[var(--border)] pt-4">
+                <p class="font-bold" style="color:var(--text);">© 2026 Zenvs · All-in-One Downloader</p>
+                <p style="color:var(--text-muted);">Kami cuma perantara, semua media tetap di tangan pemiliknya.</p>
+                <p class="text-[10px] sm:text-xs" style="color:var(--text-muted);">
+                    Made with <i class="fa-solid fa-heart text-[#dc2626] animate-pulse"></i> by Jar ·
+                    <span class="gradient-text font-bold">#NoWatermark</span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. PARTICLES
+        // ============================================================
+        (function createParticles() {
+            const container = document.getElementById('particleContainer');
+            if (!container) return;
+            const colors = ['var(--accent)', 'var(--gradient-2)', 'var(--gradient-3)'];
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = 4 + Math.random() * 20;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (15 + Math.random() * 25) + 's';
+                p.style.animationDelay = (Math.random() * 20) + 's';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.opacity = 0.04 + Math.random() * 0.08;
+                container.appendChild(p);
+            }
+        })();
+
+        // ============================================================
+        // 2. SIDEBAR
+        // ============================================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar || !overlay) return;
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+            playClickSound();
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar || !overlay) return;
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        // 3. THEME TOGGLE
+        // ============================================================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            const icon = document.getElementById('themeIcon');
+            if (icon) {
+                icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+            localStorage.setItem('zenvs-theme', newTheme);
+            playClickSound();
+        }
+
+        (function() {
+            const saved = localStorage.getItem('zenvs-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            const icon = document.getElementById('themeIcon');
+            if (icon) {
+                icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+        })();
+
+        // ============================================================
+        // 4. SOUND EFFECT
+        // ============================================================
+        function playClickSound() {
+            try {
+                const audio = new Audio('data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoAAACBhYqFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYU=');
+                audio.volume = 0.10;
+                audio.play().catch(() => {});
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // 5. SHARE FUNCTIONS
+        // ============================================================
+        const shareText = 'Ayo lihat dan gunakan Zenvs All-in-One Downloader! Download banyak video tanpa halangan, tanpa limit, dan tanpa iklan! 🚀\n\nKunjungi: https://zenvs.vercel.app';
+        const shareUrl = 'https://zenvs.vercel.app';
+
+        function openShareModal() {
+            document.getElementById('shareOverlay').classList.add('active');
+            closeSidebar();
+            playClickSound();
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareOverlay').classList.remove('active');
+            playClickSound();
+        }
+
+        function nativeShare() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Zenvs All-in-One Downloader',
+                    text: shareText,
+                    url: shareUrl
+                }).catch(() => {});
+            } else {
+                copyLink();
+            }
+            closeShareModal();
+            playClickSound();
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(shareText + '\n\n' + shareUrl).then(() => {
+                showCopySuccess('Link berhasil disalin!');
+            }).catch(() => {
+                showCopySuccess('Gagal menyalin, coba manual');
+            });
+            closeShareModal();
+            playClickSound();
+        }
+
+        function shareTo(platform) {
+            const text = encodeURIComponent(shareText);
+            let shareUrlLink = '';
+
+            switch(platform) {
+                case 'whatsapp':
+                    shareUrlLink = `https://wa.me/?text=${text}%0A%0A${encodeURIComponent(shareUrl)}`;
+                    break;
+                case 'telegram':
+                    shareUrlLink = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`;
+                    break;
+                case 'facebook':
+                    shareUrlLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    shareUrlLink = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareUrl)}`;
+                    break;
+                case 'email':
+                    shareUrlLink = `mailto:?subject=Zenvs%20All-in-One%20Downloader&body=${text}%0A%0A${encodeURIComponent(shareUrl)}`;
+                    break;
+                default:
+                    return;
+            }
+
+            if (shareUrlLink) {
+                window.open(shareUrlLink, '_blank');
+                playClickSound();
+                closeShareModal();
+            }
+        }
+
+        function showCopySuccess(message) {
+            const el = document.getElementById('copySuccess');
+            el.textContent = '✅ ' + message;
+            el.classList.remove('hidden');
+            setTimeout(() => {
+                el.classList.add('hidden');
+            }, 3000);
+        }
+
+        // ============================================================
+        // 6. SIDEBAR MENU FUNCTIONS
+        // ============================================================
+        function openChannelWA() {
+            closeSidebar();
+            window.open('https://whatsapp.com/channel/0029Vb83whu6WaKfFbCOPG1o', '_blank');
+            playClickSound();
+        }
+
+        function openAbout() {
+            closeSidebar();
+            document.getElementById('infoIcon').textContent = '👨‍💻';
+            document.getElementById('infoTitle').textContent = 'Tentang Pembuat';
+            document.getElementById('infoDesc').innerHTML = `
+                <strong>Nama:</strong> Jar<br>
+                <strong>Profesi:</strong> Fullstack Developer<br><br>
+                Zenvs adalah project open-source yang dibuat untuk memudahkan orang mengunduh video dari berbagai platform sosial media.<br><br>
+                <strong>Fitur:</strong><br>
+                ✅ Tanpa watermark<br>
+                ✅ Tanpa limit<br>
+                ✅ Tanpa iklan<br>
+                ✅ Super cepat<br><br>
+                Support kami dengan share ke teman-teman! ❤️
+            `;
+            document.getElementById('infoModal').classList.add('active');
+            playClickSound();
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModal').classList.remove('active');
+            playClickSound();
+        }
+
+        // ============================================================
+        // 7. TOAST MODAL - 5 TAHAP
+        // ============================================================
+        const toastData = [{
+            icon: '📢',
+            title: 'Gabung Saluran Zenvs!',
+            desc: 'Dapatkan update terbaru, tips, dan fitur baru langsung dari WhatsApp.',
+            btnText: 'Gabung Sekarang',
+            btnLink: 'https://whatsapp.com/channel/0029Vb83whu6WaKfFbCOPG1o',
+            isChannel: true
+        }, {
+            icon: '💡',
+            title: 'Tips Download',
+            desc: 'Pastikan link yang kamu tempel adalah link publik. Video privat tidak bisa diunduh.',
+            btnText: 'Lanjut',
+            isChannel: false
+        }, {
+            icon: '🔥',
+            title: 'Zenvs All-in-One!',
+            desc: 'Support YouTube, TikTok, IG, FB, Twitter, WhatsApp. Gratis tanpa watermark!',
+            btnText: 'Lanjut',
+            isChannel: false
+        }, {
+            icon: '⚠️',
+            title: 'Peringatan Penting',
+            desc: 'Dilarang mengunduh konten SARA, pornografi, kekerasan, atau konten ilegal. Gunakan dengan bijak!',
+            btnText: 'Saya Mengerti',
+            isChannel: false
+        }, {
+            icon: '👨‍💻',
+            title: 'Tentang Pembuat',
+            desc: 'Zenvs dibuat oleh Jar, seorang Fullstack Developer. Support kami dengan share ke teman-teman!',
+            btnText: 'Mulai Pakai',
+            isChannel: false
+        }];
+
+        let currentToastStep = 0;
+
+        function showToastStep(step) {
+            const overlay = document.getElementById('toastOverlay');
+            const content = document.getElementById('toastContent');
+
+            if (!overlay || !content) {
+                console.error('Toast elements not found!');
+                return;
+            }
+
+            const data = toastData[step];
+            if (!data) {
+                console.error('Toast data not found for step:', step);
+                return;
+            }
+
+            let btnHTML = '';
+            if (data.isChannel) {
+                btnHTML = `
+                    <a href="${data.btnLink}" target="_blank" class="channel-btn" onclick="playClickSound();">
+                        <i class="fa-brands fa-whatsapp"></i> ${data.btnText}
+                    </a>
+                    <button class="toast-btn-secondary" onclick="playClickSound(); nextToastStep();">
+                        Lewati
+                    </button>
+                `;
+            } else if (step === toastData.length - 1) {
+                btnHTML = `
+                    <button class="toast-btn" onclick="playClickSound(); closeToast();">
+                        ${data.btnText}
+                    </button>
+                `;
+            } else {
+                btnHTML = `
+                    <button class="toast-btn" onclick="playClickSound(); nextToastStep();">
+                        ${data.btnText}
+                    </button>
+                `;
+            }
+
+            content.innerHTML = `
+                <div class="logo">
+                    <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                         alt="Zenvs Logo"
+                         onerror="this.style.display='none'; this.parentElement.textContent='Z'; this.parentElement.style.fontSize='32px'; this.parentElement.style.fontWeight='900';" />
+                </div>
+                <div class="step-badge">${step + 1} / ${toastData.length}</div>
+                <h2>${data.icon} ${data.title}</h2>
+                <p>${data.desc}</p>
+                <div class="btn-group">
+                    ${btnHTML}
+                </div>
+            `;
+
+            overlay.classList.add('active');
+            console.log('Toast shown:', step + 1, '/', toastData.length);
+        }
+
+        function nextToastStep() {
+            currentToastStep++;
+            if (currentToastStep < toastData.length) {
+                showToastStep(currentToastStep);
+            } else {
+                closeToast();
+            }
+        }
+
+        function closeToast() {
+            const overlay = document.getElementById('toastOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+            localStorage.setItem('zenvs-toast-done', 'true');
+            playClickSound();
+            console.log('Toast closed');
+        }
+
+        (function() {
+            const done = localStorage.getItem('zenvs-toast-done');
+            console.log('Toast done status:', done);
+            if (done !== 'true') {
+                setTimeout(function() {
+                    console.log('Showing toast step 0');
+                    showToastStep(0);
+                }, 1000);
+            } else {
+                console.log('Toast already shown before');
+            }
+        })();
+
+        // ============================================================
+        // 8. NOTIFICATION
+        // ============================================================
+        function showNotif(text, icon = 'fa-solid fa-check-circle', color = '#28a745') {
+            const container = document.createElement('div');
+            container.style.cssText = `
+                position: fixed;
+                bottom: 28px;
+                right: 28px;
+                background: var(--bg-card-solid);
+                border: 3px solid var(--border);
+                box-shadow: 10px 10px 0 var(--shadow);
+                padding: 1rem 1.8rem;
+                z-index: 999;
+                max-width: 360px;
+                animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+                color: var(--text);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                border-radius: 14px;
+            `;
+            container.innerHTML = `
+                <i class="${icon}" style="color:${color};font-size:1.6rem;"></i>
+                <span style="font-weight:700;font-size:0.9rem;">${text}</span>
+            `;
+            container.onclick = function() { this.remove(); };
+            document.body.appendChild(container);
+            setTimeout(() => {
+                if (container.parentElement) {
+                    container.style.animation = 'slideOut 0.4s ease forwards';
+                    setTimeout(() => container.remove(), 400);
+                }
+            }, 3200);
+        }
+
+        // ============================================================
+        // 9. DOWNLOADER
+        // ============================================================
+        function showError(msg) {
+            const box = document.getElementById('errorBox');
+            if (!box) return;
+            document.getElementById('errorText').innerText = msg;
+            box.classList.remove('hidden');
+        }
+
+        function hideError() {
+            const box = document.getElementById('errorBox');
+            if (box) box.classList.add('hidden');
+        }
+
+        async function pasteText() {
+            playClickSound();
+            hideError();
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) document.getElementById('urlInput').value = text;
+            } catch {
+                showError('Gagal baca clipboard. Rekat manual aja.');
+            }
+        }
+
+        function formatDuration(seconds) {
+            if (!seconds) return '--';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function formatSize(bytes) {
+            if (!bytes) return '';
+            const mb = bytes / 1024 / 1024;
+            if (mb >= 1) return mb.toFixed(1) + ' MB';
+            return (bytes / 1024).toFixed(0) + ' KB';
+        }
+
+        function startProgress() {
+            const container = document.getElementById('progressContainer');
+            const fill = document.getElementById('progressFill');
+            if (!container || !fill) return null;
+            container.classList.add('active');
+            fill.style.width = '0%';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 5 + 2;
+                if (progress > 95) progress = 95;
+                fill.style.width = progress + '%';
+            }, 300);
+            return interval;
+        }
+
+        function completeProgress(interval) {
+            const fill = document.getElementById('progressFill');
+            if (!fill) return;
+            clearInterval(interval);
+            fill.style.width = '100%';
+            setTimeout(() => {
+                const container = document.getElementById('progressContainer');
+                if (container) {
+                    container.classList.remove('active');
+                }
+                if (fill) fill.style.width = '0%';
+            }, 600);
+        }
+
+        async function directDownload(url, filename) {
+            const btn = event ? event.currentTarget : null;
+            let origText = '';
+            if (btn) {
+                origText = btn.innerHTML;
+                btn.innerHTML = `<span class="btn-spinner"></span> Mendownload...`;
+                btn.disabled = true;
+            }
+
+            const progressInterval = startProgress();
+            playClickSound();
+
+            try {
+                const response = await fetch(url, { mode: 'cors', headers: { 'Accept': '*/*' } });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+                if (progressInterval) completeProgress(progressInterval);
+                showNotif('Download selesai!');
+            } catch (error) {
+                console.error('Download error:', error);
+                if (progressInterval) completeProgress(progressInterval);
+                showNotif('Gagal download', 'fa-solid fa-circle-exclamation', '#dc2626');
+                try { window.open(url, '_blank'); } catch { window.location.href = url; }
+            } finally {
+                if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+            }
+        }
+
+        async function processDownload() {
+            playClickSound();
+            hideError();
+            const urlInput = document.getElementById('urlInput');
+            if (!urlInput) return;
+            const url = urlInput.value.trim();
+            const loading = document.getElementById('loading');
+            const skeleton = document.getElementById('skeletonContainer');
+            const resultArea = document.getElementById('resultArea');
+            const contentList = document.getElementById('contentList');
+            const featuresRow = document.getElementById('featuresRow');
+            const btn = document.getElementById('btnAction');
+
+            if (!url) { showError('Masukkan link dulu!'); return; }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i>`;
+            }
+            if (loading) loading.classList.remove('hidden');
+            if (skeleton) skeleton.classList.remove('hidden');
+            if (resultArea) resultArea.classList.add('hidden');
+
+            const progressInterval = startProgress();
+
+            try {
+                const apiUrl = `https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(url)}`;
+                const res = await fetch(apiUrl);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                console.log('API Response:', data);
+
+                if (progressInterval) completeProgress(progressInterval);
+
+                if (data.status && data.result) {
+                    const d = data.result;
+                    let html = '';
+                    const id = d.id || Math.random().toString(36).substring(2, 8);
+                    const zenCode = `Zenvs_${id}`;
+
+                    const thumb = d.thumbnail || d.cover || '';
+                    const previewThumb = document.getElementById('previewThumb');
+                    const previewAuthor = document.getElementById('previewAuthor');
+                    const previewTitle = document.getElementById('previewTitle');
+                    const previewMeta = document.getElementById('previewMeta');
+
+                    if (previewThumb) previewThumb.src = thumb;
+                    if (previewAuthor) previewAuthor.innerText = d.author || d.channel || '@user';
+                    if (previewTitle) previewTitle.innerText = d.title || d.description || 'Tanpa Judul';
+                    if (previewMeta) previewMeta.innerText =
+                        `Durasi: ${formatDuration(d.duration)} | Author: ${d.author || 'Unknown'}`;
+
+                    if (d.medias && d.medias.length > 0) {
+                        const videos = d.medias.filter(m => m.type === 'video');
+                        const audios = d.medias.filter(m => m.type === 'audio');
+                        const images = d.medias.filter(m => m.type === 'image');
+
+                        const bestVideos = videos.slice(0, 5);
+                        bestVideos.forEach((media, idx) => {
+                            const isHD = media.height && media.height >= 720;
+                            const label = media.quality || media.label || `${media.height || '?'}p`;
+                            const size = media.clen ? ` (${formatSize(media.clen)})` : '';
+                            const badgeClass = isHD ? 'hd' : 'sd';
+                            const badgeText = isHD ? 'HD' : 'SD';
+                            const ext = media.ext || 'mp4';
+                            html +=
+                                `<button onclick="directDownload('${media.url}', '${zenCode}_${label}.${ext}')" class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" style="animation-delay:${idx*0.05}s;"><span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span><span class="format-badge ${badgeClass}">${badgeText}</span></button>`;
+                        });
+
+                        const bestAudios = audios.slice(0, 3);
+                        bestAudios.forEach((media, idx) => {
+                            const label = media.quality || media.label || 'Audio';
+                            const bitrate = media.bitrate ? ` (${(media.bitrate/1000).toFixed(0)}kbps)` :
+                            '';
+                            const ext = media.ext || 'm4a';
+                            html +=
+                                `<button onclick="directDownload('${media.url}', '${zenCode}_audio.${ext}')" class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" style="animation-delay:${(idx+5)*0.05}s;"><span><i class="fa-solid fa-music mr-2"></i> ${label} ${bitrate}</span><span class="format-badge audio">AUDIO</span></button>`;
+                        });
+
+                        if (images.length > 0) {
+                            images.forEach((img, idx) => {
+                                const fileName = `${zenCode}_photo_${idx+1}.jpg`;
+                                html +=
+                                    `<div class="flex items-center justify-between" style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.6rem 0.8rem;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);gap:0.8rem;border-radius:12px;animation-delay:${(idx+10)*0.05}s;"><div class="flex items-center gap-3 overflow-hidden min-w-0"><img src="${img.url}" referrerpolicy="no-referrer" alt="Foto #${idx+1}" class="w-12 h-12 object-cover" style="border:3px solid var(--border);box-shadow:4px 4px 0 var(--shadow);flex-shrink:0;border-radius:8px;background:#d6cdc2;" onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';"><span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span></div><button onclick="directDownload('${img.url}', '${fileName}')" class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> <i class="fa-solid fa-download"></i> Download Foto</button></div>`;
+                            });
+                        }
+
+                        if (contentList) contentList.innerHTML = html;
+                        if (resultArea) resultArea.classList.remove('hidden');
+                        if (featuresRow) featuresRow.classList.add('hidden');
+                    } else {
+                        showError('Link tidak valid atau platform tidak didukung.');
+                    }
+                } else {
+                    showError(data.message || 'Link tidak valid atau platform tidak didukung.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                if (progressInterval) completeProgress(progressInterval);
+                showError('Gagal terhubung ke server.');
+            } finally {
+                if (loading) loading.classList.add('hidden');
+                if (skeleton) skeleton.classList.add('hidden');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-download"></i> Ambil`;
+                }
+            }
+        }
+
+        function resetForm() {
+            playClickSound();
+            const resultArea = document.getElementById('resultArea');
+            const featuresRow = document.getElementById('featuresRow');
+            const urlInput = document.getElementById('urlInput');
+            if (resultArea) resultArea.classList.add('hidden');
+            if (featuresRow) featuresRow.classList.remove('hidden');
+            if (urlInput) urlInput.value = '';
+            hideError();
+        }
+
+        const urlInput = document.getElementById('urlInput');
+        if (urlInput) {
+            urlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') processDownload();
+            });
+        }
+
+        console.log('Zenvs v2.0 Loaded!');
+        console.log('Toast 5 Tahap - FIXED!');
+        console.log('Share Modal dengan Native Share API!');
+        console.log('Fitur Versi 2.0 dihapus dari hamburger!');
+    </script>
+</body>
+</html>
