@@ -1631,10 +1631,8 @@
     <header class="header-brutal">
         <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between" style="height:68px;">
             <a href="index.html" class="flex items-center gap-3 font-black tracking-tight" style="text-decoration:none;">
-                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
-                     alt="Zenvs Logo" class="brand-logo-img"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                <span class="bg-[#dc2626] text-[#faf6f0] px-2 py-0.5 border-2 border-[#1a1716] shadow-[4px_4px_0_#1a1716] text-2xl flex items-center justify-center font-black rounded-lg" style="display:none;">Z</span>
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo" class="brand-logo-img" />
                 <span class="brand-text">Zenvs</span>
             </a>
             <div class="flex items-center gap-2">
@@ -1655,10 +1653,8 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-brand">
-                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
-                     alt="Zenvs Logo"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
-                <span style="display:none;">Z</span>
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo" />
                 <span>Zenvs</span>
             </div>
             <button class="sidebar-close" onclick="closeSidebar()">✕</button>
@@ -1684,9 +1680,8 @@
     <div class="share-overlay" id="shareOverlay" onclick="if(event.target===this) closeShareModal()">
         <div class="share-modal">
             <div class="share-logo">
-                <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
-                     alt="Zenvs Logo"
-                     onerror="this.style.display='none'; this.parentElement.textContent='Z'; this.parentElement.style.fontSize='36px'; this.parentElement.style.fontWeight='900';" />
+                <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                     alt="Zenvs Logo" />
             </div>
             <h3>Bagikan Zenvs</h3>
             <p class="share-desc">
@@ -2161,7 +2156,7 @@
         }
 
         // ============================================================
-        // 7. TOAST MODAL - 5 TAHAP
+        // 7. TOAST MODAL - 5 TAHAP (MUNCUL SETIAP BUKA WEB)
         // ============================================================
         const toastData = [{
             icon: '📢',
@@ -2239,9 +2234,8 @@
 
             content.innerHTML = `
                 <div class="logo">
-                    <img src="https://raw.githubusercontent.com/Jar-Anonymous/website-donwloader/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
-                         alt="Zenvs Logo"
-                         onerror="this.style.display='none'; this.parentElement.textContent='Z'; this.parentElement.style.fontSize='32px'; this.parentElement.style.fontWeight='900';" />
+                    <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
+                         alt="Zenvs Logo" />
                 </div>
                 <div class="step-badge">${step + 1} / ${toastData.length}</div>
                 <h2>${data.icon} ${data.title}</h2>
@@ -2269,23 +2263,18 @@
             if (overlay) {
                 overlay.classList.remove('active');
             }
-            localStorage.setItem('zenvs-toast-done', 'true');
+            // TIDAK MENYIMPAN KE LOCALSTORAGE AGAR MUNCUL SETIAP BUKA WEB
+            // localStorage.setItem('zenvs-toast-done', 'true');
             playClickSound();
             console.log('Toast closed');
         }
 
-        (function() {
-            const done = localStorage.getItem('zenvs-toast-done');
-            console.log('Toast done status:', done);
-            if (done !== 'true') {
-                setTimeout(function() {
-                    console.log('Showing toast step 0');
-                    showToastStep(0);
-                }, 1000);
-            } else {
-                console.log('Toast already shown before');
-            }
-        })();
+        // ===== TOAST MUNCUL SETIAP BUKA WEB =====
+        // Tidak ada pengecekan localStorage, langsung muncul setiap load
+        setTimeout(function() {
+            console.log('Showing toast step 0 (setiap buka web)');
+            showToastStep(0);
+        }, 1000);
 
         // ============================================================
         // 8. NOTIFICATION
@@ -2558,9 +2547,9 @@
         }
 
         console.log('Zenvs v2.0 Loaded!');
-        console.log('Toast 5 Tahap - FIXED!');
+        console.log('Toast 5 Tahap - MUNCUL SETIAP BUKA WEB!');
         console.log('Share Modal dengan Native Share API!');
-        console.log('Fitur Versi 2.0 dihapus dari hamburger!');
+        console.log('Logo: kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png');
     </script>
 </body>
 </html>
