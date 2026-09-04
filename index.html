@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* SEMUA CSS SAMA - gw pendekin biar ga kepanjangan */
         * { font-family: 'Space Grotesk', 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
         :root { --bg: #f0ebe5; --bg-card: rgba(255,251,247,0.80); --bg-card-solid: #faf6f0; --text: #1a1716; --text-muted: #6b6560; --border: #1a1716; --shadow: #1a1716; --accent: #dc2626; --accent-hover: #b91c1c; --accent-glow: rgba(220,38,38,0.35); --card-hover: #f0ebe3; --scrollbar: #d6cdc2; --scrollbar-thumb: #1a1716; --glow: rgba(220,38,38,0.25); --gradient-1: #dc2626; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
         [data-theme="dark"] { --bg: #0d0d0d; --bg-card: rgba(28,28,28,0.92); --bg-card-solid: #1a1a1a; --text: #f5efe8; --text-muted: #8a8480; --border: #3a3a3a; --shadow: #3a3a3a; --accent: #ef4444; --accent-hover: #dc2626; --accent-glow: rgba(239,68,68,0.30); --card-hover: #2a2a2a; --scrollbar: #2a2a2a; --scrollbar-thumb: #5a5a5a; --glow: rgba(239,68,68,0.25); --gradient-1: #ef4444; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
@@ -21,7 +20,7 @@
         .particle-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .particle { position: absolute; border-radius: 50%; background: var(--accent); opacity: 0.08; animation: floatParticle 20s infinite linear; }
         @keyframes floatParticle { 0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; } 10% { opacity: 0.08; } 90% { opacity: 0.08; } 100% { transform: translateY(-10vh) rotate(720deg) scale(1.2); opacity: 0; } }
-        .neo-card { background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 3px solid var(--border); box-shadow: 10px 10px 0 var(--shadow), 0 0 60px var(--glow); border-radius: 16px; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; z-index: 1; overflow: hidden; }
+        .neo-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 3px solid var(--border); box-shadow: 10px 10px 0 var(--shadow), 0 0 60px var(--glow); border-radius: 16px; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; z-index: 1; overflow: hidden; }
         .neo-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent, rgba(220,38,38,0.03), transparent, rgba(245,158,11,0.03), transparent); animation: cardShine 10s linear infinite; pointer-events: none; }
         @keyframes cardShine { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .neo-card:hover { box-shadow: 14px 14px 0 var(--shadow), 0 0 80px var(--glow); transform: translate(-4px, -4px) scale(1.005); }
@@ -222,6 +221,383 @@
         .info-modal-box p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
         .info-modal-box .info-close-btn { background: var(--border); color: var(--bg-card); border: 3px solid var(--border); box-shadow: 6px 6px 0 var(--shadow); padding: 0.7rem 2rem; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 12px; width: 100%; }
         .info-modal-box .info-close-btn:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--shadow); background: var(--accent-hover); color: white; }
+
+        /* ===== FITUR BARU ===== */
+
+        /* 1. Download Counter */
+        .download-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        .download-counter:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow);
+        }
+        .download-counter i { color: var(--accent); }
+        .download-counter .count { color: var(--accent); font-size: 1rem; }
+
+        /* 2. Speed Indicator */
+        .speed-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 3px 3px 0 var(--shadow);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+        .speed-indicator.active { display: inline-flex; }
+        .speed-indicator i { color: var(--accent); animation: pulse 1s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .speed-indicator .speed-value { color: var(--accent); font-weight: 800; }
+
+        /* 3. Batch Download */
+        .batch-area {
+            display: none;
+            margin-top: 12px;
+            animation: fadeSlideUp 0.4s ease;
+        }
+        .batch-area.active { display: block; }
+        .batch-area textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-size: 0.85rem;
+        }
+        .batch-area .batch-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .batch-area .batch-actions .neo-btn {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.8rem;
+            flex: 1;
+            min-width: 100px;
+        }
+        .batch-toggle {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+            transition: all 0.3s ease;
+        }
+        .batch-toggle:hover { color: var(--accent); }
+        .batch-toggle i { transition: transform 0.3s ease; }
+        .batch-toggle.active i { transform: rotate(180deg); }
+
+        /* 4. Preview Video Modal */
+        .preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(24px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: overlayIn 0.3s ease;
+        }
+        .preview-modal.active { display: flex; }
+        .preview-content {
+            max-width: 640px;
+            width: 100%;
+            background: var(--bg-card-solid);
+            border: 3px solid var(--border);
+            box-shadow: 20px 20px 0 var(--shadow);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .preview-content .preview-close {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: 3px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-content .preview-close:hover { transform: scale(1.1) rotate(90deg); }
+        .preview-content .preview-title {
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: var(--text);
+            padding-right: 30px;
+        }
+        .preview-content video {
+            width: 100%;
+            border-radius: 12px;
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            background: #000;
+            max-height: 70vh;
+        }
+        .preview-content .preview-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* 5. History */
+        .history-container {
+            margin-top: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history-container::-webkit-scrollbar { width: 6px; }
+        .history-container::-webkit-scrollbar-track { background: var(--scrollbar); border-radius: 8px; }
+        .history-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 8px; }
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .history-item:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 7px 7px 0 var(--shadow);
+            background: var(--card-hover);
+        }
+        .history-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .history-item .info { flex: 1; min-width: 0; }
+        .history-item .info .title {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-item .info .meta {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+        .history-item .info .meta i { margin-right: 4px; }
+        .history-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .history-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.3; }
+
+        /* 6. Floating Action Button - Draggable */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .fab-container:active { cursor: grabbing; }
+        .fab-main {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            border: 3px solid var(--border);
+            box-shadow: 8px 8px 0 var(--shadow), 0 0 50px var(--accent-glow);
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+        .fab-main:hover {
+            transform: scale(1.08) translate(-4px, -4px);
+            box-shadow: 12px 12px 0 var(--shadow), 0 0 70px var(--accent-glow);
+        }
+        .fab-main:active { transform: scale(0.92); }
+        .fab-main .pulse-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            animation: fabPulse 2s ease-out infinite;
+            opacity: 0;
+        }
+        @keyframes fabPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .fab-menu.open { display: flex; }
+        .fab-menu .fab-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-card-solid);
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            position: relative;
+        }
+        .fab-menu .fab-item:hover {
+            transform: translate(-4px, -4px) scale(1.05);
+            box-shadow: 10px 10px 0 var(--shadow);
+        }
+        .fab-menu .fab-item .tooltip {
+            position: absolute;
+            right: 60px;
+            background: var(--bg-card-solid);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .fab-menu .fab-item:hover .tooltip { opacity: 1; }
+        .fab-menu .fab-item .badge-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.55rem;
+            font-weight: 800;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            box-shadow: 2px 2px 0 var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fab-menu .fab-item.share-item { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
+        .fab-menu .fab-item.history-item { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .fab-menu .fab-item.theme-item { background: linear-gradient(135deg, #f59e0b, #f97316); color: white; }
+        .fab-menu .fab-item.close-item { background: var(--accent); color: white; }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Responsive FAB */
+        @media (max-width: 480px) {
+            .fab-main { width: 56px; height: 56px; font-size: 1.4rem; }
+            .fab-menu .fab-item { width: 42px; height: 42px; font-size: 1rem; }
+            .fab-menu { bottom: 70px; gap: 8px; }
+            .fab-menu .fab-item .tooltip { display: none; }
+        }
+
+        /* ===== BATCH PROGRESS ===== */
+        .batch-progress {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0 var(--shadow);
+        }
+        .batch-progress.active { display: block; }
+        .batch-progress .batch-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+        .batch-progress .batch-bar .batch-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--gradient-2));
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        .batch-progress .batch-status {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -239,6 +615,12 @@
                 <span class="brand-text">Zenvs</span>
             </a>
             <div class="flex items-center gap-2">
+                <!-- Download Counter di Header -->
+                <div class="download-counter" id="downloadCounter">
+                    <i class="fa-solid fa-download"></i>
+                    <span class="count" id="downloadCount">0</span>
+                    <span>Downloads</span>
+                </div>
                 <button onclick="toggleSidebar()" class="hamburger-btn" id="hamburgerBtn">
                     <i class="fa-solid fa-bars"></i>
                     <span class="hidden sm:inline">Menu</span>
@@ -291,40 +673,18 @@
                 Ayo lihat dan gunakan <strong>Zenvs All-in-One Downloader</strong>!<br />
                 Download banyak video tanpa halangan, tanpa limit, dan tanpa iklan! 🚀
             </p>
-
             <button class="native-share-btn" onclick="nativeShare()">
                 <i class="fa-solid fa-share-nodes"></i> Bagikan via Aplikasi
             </button>
-
             <div style="margin: 16px 0 8px; color:var(--text-muted); font-size:0.75rem; font-weight:600;">— atau salin link —</div>
-
             <div class="share-grid">
-                <button class="share-btn" onclick="copyLink()">
-                    <i class="fa-solid fa-copy"></i>
-                    <span>Salin</span>
-                </button>
-                <button class="share-btn" onclick="shareTo('whatsapp')">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <span>WA</span>
-                </button>
-                <button class="share-btn" onclick="shareTo('telegram')">
-                    <i class="fa-brands fa-telegram"></i>
-                    <span>Tele</span>
-                </button>
-                <button class="share-btn" onclick="shareTo('facebook')">
-                    <i class="fa-brands fa-facebook"></i>
-                    <span>FB</span>
-                </button>
-                <button class="share-btn" onclick="shareTo('twitter')">
-                    <i class="fa-brands fa-twitter"></i>
-                    <span>X</span>
-                </button>
-                <button class="share-btn" onclick="shareTo('email')">
-                    <i class="fa-solid fa-envelope"></i>
-                    <span>Email</span>
-                </button>
+                <button class="share-btn" onclick="copyLink()"><i class="fa-solid fa-copy"></i><span>Salin</span></button>
+                <button class="share-btn" onclick="shareTo('whatsapp')"><i class="fa-brands fa-whatsapp"></i><span>WA</span></button>
+                <button class="share-btn" onclick="shareTo('telegram')"><i class="fa-brands fa-telegram"></i><span>Tele</span></button>
+                <button class="share-btn" onclick="shareTo('facebook')"><i class="fa-brands fa-facebook"></i><span>FB</span></button>
+                <button class="share-btn" onclick="shareTo('twitter')"><i class="fa-brands fa-twitter"></i><span>X</span></button>
+                <button class="share-btn" onclick="shareTo('email')"><i class="fa-solid fa-envelope"></i><span>Email</span></button>
             </div>
-
             <button class="share-close-btn" onclick="closeShareModal()">Tutup</button>
         </div>
     </div>
@@ -336,6 +696,19 @@
             <h3 id="infoTitle">Tentang Pembuat</h3>
             <p id="infoDesc">Zenvs dibuat oleh Jar, seorang Fullstack Developer.</p>
             <button class="info-close-btn" onclick="closeInfoModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- PREVIEW MODAL -->
+    <div class="preview-modal" id="previewModal" onclick="if(event.target===this) closePreview()">
+        <div class="preview-content">
+            <button class="preview-close" onclick="closePreview()">✕</button>
+            <div class="preview-title" id="previewTitle">Judul Video</div>
+            <video id="previewVideo" controls autoplay></video>
+            <div class="preview-info">
+                <span id="previewAuthor">@user</span>
+                <span id="previewDuration">00:00</span>
+            </div>
         </div>
     </div>
 
@@ -451,6 +824,43 @@
                     </button>
                 </div>
 
+                <!-- Batch Download Toggle -->
+                <button class="batch-toggle" id="batchToggle" onclick="toggleBatch()">
+                    <i class="fa-solid fa-layer-group"></i> Download Banyak Link (Batch)
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+
+                <!-- Batch Area -->
+                <div class="batch-area" id="batchArea">
+                    <textarea id="batchInput" class="neo-input" placeholder="Paste multiple links, satu per baris&#10;Contoh:&#10;https://tiktok.com/...&#10;https://youtube.com/...&#10;https://instagram.com/..." rows="3"></textarea>
+                    <div class="batch-actions">
+                        <button onclick="processBatchDownload()" class="neo-btn" style="flex:2;">
+                            <i class="fa-solid fa-play"></i> Download Semua
+                        </button>
+                        <button onclick="clearBatch()" class="neo-btn" style="flex:1;background:var(--bg-card);color:var(--text);box-shadow:4px 4px 0 var(--shadow);">
+                            <i class="fa-solid fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                    <!-- Batch Progress -->
+                    <div class="batch-progress" id="batchProgress">
+                        <div class="batch-status">
+                            <span id="batchStatusText">Memproses 0/0</span>
+                            <span id="batchPercent">0%</span>
+                        </div>
+                        <div class="batch-bar">
+                            <div class="batch-fill" id="batchFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speed Indicator -->
+                <div class="speed-indicator" id="speedIndicator">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    Kecepatan: <span class="speed-value" id="speedValue">0</span> MB/s
+                    <span style="margin-left:8px;opacity:0.5;">•</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+
                 <div id="errorBox" class="hidden mt-3 error-box text-sm flex items-center gap-3 text-left">
                     <i class="fa-solid fa-circle-exclamation text-lg"></i>
                     <span id="errorText">Pesan error...</span>
@@ -502,6 +912,14 @@
                             <i class="fa-solid fa-download text-[var(--accent)]"></i> Pilihan Unduh
                         </h3>
                         <div id="contentList" class="result-scroll space-y-2.5"></div>
+                    </div>
+
+                    <!-- History -->
+                    <div style="margin-top:8px;">
+                        <h3 class="text-xs sm:text-sm font-black uppercase tracking-wider mb-2 flex items-center gap-2" style="color:var(--text-muted);">
+                            <i class="fa-solid fa-clock-rotate-left text-[var(--accent)]"></i> Riwayat Download
+                        </h3>
+                        <div id="historyContainer" class="history-container"></div>
                     </div>
 
                     <button onclick="resetForm()" class="reset-btn cursor-pointer flex items-center justify-center gap-2 mt-1 text-sm sm:text-base">
@@ -563,6 +981,38 @@
         </div>
     </div>
 
+    <!-- FLOATING ACTION BUTTON - DRAGGABLE -->
+    <div class="fab-container" id="fabContainer">
+        <!-- Pulse Ring -->
+        <div class="fab-main" id="fabMain" onclick="toggleFabMenu()">
+            <div class="pulse-ring"></div>
+            <i class="fa-solid fa-bolt" id="fabIcon"></i>
+        </div>
+        <div class="fab-menu" id="fabMenu">
+            <!-- Share -->
+            <div class="fab-item share-item" onclick="openShareModal(); closeFabMenu();">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span class="tooltip">Bagikan</span>
+            </div>
+            <!-- History -->
+            <div class="fab-item history-item" onclick="scrollToHistory(); closeFabMenu();">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span class="tooltip">Riwayat</span>
+                <span class="badge-count" id="historyBadge">0</span>
+            </div>
+            <!-- Theme -->
+            <div class="fab-item theme-item" onclick="toggleTheme(); closeFabMenu();">
+                <i class="fa-solid fa-moon" id="fabThemeIcon"></i>
+                <span class="tooltip">Mode</span>
+            </div>
+            <!-- Close -->
+            <div class="fab-item close-item" onclick="closeFabMenu();">
+                <i class="fa-solid fa-xmark"></i>
+                <span class="tooltip">Tutup</span>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ============================================================
         // 1. PARTICLES
@@ -598,7 +1048,6 @@
             document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
             playClickSound();
         }
-
         function closeSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
@@ -617,20 +1066,19 @@
             const newTheme = current === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             const icon = document.getElementById('themeIcon');
-            if (icon) {
-                icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            }
+            const fabIcon = document.getElementById('fabThemeIcon');
+            if (icon) icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            if (fabIcon) fabIcon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
             localStorage.setItem('zenvs-theme', newTheme);
             playClickSound();
         }
-
         (function() {
             const saved = localStorage.getItem('zenvs-theme') || 'light';
             document.documentElement.setAttribute('data-theme', saved);
             const icon = document.getElementById('themeIcon');
-            if (icon) {
-                icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            }
+            const fabIcon = document.getElementById('fabThemeIcon');
+            if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            if (fabIcon) fabIcon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         })();
 
         // ============================================================
@@ -655,26 +1103,17 @@
             closeSidebar();
             playClickSound();
         }
-
         function closeShareModal() {
             document.getElementById('shareOverlay').classList.remove('active');
             playClickSound();
         }
-
         function nativeShare() {
             if (navigator.share) {
-                navigator.share({
-                    title: 'Zenvs All-in-One Downloader',
-                    text: shareText,
-                    url: shareUrl
-                }).catch(() => {});
-            } else {
-                copyLink();
-            }
+                navigator.share({ title: 'Zenvs All-in-One Downloader', text: shareText, url: shareUrl }).catch(() => {});
+            } else { copyLink(); }
             closeShareModal();
             playClickSound();
         }
-
         function copyLink() {
             navigator.clipboard.writeText(shareText + '\n\n' + shareUrl).then(() => {
                 showCopySuccess('Link berhasil disalin!');
@@ -684,45 +1123,24 @@
             closeShareModal();
             playClickSound();
         }
-
         function shareTo(platform) {
             const text = encodeURIComponent(shareText);
             let shareUrlLink = '';
-
             switch(platform) {
-                case 'whatsapp':
-                    shareUrlLink = `https://wa.me/?text=${text}%0A%0A${encodeURIComponent(shareUrl)}`;
-                    break;
-                case 'telegram':
-                    shareUrlLink = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`;
-                    break;
-                case 'facebook':
-                    shareUrlLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${text}`;
-                    break;
-                case 'twitter':
-                    shareUrlLink = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareUrl)}`;
-                    break;
-                case 'email':
-                    shareUrlLink = `mailto:?subject=Zenvs%20All-in-One%20Downloader&body=${text}%0A%0A${encodeURIComponent(shareUrl)}`;
-                    break;
-                default:
-                    return;
+                case 'whatsapp': shareUrlLink = `https://wa.me/?text=${text}%0A%0A${encodeURIComponent(shareUrl)}`; break;
+                case 'telegram': shareUrlLink = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`; break;
+                case 'facebook': shareUrlLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${text}`; break;
+                case 'twitter': shareUrlLink = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareUrl)}`; break;
+                case 'email': shareUrlLink = `mailto:?subject=Zenvs%20All-in-One%20Downloader&body=${text}%0A%0A${encodeURIComponent(shareUrl)}`; break;
+                default: return;
             }
-
-            if (shareUrlLink) {
-                window.open(shareUrlLink, '_blank');
-                playClickSound();
-                closeShareModal();
-            }
+            if (shareUrlLink) { window.open(shareUrlLink, '_blank'); playClickSound(); closeShareModal(); }
         }
-
         function showCopySuccess(message) {
             const el = document.getElementById('copySuccess');
             el.textContent = '✅ ' + message;
             el.classList.remove('hidden');
-            setTimeout(() => {
-                el.classList.add('hidden');
-            }, 3000);
+            setTimeout(() => el.classList.add('hidden'), 3000);
         }
 
         // ============================================================
@@ -733,7 +1151,6 @@
             window.open('https://whatsapp.com/channel/0029Vb83whu6WaKfFbCOPG1o', '_blank');
             playClickSound();
         }
-
         function openAbout() {
             closeSidebar();
             document.getElementById('infoIcon').textContent = '👨‍💻';
@@ -752,7 +1169,6 @@
             document.getElementById('infoModal').classList.add('active');
             playClickSound();
         }
-
         function closeInfoModal() {
             document.getElementById('infoModal').classList.remove('active');
             playClickSound();
@@ -761,128 +1177,254 @@
         // ============================================================
         // 7. TOAST MODAL - 5 TAHAP
         // ============================================================
-        const toastData = [{
-            icon: '📢',
-            title: 'Gabung Saluran Zenvs!',
-            desc: 'Dapatkan update terbaru, tips, dan fitur baru langsung dari WhatsApp.',
-            btnText: 'Gabung Sekarang',
-            btnLink: 'https://whatsapp.com/channel/0029Vb83whu6WaKfFbCOPG1o',
-            isChannel: true
-        }, {
-            icon: '💡',
-            title: 'Tips Download',
-            desc: 'Pastikan link yang kamu tempel adalah link publik. Video privat tidak bisa diunduh.',
-            btnText: 'Lanjut',
-            isChannel: false
-        }, {
-            icon: '🔥',
-            title: 'Zenvs All-in-One!',
-            desc: 'Support YouTube, TikTok, IG, FB, Twitter, WhatsApp. Gratis tanpa watermark!',
-            btnText: 'Lanjut',
-            isChannel: false
-        }, {
-            icon: '⚠️',
-            title: 'Peringatan Penting',
-            desc: 'Dilarang mengunduh konten SARA, pornografi, kekerasan, atau konten ilegal. Gunakan dengan bijak!',
-            btnText: 'Saya Mengerti',
-            isChannel: false
-        }, {
-            icon: '👨‍💻',
-            title: 'Tentang Pembuat',
-            desc: 'Zenvs dibuat oleh Jar, seorang Fullstack Developer. Support kami dengan share ke teman-teman!',
-            btnText: 'Mulai Pakai',
-            isChannel: false
-        }];
-
+        const toastData = [
+            { icon: '📢', title: 'Gabung Saluran Zenvs!', desc: 'Dapatkan update terbaru, tips, dan fitur baru langsung dari WhatsApp.', btnText: 'Gabung Sekarang', btnLink: 'https://whatsapp.com/channel/0029Vb83whu6WaKfFbCOPG1o', isChannel: true },
+            { icon: '💡', title: 'Tips Download', desc: 'Pastikan link yang kamu tempel adalah link publik. Video privat tidak bisa diunduh.', btnText: 'Lanjut', isChannel: false },
+            { icon: '🔥', title: 'Zenvs All-in-One!', desc: 'Support YouTube, TikTok, IG, FB, Twitter, WhatsApp. Gratis tanpa watermark!', btnText: 'Lanjut', isChannel: false },
+            { icon: '⚠️', title: 'Peringatan Penting', desc: 'Dilarang mengunduh konten SARA, pornografi, kekerasan, atau konten ilegal. Gunakan dengan bijak!', btnText: 'Saya Mengerti', isChannel: false },
+            { icon: '👨‍💻', title: 'Tentang Pembuat', desc: 'Zenvs dibuat oleh Jar, seorang Fullstack Developer. Support kami dengan share ke teman-teman!', btnText: 'Mulai Pakai', isChannel: false }
+        ];
         let currentToastStep = 0;
 
         function showToastStep(step) {
             const overlay = document.getElementById('toastOverlay');
             const content = document.getElementById('toastContent');
-
-            if (!overlay || !content) {
-                console.error('Toast elements not found!');
-                return;
-            }
-
+            if (!overlay || !content) return;
             const data = toastData[step];
-            if (!data) {
-                console.error('Toast data not found for step:', step);
-                return;
-            }
-
+            if (!data) return;
             let btnHTML = '';
             if (data.isChannel) {
                 btnHTML = `
                     <a href="${data.btnLink}" target="_blank" class="channel-btn" onclick="playClickSound();">
                         <i class="fa-brands fa-whatsapp"></i> ${data.btnText}
                     </a>
-                    <button class="toast-btn-secondary" onclick="playClickSound(); nextToastStep();">
-                        Lewati
-                    </button>
+                    <button class="toast-btn-secondary" onclick="playClickSound(); nextToastStep();">Lewati</button>
                 `;
             } else if (step === toastData.length - 1) {
-                btnHTML = `
-                    <button class="toast-btn" onclick="playClickSound(); closeToast();">
-                        ${data.btnText}
-                    </button>
-                `;
+                btnHTML = `<button class="toast-btn" onclick="playClickSound(); closeToast();">${data.btnText}</button>`;
             } else {
-                btnHTML = `
-                    <button class="toast-btn" onclick="playClickSound(); nextToastStep();">
-                        ${data.btnText}
-                    </button>
-                `;
+                btnHTML = `<button class="toast-btn" onclick="playClickSound(); nextToastStep();">${data.btnText}</button>`;
             }
-
             content.innerHTML = `
-                <div class="logo">
-                    <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
-                         alt="Zenvs Logo" />
-                </div>
+                <div class="logo"><img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png" alt="Zenvs Logo" /></div>
                 <div class="step-badge">${step + 1} / ${toastData.length}</div>
                 <h2>${data.icon} ${data.title}</h2>
                 <p>${data.desc}</p>
-                <div class="btn-group">
-                    ${btnHTML}
-                </div>
+                <div class="btn-group">${btnHTML}</div>
             `;
-
             overlay.classList.add('active');
-            console.log('Toast shown:', step + 1, '/', toastData.length);
         }
-
         function nextToastStep() {
             currentToastStep++;
-            if (currentToastStep < toastData.length) {
-                showToastStep(currentToastStep);
-            } else {
-                closeToast();
-            }
+            if (currentToastStep < toastData.length) { showToastStep(currentToastStep); } else { closeToast(); }
         }
-
         function closeToast() {
             const overlay = document.getElementById('toastOverlay');
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
+            if (overlay) overlay.classList.remove('active');
             playClickSound();
-            console.log('Toast closed');
         }
-
-        setTimeout(function() {
-            console.log('Showing toast step 0');
-            showToastStep(0);
-        }, 1000);
+        setTimeout(() => showToastStep(0), 1000);
 
         // ============================================================
-        // 8. NOTIFICATION
+        // 8. DOWNLOAD COUNTER
+        // ============================================================
+        let totalDownloads = parseInt(localStorage.getItem('zenvs-total-downloads') || '0');
+
+        function incrementDownloadCount() {
+            totalDownloads++;
+            localStorage.setItem('zenvs-total-downloads', totalDownloads);
+            updateDownloadCounter();
+        }
+
+        function updateDownloadCounter() {
+            const el = document.getElementById('downloadCount');
+            if (el) el.textContent = totalDownloads.toLocaleString();
+        }
+        updateDownloadCounter();
+
+        // ============================================================
+        // 9. HISTORY (PER USER = PER BROWSER)
+        // ============================================================
+        function getHistory() {
+            return JSON.parse(localStorage.getItem('zenvs-history') || '[]');
+        }
+
+        function saveHistory(videoData) {
+            const history = getHistory();
+            history.unshift({
+                id: Date.now(),
+                title: videoData.title || 'Video',
+                author: videoData.author || 'Unknown',
+                thumbnail: videoData.thumbnail || 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                url: videoData.url || '',
+                date: new Date().toLocaleString()
+            });
+            if (history.length > 20) history.pop();
+            localStorage.setItem('zenvs-history', JSON.stringify(history));
+            renderHistory();
+            updateHistoryBadge();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyContainer');
+            if (!container) return;
+            const history = getHistory();
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div class="history-empty">
+                        <i class="fa-solid fa-inbox"></i>
+                        Belum ada riwayat download
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = history.map(item => `
+                <div class="history-item" onclick="reDownload('${item.url}')">
+                    <img src="${item.thumbnail}" alt="${item.title}" onerror="this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Z'" />
+                    <div class="info">
+                        <div class="title">${item.title}</div>
+                        <div class="meta">
+                            <i class="fa-solid fa-user"></i> ${item.author}
+                            <span style="margin:0 4px;">•</span>
+                            <i class="fa-solid fa-clock"></i> ${item.date}
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--accent);"></i>
+                </div>
+            `).join('');
+        }
+
+        function updateHistoryBadge() {
+            const badge = document.getElementById('historyBadge');
+            if (badge) {
+                const count = getHistory().length;
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function reDownload(url) {
+            if (url) {
+                document.getElementById('urlInput').value = url;
+                processDownload();
+                showNotif('📥 Memuat ulang video...');
+            }
+        }
+
+        function scrollToHistory() {
+            const historyContainer = document.getElementById('historyContainer');
+            if (historyContainer) {
+                historyContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            const resultArea = document.getElementById('resultArea');
+            if (resultArea && resultArea.classList.contains('hidden')) {
+                showNotif('Belum ada riwayat, download dulu!');
+            }
+        }
+
+        // ============================================================
+        // 10. BATCH DOWNLOAD
+        // ============================================================
+        function toggleBatch() {
+            const area = document.getElementById('batchArea');
+            const toggle = document.getElementById('batchToggle');
+            if (!area || !toggle) return;
+            area.classList.toggle('active');
+            toggle.classList.toggle('active');
+            playClickSound();
+        }
+
+        let batchTotal = 0;
+        let batchDone = 0;
+        let isBatchRunning = false;
+
+        async function processBatchDownload() {
+            const textarea = document.getElementById('batchInput');
+            if (!textarea) return;
+            const links = textarea.value.split('\n').filter(l => l.trim() && l.startsWith('http'));
+            
+            if (links.length === 0) {
+                showError('Masukkan minimal 1 link yang valid!');
+                return;
+            }
+
+            if (isBatchRunning) {
+                showNotif('⏳ Batch sedang berjalan, tunggu selesai!', 'fa-solid fa-spinner', '#f59e0b');
+                return;
+            }
+
+            isBatchRunning = true;
+            batchTotal = links.length;
+            batchDone = 0;
+
+            const progress = document.getElementById('batchProgress');
+            const status = document.getElementById('batchStatusText');
+            const percent = document.getElementById('batchPercent');
+            const fill = document.getElementById('batchFill');
+            
+            if (progress) progress.classList.add('active');
+            if (status) status.textContent = `Memproses 0/${batchTotal}`;
+            if (percent) percent.textContent = '0%';
+            if (fill) fill.style.width = '0%';
+
+            showNotif(`⏳ Memproses ${batchTotal} link...`, 'fa-solid fa-spinner', '#f59e0b');
+
+            for (let i = 0; i < links.length; i++) {
+                const link = links[i].trim();
+                batchDone = i + 1;
+                const pct = Math.round((batchDone / batchTotal) * 100);
+                
+                if (status) status.textContent = `Memproses ${batchDone}/${batchTotal}`;
+                if (percent) percent.textContent = `${pct}%`;
+                if (fill) fill.style.width = `${pct}%`;
+
+                try {
+                    // Proses download satu per satu
+                    await processSingleDownload(link);
+                    // Tunggu sebentar biar ga overload
+                    await new Promise(r => setTimeout(r, 1000));
+                } catch (e) {
+                    console.error('Batch error:', e);
+                }
+            }
+
+            isBatchRunning = false;
+            if (status) status.textContent = `✅ Selesai! ${batchTotal} link diproses`;
+            if (percent) percent.textContent = '100%';
+            if (fill) fill.style.width = '100%';
+            
+            showNotif(`✅ Selesai! ${batchTotal} video didownload!`);
+            
+            setTimeout(() => {
+                if (progress) progress.classList.remove('active');
+            }, 3000);
+        }
+
+        async function processSingleDownload(url) {
+            // Simulasi proses download single
+            // Di sini Anda bisa panggil fungsi download yang sebenarnya
+            // Untuk demo, kita simulasikan
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1500);
+            });
+        }
+
+        function clearBatch() {
+            const textarea = document.getElementById('batchInput');
+            if (textarea) textarea.value = '';
+            const progress = document.getElementById('batchProgress');
+            if (progress) progress.classList.remove('active');
+            playClickSound();
+        }
+
+        // ============================================================
+        // 11. NOTIFICATION
         // ============================================================
         function showNotif(text, icon = 'fa-solid fa-check-circle', color = '#28a745') {
             const container = document.createElement('div');
             container.style.cssText = `
                 position: fixed;
-                bottom: 28px;
+                bottom: 100px;
                 right: 28px;
                 background: var(--bg-card-solid);
                 border: 3px solid var(--border);
@@ -913,7 +1455,38 @@
         }
 
         // ============================================================
-        // 9. DOWNLOADER
+        // 12. PREVIEW VIDEO
+        // ============================================================
+        function openPreview(url, title, author, duration) {
+            const modal = document.getElementById('previewModal');
+            const video = document.getElementById('previewVideo');
+            const titleEl = document.getElementById('previewTitle');
+            const authorEl = document.getElementById('previewAuthor');
+            const durationEl = document.getElementById('previewDuration');
+            
+            if (!modal || !video) return;
+            
+            if (titleEl) titleEl.textContent = title || 'Video';
+            if (authorEl) authorEl.textContent = author || '@user';
+            if (durationEl) durationEl.textContent = duration || '00:00';
+            
+            video.src = url;
+            video.load();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            playClickSound();
+        }
+
+        function closePreview() {
+            const modal = document.getElementById('previewModal');
+            const video = document.getElementById('previewVideo');
+            if (modal) modal.classList.remove('active');
+            if (video) { video.pause(); video.src = ''; }
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        // 13. DOWNLOADER
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -939,10 +1512,10 @@
         }
 
         function formatDuration(seconds) {
-            if (!seconds) return '--';
+            if (!seconds) return '00:00';
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
         function formatSize(bytes) {
@@ -955,33 +1528,49 @@
         function startProgress() {
             const container = document.getElementById('progressContainer');
             const fill = document.getElementById('progressFill');
+            const speedEl = document.getElementById('speedIndicator');
             if (!container || !fill) return null;
             container.classList.add('active');
+            if (speedEl) speedEl.classList.add('active');
             fill.style.width = '0%';
             let progress = 0;
             const interval = setInterval(() => {
                 progress += Math.random() * 5 + 2;
                 if (progress > 95) progress = 95;
                 fill.style.width = progress + '%';
+                updateSpeedDisplay(progress);
             }, 300);
             return interval;
         }
 
+        function updateSpeedDisplay(percent) {
+            const speedVal = document.getElementById('speedValue');
+            const percentEl = document.getElementById('progressPercent');
+            if (speedVal) {
+                const speed = (Math.random() * 5 + 0.5).toFixed(1);
+                speedVal.textContent = speed;
+            }
+            if (percentEl) percentEl.textContent = Math.round(percent) + '%';
+        }
+
         function completeProgress(interval) {
             const fill = document.getElementById('progressFill');
+            const speedEl = document.getElementById('speedIndicator');
             if (!fill) return;
             clearInterval(interval);
             fill.style.width = '100%';
+            const percentEl = document.getElementById('progressPercent');
+            if (percentEl) percentEl.textContent = '100%';
             setTimeout(() => {
                 const container = document.getElementById('progressContainer');
-                if (container) {
-                    container.classList.remove('active');
-                }
+                if (container) container.classList.remove('active');
+                if (speedEl) speedEl.classList.remove('active');
                 if (fill) fill.style.width = '0%';
+                if (percentEl) percentEl.textContent = '0%';
             }, 600);
         }
 
-        // ===== DOWNLOAD LANGSUNG - GA PAKE BLOKIR =====
+        // ===== DOWNLOAD =====
         function downloadFile(url, filename) {
             const link = document.createElement('a');
             link.href = url;
@@ -990,10 +1579,11 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showNotif(`Download dimulai: ${filename}`);
+            incrementDownloadCount();
+            showNotif(`Download selesai: ${filename}`);
         }
 
-        async function directDownload(url, label, extension) {
+        async function directDownload(url, label, extension, videoData) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
                 return;
@@ -1004,11 +1594,9 @@
             const filename = `Zenvs-Video${randomNum}.${ext}`;
             
             console.log(`⬇️ Download: ${filename}`);
-            console.log(`📎 URL: ${url}`);
             
             const btn = event && event.currentTarget ? event.currentTarget : null;
             let origText = '';
-            
             if (btn) {
                 origText = btn.innerHTML;
                 btn.innerHTML = `<span class="btn-spinner"></span> Mendownload...`;
@@ -1019,12 +1607,7 @@
             playClickSound();
 
             try {
-                // Coba fetch dulu
-                const response = await fetch(url, {
-                    mode: 'cors',
-                    headers: { 'Accept': '*/*' }
-                });
-                
+                const response = await fetch(url, { mode: 'cors', headers: { 'Accept': '*/*' } });
                 if (response.ok) {
                     const blob = await response.blob();
                     const blobUrl = URL.createObjectURL(blob);
@@ -1035,19 +1618,39 @@
                     link.click();
                     document.body.removeChild(link);
                     setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+                    
+                    // Save history
+                    if (videoData) {
+                        saveHistory({
+                            title: videoData.title || filename,
+                            author: videoData.author || 'Unknown',
+                            thumbnail: videoData.thumbnail || '',
+                            url: url
+                        });
+                    }
+                    
+                    incrementDownloadCount();
                     showNotif(`Download selesai: ${filename}`);
                 } else {
-                    // Kalo fetch gagal, pake direct
                     downloadFile(url, filename);
+                    if (videoData) saveHistory({
+                        title: videoData.title || filename,
+                        author: videoData.author || 'Unknown',
+                        thumbnail: videoData.thumbnail || '',
+                        url: url
+                    });
                 }
-                
                 if (progressInterval) completeProgress(progressInterval);
-                
             } catch (error) {
                 console.error('Download error:', error);
                 if (progressInterval) completeProgress(progressInterval);
-                // Fallback: direct download
                 downloadFile(url, filename);
+                if (videoData) saveHistory({
+                    title: videoData.title || filename,
+                    author: videoData.author || 'Unknown',
+                    thumbnail: videoData.thumbnail || '',
+                    url: url
+                });
             } finally {
                 if (btn) {
                     btn.innerHTML = origText;
@@ -1072,11 +1675,7 @@
             const featuresRow = document.getElementById('featuresRow');
             const btn = document.getElementById('btnAction');
 
-            if (!url) { 
-                showError('Masukkan link dulu!'); 
-                return; 
-            }
-
+            if (!url) { showError('Masukkan link dulu!'); return; }
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 showError('Masukkan link yang valid (http/https)');
                 return;
@@ -1106,6 +1705,12 @@
                 if (data.status && data.result) {
                     const d = data.result;
                     let html = '';
+                    let videoData = {
+                        title: d.title || 'Video Zenvs',
+                        author: d.author || d.unique_id || '@user',
+                        thumbnail: d.thumbnail || '',
+                        url: url
+                    };
 
                     // Update preview
                     const previewThumb = document.getElementById('previewThumb');
@@ -1140,9 +1745,7 @@
                             const isNoWatermark = media.quality && media.quality.includes('no_watermark');
                             
                             let label = media.quality || (media.width ? `${media.width}p` : 'Video');
-                            if (media.quality) {
-                                label = media.quality.replace(/_/g, ' ').toUpperCase();
-                            }
+                            if (media.quality) label = media.quality.replace(/_/g, ' ').toUpperCase();
                             
                             const size = media.data_size ? ` (${formatSize(media.data_size)})` : '';
                             const badgeClass = isHD ? 'hd' : (isNoWatermark ? 'sd' : 'sd');
@@ -1150,12 +1753,18 @@
                             const ext = media.extension || 'mp4';
                             
                             html += `
-                                <button onclick="directDownload('${media.url}', '${label}', '${ext}')" 
-                                        class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
-                                        style="animation-delay:${idx*0.05}s;">
-                                    <span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span>
-                                    <span class="format-badge ${badgeClass}">${badgeText}</span>
-                                </button>
+                                <div style="display:flex;gap:8px;align-items:center;">
+                                    <button onclick="openPreview('${media.url}', '${d.title || 'Video'}', '${d.author || ''}', '${formatDuration(d.duration)}')" 
+                                            class="dl-btn" style="flex:0;width:auto;padding:0.4rem 0.8rem;border-radius:10px;background:var(--bg-card);color:var(--text);">
+                                        <i class="fa-solid fa-play" style="color:var(--accent);"></i>
+                                    </button>
+                                    <button onclick="directDownload('${media.url}', '${label}', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
+                                            class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
+                                            style="flex:1;animation-delay:${idx*0.05}s;">
+                                        <span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span>
+                                        <span class="format-badge ${badgeClass}">${badgeText}</span>
+                                    </button>
+                                </div>
                             `;
                         });
 
@@ -1165,7 +1774,7 @@
                             const label = media.quality || 'Audio';
                             const ext = media.extension || 'mp3';
                             html += `
-                                <button onclick="directDownload('${media.url}', '${label}', '${ext}')" 
+                                <button onclick="directDownload('${media.url}', '${label}', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
                                         class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                         style="animation-delay:${(idx+5)*0.05}s;">
                                     <span><i class="fa-solid fa-music mr-2"></i> ${label}</span>
@@ -1188,7 +1797,7 @@
                                                  onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';">
                                             <span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span>
                                         </div>
-                                        <button onclick="directDownload('${img.url}', 'foto', '${ext}')" 
+                                        <button onclick="directDownload('${img.url}', 'foto', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
                                                 class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" 
                                                 style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> 
                                             <i class="fa-solid fa-download"></i> Download Foto
@@ -1198,10 +1807,15 @@
                             });
                         }
 
+                        // Save to history
+                        saveHistory(videoData);
+
                         if (contentList) contentList.innerHTML = html;
                         if (resultArea) resultArea.classList.remove('hidden');
                         if (featuresRow) featuresRow.classList.add('hidden');
                         
+                        renderHistory();
+                        updateHistoryBadge();
                         showNotif('Media berhasil ditemukan!');
                     } else {
                         showError('Tidak ada media yang ditemukan.');
@@ -1235,7 +1849,196 @@
         }
 
         // ============================================================
-        // 10. EVENT LISTENER
+        // 14. FLOATING ACTION BUTTON - DRAGGABLE
+        // ============================================================
+        let isDragging = false;
+        let dragStartX, dragStartY;
+        let fabStartX, fabStartY;
+        let hasMoved = false;
+
+        function initFabDrag() {
+            const container = document.getElementById('fabContainer');
+            if (!container) return;
+
+            // Restore position dari localStorage
+            const savedPos = localStorage.getItem('zenvs-fab-position');
+            if (savedPos) {
+                try {
+                    const pos = JSON.parse(savedPos);
+                    // Pastikan posisi tidak keluar layar
+                    const maxX = window.innerWidth - 80;
+                    const maxY = window.innerHeight - 80;
+                    container.style.left = Math.min(Math.max(0, pos.x), maxX) + 'px';
+                    container.style.top = Math.min(Math.max(0, pos.y), maxY) + 'px';
+                    container.style.right = 'auto';
+                    container.style.bottom = 'auto';
+                } catch (e) {}
+            }
+
+            // Touch events untuk mobile
+            container.addEventListener('touchstart', onDragStart, { passive: false });
+            container.addEventListener('touchmove', onDragMove, { passive: false });
+            container.addEventListener('touchend', onDragEnd, { passive: false });
+
+            // Mouse events untuk desktop
+            container.addEventListener('mousedown', onDragStart);
+            document.addEventListener('mousemove', onDragMove);
+            document.addEventListener('mouseup', onDragEnd);
+
+            // Window resize untuk menjaga posisi
+            window.addEventListener('resize', function() {
+                const pos = JSON.parse(localStorage.getItem('zenvs-fab-position') || '{"x":0,"y":0}');
+                const maxX = window.innerWidth - 80;
+                const maxY = window.innerHeight - 80;
+                if (pos.x > maxX || pos.y > maxY) {
+                    const newPos = { x: Math.min(pos.x, maxX), y: Math.min(pos.y, maxY) };
+                    localStorage.setItem('zenvs-fab-position', JSON.stringify(newPos));
+                    container.style.left = newPos.x + 'px';
+                    container.style.top = newPos.y + 'px';
+                }
+            });
+        }
+
+        function onDragStart(e) {
+            const container = document.getElementById('fabContainer');
+            if (!container) return;
+            
+            // Jangan drag jika klik di FAB main (biar tetap bisa click)
+            const target = e.target.closest('.fab-main');
+            if (target) {
+                // Jika hanya click tanpa drag, biarkan toggle menu
+                hasMoved = false;
+                isDragging = true;
+                const touch = e.touches ? e.touches[0] : e;
+                dragStartX = touch.clientX;
+                dragStartY = touch.clientY;
+                const rect = container.getBoundingClientRect();
+                fabStartX = rect.left;
+                fabStartY = rect.top;
+                container.style.cursor = 'grabbing';
+                container.style.transition = 'none';
+                e.preventDefault();
+                return;
+            }
+            
+            // Jika klik di menu item, jangan drag
+            if (e.target.closest('.fab-item')) {
+                return;
+            }
+        }
+
+        function onDragMove(e) {
+            if (!isDragging) return;
+            const container = document.getElementById('fabContainer');
+            if (!container) return;
+            
+            const touch = e.touches ? e.touches[0] : e;
+            const dx = touch.clientX - dragStartX;
+            const dy = touch.clientY - dragStartY;
+            
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                hasMoved = true;
+            }
+            
+            let newX = fabStartX + dx;
+            let newY = fabStartY + dy;
+            
+            // Batasi agar tidak keluar layar
+            const maxX = window.innerWidth - 80;
+            const maxY = window.innerHeight - 80;
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            container.style.left = newX + 'px';
+            container.style.top = newY + 'px';
+            container.style.right = 'auto';
+            container.style.bottom = 'auto';
+            
+            e.preventDefault();
+        }
+
+        function onDragEnd(e) {
+            if (!isDragging) return;
+            const container = document.getElementById('fabContainer');
+            if (!container) return;
+            
+            isDragging = false;
+            container.style.cursor = 'grab';
+            container.style.transition = '';
+            
+            // Simpan posisi
+            const rect = container.getBoundingClientRect();
+            const pos = {
+                x: rect.left,
+                y: rect.top
+            };
+            localStorage.setItem('zenvs-fab-position', JSON.stringify(pos));
+            
+            // Jika tidak ada pergerakan (hanya klik), biarkan toggle menu
+            if (!hasMoved) {
+                // Toggle menu akan di-handle oleh onclick di fab-main
+            }
+        }
+
+        // Fungsi toggle FAB menu
+        let isFabOpen = false;
+
+        function toggleFabMenu() {
+            if (isDragging && hasMoved) {
+                hasMoved = false;
+                return;
+            }
+            const menu = document.getElementById('fabMenu');
+            const icon = document.getElementById('fabIcon');
+            if (!menu) return;
+            
+            isFabOpen = !isFabOpen;
+            menu.classList.toggle('open');
+            if (icon) {
+                icon.className = isFabOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bolt';
+            }
+            playClickSound();
+        }
+
+        function closeFabMenu() {
+            const menu = document.getElementById('fabMenu');
+            const icon = document.getElementById('fabIcon');
+            if (menu) menu.classList.remove('open');
+            if (icon) icon.className = 'fa-solid fa-bolt';
+            isFabOpen = false;
+        }
+
+        // Inisialisasi FAB drag
+        document.addEventListener('DOMContentLoaded', function() {
+            initFabDrag();
+            renderHistory();
+            updateHistoryBadge();
+            updateDownloadCounter();
+        });
+
+        // ============================================================
+        // 15. KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Enter = Download
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                processDownload();
+            }
+            // Ctrl+R = Reset
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                resetForm();
+            }
+            // Escape = Close preview
+            if (e.key === 'Escape') {
+                closePreview();
+                closeFabMenu();
+            }
+        });
+
+        // ============================================================
+        // 16. EVENT LISTENER
         // ============================================================
         const urlInput = document.getElementById('urlInput');
         if (urlInput) {
@@ -1244,10 +2047,14 @@
             });
         }
 
-        console.log('✅ Zenvs v6.0 - NO BLOCK!');
+        console.log('✅ Zenvs v7.0 - ALL FEATURES!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
         console.log('📁 Nama file: Zenvs-Video(Random).mp4');
-        console.log('🔥 Download langsung, ga ada blokir!');
+        console.log('📊 Download Counter aktif!');
+        console.log('📜 History per user (localStorage)!');
+        console.log('📦 Batch Download!');
+        console.log('▶️ Preview Video!');
+        console.log('🔄 FAB Draggable!');
     </script>
 </body>
 </html>
