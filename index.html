@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
+        /* --- Semua CSS tetap sama seperti sebelumnya --- */
         * {
             font-family: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
             box-sizing: border-box;
@@ -1619,6 +1620,79 @@
             background: var(--accent-hover);
             color: white;
         }
+
+        /* ===== CSS untuk BLOCK TikTok CDN ===== */
+        .blocked-cdn-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: overlayIn 0.4s ease forwards;
+        }
+
+        .blocked-cdn-overlay.active {
+            display: flex !important;
+        }
+
+        .blocked-cdn-modal {
+            background: var(--bg-card-solid);
+            border: 4px solid var(--accent);
+            box-shadow: 20px 20px 0 var(--shadow), 0 0 80px var(--accent-glow);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 100%;
+            animation: modalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            text-align: center;
+        }
+
+        .blocked-cdn-modal .block-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .blocked-cdn-modal h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .blocked-cdn-modal p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .blocked-cdn-modal .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: #faf6f0;
+            border: 3px solid var(--border);
+            box-shadow: 6px 6px 0 var(--shadow);
+            padding: 0.8rem 2rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .blocked-cdn-modal .btn-primary:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 10px 10px 0 var(--shadow);
+            background: linear-gradient(135deg, var(--accent-hover), #d97706);
+        }
     </style>
 </head>
 <body>
@@ -1733,6 +1807,22 @@
             <h3 id="infoTitle">Tentang Pembuat</h3>
             <p id="infoDesc">Zenvs dibuat oleh Jar, seorang Fullstack Developer.</p>
             <button class="info-close-btn" onclick="closeInfoModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- BLOCKED CDN OVERLAY -->
+    <div class="blocked-cdn-overlay" id="blockedCdnOverlay">
+        <div class="blocked-cdn-modal">
+            <div class="block-icon">🚫</div>
+            <h3>Akses Ditolak!</h3>
+            <p>
+                <strong>Link TikTok CDN tidak dapat diakses langsung.</strong><br><br>
+                Untuk mendownload video, silakan gunakan tombol download yang tersedia di halaman Zenvs.<br><br>
+                Ini dilakukan untuk mencegah penyalahgunaan dan menjaga kestabilan server.
+            </p>
+            <button class="btn-primary" onclick="closeBlockedCdn()">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Zenvs
+            </button>
         </div>
     </div>
 
@@ -2035,7 +2125,7 @@
         // ============================================================
         function playClickSound() {
             try {
-                const audio = new Audio('data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoAAACBhYqFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYU=');
+                const audio = new Audio('data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoAAACBhYqFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYU=');
                 audio.volume = 0.10;
                 audio.play().catch(() => {});
             } catch (e) {}
@@ -2263,21 +2353,100 @@
             if (overlay) {
                 overlay.classList.remove('active');
             }
-            // TIDAK MENYIMPAN KE LOCALSTORAGE AGAR MUNCUL SETIAP BUKA WEB
-            // localStorage.setItem('zenvs-toast-done', 'true');
             playClickSound();
             console.log('Toast closed');
         }
 
         // ===== TOAST MUNCUL SETIAP BUKA WEB =====
-        // Tidak ada pengecekan localStorage, langsung muncul setiap load
         setTimeout(function() {
             console.log('Showing toast step 0 (setiap buka web)');
             showToastStep(0);
         }, 1000);
 
         // ============================================================
-        // 8. NOTIFICATION
+        // 8. BLOCK TIKTOK CDN
+        // ============================================================
+        // Fungsi untuk menampilkan overlay blokir
+        function showBlockedCdn() {
+            document.getElementById('blockedCdnOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlockedCdn() {
+            document.getElementById('blockedCdnOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            playClickSound();
+        }
+
+        // ===== DETECT DAN BLOKIR AKSES KE TIKTOK CDN =====
+        // Ini akan berjalan saat halaman dimuat
+        (function blockTikTokCDN() {
+            // Cek apakah URL saat ini mengandung tiktokcdn.com
+            const currentUrl = window.location.href;
+            if (currentUrl.includes('tiktokcdn.com')) {
+                // Jika user mencoba mengakses langsung link CDN, tampilkan overlay
+                showBlockedCdn();
+                // Ubah URL di address bar ke halaman utama Zenvs (tanpa reload)
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState({}, document.title, window.location.origin + '/');
+                }
+            }
+
+            // === INTERCEPT semua klik pada link yang mengandung tiktokcdn.com ===
+            // Override fungsi window.open untuk memblokir
+            const originalOpen = window.open;
+            window.open = function(url, name, specs) {
+                if (typeof url === 'string' && url.includes('tiktokcdn.com')) {
+                    showBlockedCdn();
+                    return null;
+                }
+                return originalOpen.call(this, url, name, specs);
+            };
+
+            // Intercept navigasi
+            document.addEventListener('click', function(e) {
+                let target = e.target;
+                // Cari elemen anchor terdekat
+                while (target && target.tagName !== 'A') {
+                    target = target.parentElement;
+                }
+                if (target && target.tagName === 'A') {
+                    const href = target.getAttribute('href');
+                    if (href && href.includes('tiktokcdn.com')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showBlockedCdn();
+                        return false;
+                    }
+                }
+            }, true);
+
+            // Intercept fetch dan XMLHttpRequest ke tiktokcdn.com
+            const originalFetch = window.fetch;
+            window.fetch = function(input, init) {
+                const url = typeof input === 'string' ? input : (input && input.url);
+                if (url && url.includes('tiktokcdn.com')) {
+                    showBlockedCdn();
+                    return Promise.reject(new Error('Akses ke TikTok CDN diblokir'));
+                }
+                return originalFetch.call(this, input, init);
+            };
+
+            // Intercept XMLHttpRequest
+            const originalXHROpen = XMLHttpRequest.prototype.open;
+            XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+                if (url && typeof url === 'string' && url.includes('tiktokcdn.com')) {
+                    showBlockedCdn();
+                    throw new Error('Akses ke TikTok CDN diblokir');
+                }
+                return originalXHROpen.call(this, method, url, async !== false, user, password);
+            };
+
+            console.log('🔒 TikTok CDN Block aktif!');
+        })();
+
+        // ============================================================
+        // 9. NOTIFICATION
         // ============================================================
         function showNotif(text, icon = 'fa-solid fa-check-circle', color = '#28a745') {
             const container = document.createElement('div');
@@ -2314,7 +2483,7 @@
         }
 
         // ============================================================
-        // 9. DOWNLOADER
+        // 10. DOWNLOADER - MENGGUNAKAN API NEXRAY
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -2382,7 +2551,13 @@
             }, 600);
         }
 
-        async function directDownload(url, filename) {
+        // --- Fungsi Download Langsung dengan Nama File Zenvs-Video(Random) ---
+        async function directDownload(url, quality = 'video', extension = 'mp4') {
+            // Generate angka acak untuk nama file
+            const randomNum = Math.floor(Math.random() * 9000) + 1000;
+            const filename = `Zenvs-Video${randomNum}.${extension}`;
+            
+            // Ambil tombol yang diklik
             const btn = event ? event.currentTarget : null;
             let origText = '';
             if (btn) {
@@ -2395,35 +2570,54 @@
             playClickSound();
 
             try {
-                const response = await fetch(url, { mode: 'cors', headers: { 'Accept': '*/*' } });
+                // Fetch file dari URL
+                const response = await fetch(url, { 
+                    mode: 'cors', 
+                    headers: { 'Accept': '*/*' } 
+                });
+                
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                // Konversi ke blob dan download
                 const blob = await response.blob();
                 const blobUrl = URL.createObjectURL(blob);
+                
                 const a = document.createElement('a');
                 a.href = blobUrl;
                 a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                
                 setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+                
                 if (progressInterval) completeProgress(progressInterval);
-                showNotif('Download selesai!');
+                showNotif(`Download selesai! (${filename})`);
+                
             } catch (error) {
                 console.error('Download error:', error);
                 if (progressInterval) completeProgress(progressInterval);
                 showNotif('Gagal download', 'fa-solid fa-circle-exclamation', '#dc2626');
+                
+                // Coba buka di tab baru (tapi akan diblokir jika tiktokcdn.com)
                 try { window.open(url, '_blank'); } catch { window.location.href = url; }
             } finally {
-                if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+                if (btn) {
+                    btn.innerHTML = origText;
+                    btn.disabled = false;
+                }
             }
         }
 
+        // --- Fungsi Proses Download dengan API NexRay ---
         async function processDownload() {
             playClickSound();
             hideError();
+            
             const urlInput = document.getElementById('urlInput');
             if (!urlInput) return;
             const url = urlInput.value.trim();
+            
             const loading = document.getElementById('loading');
             const skeleton = document.getElementById('skeletonContainer');
             const resultArea = document.getElementById('resultArea');
@@ -2431,7 +2625,16 @@
             const featuresRow = document.getElementById('featuresRow');
             const btn = document.getElementById('btnAction');
 
-            if (!url) { showError('Masukkan link dulu!'); return; }
+            if (!url) { 
+                showError('Masukkan link dulu!'); 
+                return; 
+            }
+
+            // Validasi sederhana
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                showError('Masukkan link yang valid (http/https)');
+                return;
+            }
 
             if (btn) {
                 btn.disabled = true;
@@ -2444,7 +2647,10 @@
             const progressInterval = startProgress();
 
             try {
+                // === MENGGUNAKAN API NEXRAY ===
                 const apiUrl = `https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(url)}`;
+                console.log('Mengambil data dari API:', apiUrl);
+                
                 const res = await fetch(apiUrl);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
@@ -2455,61 +2661,120 @@
                 if (data.status && data.result) {
                     const d = data.result;
                     let html = '';
-                    const id = d.id || Math.random().toString(36).substring(2, 8);
-                    const zenCode = `Zenvs_${id}`;
+                    const zenCode = `Zenvs_${d.id || 'video'}`;
 
-                    const thumb = d.thumbnail || d.cover || '';
+                    // Update preview
                     const previewThumb = document.getElementById('previewThumb');
                     const previewAuthor = document.getElementById('previewAuthor');
                     const previewTitle = document.getElementById('previewTitle');
                     const previewMeta = document.getElementById('previewMeta');
 
-                    if (previewThumb) previewThumb.src = thumb;
-                    if (previewAuthor) previewAuthor.innerText = d.author || d.channel || '@user';
-                    if (previewTitle) previewTitle.innerText = d.title || d.description || 'Tanpa Judul';
-                    if (previewMeta) previewMeta.innerText =
-                        `Durasi: ${formatDuration(d.duration)} | Author: ${d.author || 'Unknown'}`;
+                    if (previewThumb) previewThumb.src = d.thumbnail || 'https://placehold.co/480x360/1a1716/faf6f0?text=Zenvs';
+                    if (previewAuthor) previewAuthor.innerText = d.author || d.unique_id || '@user';
+                    if (previewTitle) previewTitle.innerText = d.title || 'Video Zenvs';
+                    if (previewMeta) previewMeta.innerText = `Durasi: ${formatDuration(d.duration)} | Author: ${d.author || 'Unknown'}`;
 
+                    // Buat tombol download dari medi as
                     if (d.medias && d.medias.length > 0) {
+                        // Filter media berdasarkan tipe
                         const videos = d.medias.filter(m => m.type === 'video');
                         const audios = d.medias.filter(m => m.type === 'audio');
                         const images = d.medias.filter(m => m.type === 'image');
 
-                        const bestVideos = videos.slice(0, 5);
-                        bestVideos.forEach((media, idx) => {
-                            const isHD = media.height && media.height >= 720;
-                            const label = media.quality || media.label || `${media.height || '?'}p`;
-                            const size = media.clen ? ` (${formatSize(media.clen)})` : '';
-                            const badgeClass = isHD ? 'hd' : 'sd';
-                            const badgeText = isHD ? 'HD' : 'SD';
-                            const ext = media.ext || 'mp4';
-                            html +=
-                                `<button onclick="directDownload('${media.url}', '${zenCode}_${label}.${ext}')" class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" style="animation-delay:${idx*0.05}s;"><span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span><span class="format-badge ${badgeClass}">${badgeText}</span></button>`;
+                        // === VIDEO ===
+                        // Urutkan video dari kualitas tertinggi ke terendah
+                        const sortedVideos = videos.sort((a, b) => {
+                            const qualityA = a.quality || '';
+                            const qualityB = b.quality || '';
+                            if (qualityA.includes('hd') && !qualityB.includes('hd')) return -1;
+                            if (!qualityA.includes('hd') && qualityB.includes('hd')) return 1;
+                            if (qualityA.includes('no_watermark') && !qualityB.includes('no_watermark')) return -1;
+                            if (!qualityA.includes('no_watermark') && qualityB.includes('no_watermark')) return 1;
+                            return 0;
                         });
 
+                        // Tampilkan maksimal 5 video terbaik
+                        const bestVideos = sortedVideos.slice(0, 5);
+                        bestVideos.forEach((media, idx) => {
+                            const isHD = media.quality && media.quality.includes('hd');
+                            const isNoWatermark = media.quality && media.quality.includes('no_watermark');
+                            
+                            let label = media.quality || media.width ? `${media.width||'?'}p` : 'Video';
+                            // Perbaiki label
+                            if (media.quality) {
+                                label = media.quality.replace(/_/g, ' ').toUpperCase();
+                            } else if (media.width) {
+                                label = `${media.width}p`;
+                            }
+                            
+                            const size = media.data_size ? ` (${formatSize(media.data_size)})` : '';
+                            const badgeClass = isHD ? 'hd' : 'sd';
+                            const badgeText = isHD ? 'HD' : (isNoWatermark ? 'NW' : 'SD');
+                            const ext = media.extension || 'mp4';
+                            
+                            // Cek apakah URL mengandung tiktokcdn.com
+                            const isCdn = media.url && media.url.includes('tiktokcdn.com');
+                            
+                            html += `
+                                <button onclick="directDownload('${media.url}', '${label}', '${ext}')" 
+                                        class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
+                                        style="animation-delay:${idx*0.05}s;">
+                                    <span>
+                                        <i class="fa-solid fa-video mr-2"></i> 
+                                        ${label} ${size}
+                                        ${isCdn ? '<span style="font-size:0.6rem;color:#f59e0b;margin-left:4px;">⚡CDN</span>' : ''}
+                                    </span>
+                                    <span class="format-badge ${badgeClass}">${badgeText}</span>
+                                </button>
+                            `;
+                        });
+
+                        // === AUDIO ===
                         const bestAudios = audios.slice(0, 3);
                         bestAudios.forEach((media, idx) => {
-                            const label = media.quality || media.label || 'Audio';
-                            const bitrate = media.bitrate ? ` (${(media.bitrate/1000).toFixed(0)}kbps)` :
-                            '';
-                            const ext = media.ext || 'm4a';
-                            html +=
-                                `<button onclick="directDownload('${media.url}', '${zenCode}_audio.${ext}')" class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" style="animation-delay:${(idx+5)*0.05}s;"><span><i class="fa-solid fa-music mr-2"></i> ${label} ${bitrate}</span><span class="format-badge audio">AUDIO</span></button>`;
+                            const label = media.quality || 'Audio';
+                            const ext = media.extension || 'mp3';
+                            html += `
+                                <button onclick="directDownload('${media.url}', 'audio', '${ext}')" 
+                                        class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" 
+                                        style="animation-delay:${(idx+5)*0.05}s;">
+                                    <span><i class="fa-solid fa-music mr-2"></i> ${label}</span>
+                                    <span class="format-badge audio">AUDIO</span>
+                                </button>
+                            `;
                         });
 
+                        // === IMAGES ===
                         if (images.length > 0) {
                             images.forEach((img, idx) => {
-                                const fileName = `${zenCode}_photo_${idx+1}.jpg`;
-                                html +=
-                                    `<div class="flex items-center justify-between" style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.6rem 0.8rem;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);gap:0.8rem;border-radius:12px;animation-delay:${(idx+10)*0.05}s;"><div class="flex items-center gap-3 overflow-hidden min-w-0"><img src="${img.url}" referrerpolicy="no-referrer" alt="Foto #${idx+1}" class="w-12 h-12 object-cover" style="border:3px solid var(--border);box-shadow:4px 4px 0 var(--shadow);flex-shrink:0;border-radius:8px;background:#d6cdc2;" onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';"><span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span></div><button onclick="directDownload('${img.url}', '${fileName}')" class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> <i class="fa-solid fa-download"></i> Download Foto</button></div>`;
+                                const ext = 'jpg';
+                                html += `
+                                    <div class="flex items-center justify-between" 
+                                         style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.6rem 0.8rem;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);gap:0.8rem;border-radius:12px;animation-delay:${(idx+10)*0.05}s;">
+                                        <div class="flex items-center gap-3 overflow-hidden min-w-0">
+                                            <img src="${img.url}" referrerpolicy="no-referrer" alt="Foto #${idx+1}" 
+                                                 class="w-12 h-12 object-cover" 
+                                                 style="border:3px solid var(--border);box-shadow:4px 4px 0 var(--shadow);flex-shrink:0;border-radius:8px;background:#d6cdc2;" 
+                                                 onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';">
+                                            <span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span>
+                                        </div>
+                                        <button onclick="directDownload('${img.url}', 'foto', '${ext}')" 
+                                                class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" 
+                                                style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> 
+                                            <i class="fa-solid fa-download"></i> Download Foto
+                                        </button>
+                                    </div>
+                                `;
                             });
                         }
 
                         if (contentList) contentList.innerHTML = html;
                         if (resultArea) resultArea.classList.remove('hidden');
                         if (featuresRow) featuresRow.classList.add('hidden');
+                        
+                        showNotif('Media berhasil ditemukan!');
                     } else {
-                        showError('Link tidak valid atau platform tidak didukung.');
+                        showError('Tidak ada media yang ditemukan untuk link ini.');
                     }
                 } else {
                     showError(data.message || 'Link tidak valid atau platform tidak didukung.');
@@ -2517,7 +2782,7 @@
             } catch (err) {
                 console.error('Error:', err);
                 if (progressInterval) completeProgress(progressInterval);
-                showError('Gagal terhubung ke server.');
+                showError('Gagal memproses link. Coba lagi nanti.');
             } finally {
                 if (loading) loading.classList.add('hidden');
                 if (skeleton) skeleton.classList.add('hidden');
@@ -2539,6 +2804,9 @@
             hideError();
         }
 
+        // ============================================================
+        // 11. EVENT LISTENER
+        // ============================================================
         const urlInput = document.getElementById('urlInput');
         if (urlInput) {
             urlInput.addEventListener('keypress', (e) => {
@@ -2546,10 +2814,11 @@
             });
         }
 
-        console.log('Zenvs v2.0 Loaded!');
+        console.log('Zenvs v4.0 Loaded!');
+        console.log('✅ Menggunakan API: https://api.nexray.eu.cc/downloader/aio');
+        console.log('🔒 TikTok CDN diblokir!');
+        console.log('📁 Nama file: Zenvs-Video(Random).mp4');
         console.log('Toast 5 Tahap - MUNCUL SETIAP BUKA WEB!');
-        console.log('Share Modal dengan Native Share API!');
-        console.log('Logo: kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png');
     </script>
 </body>
 </html>
