@@ -371,26 +371,7 @@
         .download-counter i { color: var(--accent); }
         .download-counter .count { color: var(--accent); font-size: 1rem; }
 
-        /* SPEED INDICATOR */
-        .speed-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            box-shadow: 3px 3px 0 var(--shadow);
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-top: 8px;
-            transition: all 0.3s ease;
-        }
-        .speed-indicator.active { display: inline-flex; }
-        .speed-indicator i { color: var(--accent); animation: pulse 1s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .speed-indicator .speed-value { color: var(--accent); font-weight: 800; }
+        /* SPEED INDICATOR - dihapus karena ga pake fetch */
     </style>
 </head>
 <body>
@@ -616,21 +597,9 @@
                     </button>
                 </div>
 
-                <!-- Speed Indicator -->
-                <div class="speed-indicator" id="speedIndicator">
-                    <i class="fa-solid fa-gauge-high"></i>
-                    Kecepatan: <span class="speed-value" id="speedValue">0</span> MB/s
-                    <span style="margin-left:8px;opacity:0.5;">•</span>
-                    <span id="progressPercent">0%</span>
-                </div>
-
                 <div id="errorBox" class="hidden mt-3 error-box text-sm flex items-center gap-3 text-left">
                     <i class="fa-solid fa-circle-exclamation text-lg"></i>
                     <span id="errorText">Pesan error...</span>
-                </div>
-
-                <div id="progressContainer" class="progress-container">
-                    <div id="progressFill" class="progress-fill"></div>
                 </div>
 
                 <div id="loading" class="hidden py-4 text-center">
@@ -746,7 +715,7 @@
 
     <script>
         // ============================================================
-        // PARTICLES, SIDEBAR, THEME, SOUND, SHARE, TOAST, COUNTER, HISTORY
+        // SEMUA FUNGSI DASAR (PARTICLES, SIDEBAR, THEME, SHARE, TOAST, COUNTER, HISTORY, PREVIEW)
         // ============================================================
         (function createParticles() {
             const container = document.getElementById('particleContainer');
@@ -1051,7 +1020,7 @@
         }
 
         // ============================================================
-        // 12. DOWNLOADER - FORCE DOWNLOAD PAKE FETCH + BLOB!
+        // DOWNLOADER - PAKE CARA SIMPLE & CEPAT!
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1089,132 +1058,39 @@
             return (bytes / 1024).toFixed(0) + ' KB';
         }
 
-        function startProgress() {
-            const container = document.getElementById('progressContainer');
-            const fill = document.getElementById('progressFill');
-            const speedEl = document.getElementById('speedIndicator');
-            if (!container || !fill) return null;
-            container.classList.add('active');
-            if (speedEl) speedEl.classList.add('active');
-            fill.style.width = '0%';
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 5 + 2;
-                if (progress > 95) progress = 95;
-                fill.style.width = progress + '%';
-                const speedVal = document.getElementById('speedValue');
-                const percentEl = document.getElementById('progressPercent');
-                if (speedVal) { const speed = (Math.random() * 5 + 0.5).toFixed(1); speedVal.textContent = speed; }
-                if (percentEl) percentEl.textContent = Math.round(progress) + '%';
-            }, 300);
-            return interval;
-        }
-
-        function completeProgress(interval) {
-            const fill = document.getElementById('progressFill');
-            const speedEl = document.getElementById('speedIndicator');
-            if (!fill) return;
-            clearInterval(interval);
-            fill.style.width = '100%';
-            const percentEl = document.getElementById('progressPercent');
-            if (percentEl) percentEl.textContent = '100%';
-            setTimeout(() => {
-                const container = document.getElementById('progressContainer');
-                if (container) container.classList.remove('active');
-                if (speedEl) speedEl.classList.remove('active');
-                if (fill) fill.style.width = '0%';
-                if (percentEl) percentEl.textContent = '0%';
-            }, 600);
-        }
-
-        // ===== FORCE DOWNLOAD PAKE FETCH + BLOB =====
-        // INI YANG BENER! LANGSUNG DOWNLOAD, GA BUKA LINK!
-        async function forceDownload(url, filename) {
+        // ===== DOWNLOAD LANGSUNG - SIMPLE & CEPAT! =====
+        function directDownload(url, filename) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
                 return;
             }
 
+            // Generate nama file dengan angka random
             const randomNum = Math.floor(Math.random() * 9000) + 1000;
             const ext = filename ? filename.split('.').pop() : 'mp4';
             const finalName = filename || `Zenvs-Video${randomNum}.${ext}`;
 
-            console.log('⬇️ FORCE DOWNLOAD:', url);
+            console.log('⬇️ DOWNLOAD LANGSUNG:', url);
             console.log('📁 Nama:', finalName);
 
-            const btn = event && event.currentTarget ? event.currentTarget : null;
-            let origText = '';
-            if (btn) {
-                origText = btn.innerHTML;
-                btn.innerHTML = `<span class="btn-spinner"></span> Downloading...`;
-                btn.disabled = true;
-            }
+            // CARA PALING SIMPLE: buat link <a> lalu klik
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = finalName;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-            const progressInterval = startProgress();
+            incrementDownloadCount();
+            showNotif(`✅ Download: ${finalName}`);
 
-            try {
-                // PAKE FETCH UNTUK AMBIL FILE
-                const response = await fetch(url, {
-                    mode: 'cors',
-                    headers: { 
-                        'Accept': '*/*',
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                // Konversi ke BLOB
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-
-                // Buat link download
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = finalName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                // Cleanup
-                setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-
-                if (progressInterval) completeProgress(progressInterval);
-
-                incrementDownloadCount();
-                saveHistory({
-                    title: finalName,
-                    author: 'Zenvs',
-                    thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
-                    url: url
-                });
-                showNotif(`✅ Download selesai: ${finalName}`);
-
-            } catch (error) {
-                console.error('Force download error:', error);
-                if (progressInterval) completeProgress(progressInterval);
-                
-                // FALLBACK: Coba pake cara lama (buka tab baru)
-                try {
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = finalName;
-                    link.target = '_blank';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    showNotif(`✅ Download: ${finalName}`);
-                } catch (e) {
-                    showNotif('Gagal download, coba lagi', 'fa-solid fa-circle-exclamation', '#dc2626');
-                }
-            } finally {
-                if (btn) {
-                    btn.innerHTML = origText;
-                    btn.disabled = false;
-                }
-            }
+            saveHistory({
+                title: finalName,
+                author: 'Zenvs',
+                thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                url: url
+            });
         }
 
         // ===== PROSES AMBIL DATA DARI API =====
@@ -1247,8 +1123,6 @@
             if (skeleton) skeleton.classList.remove('hidden');
             if (resultArea) resultArea.classList.add('hidden');
 
-            const progressInterval = startProgress();
-
             try {
                 const apiUrl = `https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(url)}`;
                 console.log('📡 API:', apiUrl);
@@ -1257,8 +1131,6 @@
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 console.log('📦 Response:', data);
-
-                if (progressInterval) completeProgress(progressInterval);
 
                 if (data.status && data.result) {
                     const d = data.result;
@@ -1310,7 +1182,7 @@
                                             class="dl-btn" style="flex:0;width:auto;padding:0.4rem 0.8rem;border-radius:10px;background:var(--bg-card);color:var(--text);">
                                         <i class="fa-solid fa-play" style="color:var(--accent);"></i>
                                     </button>
-                                    <button onclick="forceDownload('${media.url}', '${fileName}')" 
+                                    <button onclick="directDownload('${media.url}', '${fileName}')" 
                                             class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                             style="flex:1;animation-delay:${idx*0.05}s;">
                                         <span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span>
@@ -1327,7 +1199,7 @@
                             const randomNum = Math.floor(Math.random() * 9000) + 1000;
                             const fileName = `Zenvs-Audio${randomNum}.${ext}`;
                             html += `
-                                <button onclick="forceDownload('${media.url}', '${fileName}')" 
+                                <button onclick="directDownload('${media.url}', '${fileName}')" 
                                         class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                         style="animation-delay:${(idx+5)*0.05}s;">
                                     <span><i class="fa-solid fa-music mr-2"></i> ${label}</span>
@@ -1351,7 +1223,7 @@
                                                  onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';">
                                             <span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span>
                                         </div>
-                                        <button onclick="forceDownload('${img.url}', '${fileName}')" 
+                                        <button onclick="directDownload('${img.url}', '${fileName}')" 
                                                 class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" 
                                                 style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> 
                                             <i class="fa-solid fa-download"></i> Download Foto
@@ -1375,7 +1247,6 @@
                 }
             } catch (err) {
                 console.error('Error:', err);
-                if (progressInterval) completeProgress(progressInterval);
                 showError('Gagal memproses link. Coba lagi.');
             } finally {
                 if (loading) loading.classList.add('hidden');
@@ -1417,10 +1288,10 @@
             updateDownloadCounter();
         });
 
-        console.log('✅ Zenvs v11.0 - FORCE DOWNLOAD!');
+        console.log('✅ Zenvs v12.0 - CEPAT!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
-        console.log('📁 FORCE DOWNLOAD pake FETCH + BLOB!');
-        console.log('🔥 LANGSUNG DOWNLOAD, GA BUKA LINK!');
+        console.log('📁 Download LANGSUNG pake <a> tag!');
+        console.log('⚡ CEPAT, ga nunggu download ke RAM!');
     </script>
 </body>
 </html>
