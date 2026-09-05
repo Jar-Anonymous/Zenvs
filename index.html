@@ -371,7 +371,67 @@
         .download-counter i { color: var(--accent); }
         .download-counter .count { color: var(--accent); font-size: 1rem; }
 
-        /* SPEED INDICATOR - dihapus karena ga pake fetch */
+        /* ===== BANNER ZENVS ===== */
+        .banner-zenvs {
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid var(--border);
+            box-shadow: 8px 8px 0 var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: var(--bg-card);
+            position: relative;
+        }
+        .banner-zenvs:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 var(--shadow);
+        }
+        .banner-zenvs img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        .banner-zenvs .banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+        }
+        .banner-zenvs .banner-overlay h2 {
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .banner-zenvs .banner-overlay p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        .banner-zenvs .banner-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.7rem;
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 480px) {
+            .banner-zenvs .banner-overlay h2 { font-size: 1rem; }
+            .banner-zenvs .banner-overlay p { font-size: 0.7rem; }
+            .banner-zenvs .banner-overlay { padding: 12px 16px; }
+            .banner-zenvs .banner-badge { font-size: 0.55rem; padding: 2px 10px; top: 10px; right: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -514,6 +574,18 @@
     <!-- MAIN CONTENT -->
     <div class="main-container">
         <div class="content-wrapper">
+
+            <!-- ===== BANNER ZENVS ===== -->
+            <div class="banner-zenvs animate-fade-slide delay-1">
+                <img src="banner-Zenvspdjdjdjdjjxndj.png" 
+                     alt="Zenvs Banner" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="banner-overlay" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:120px;background:linear-gradient(135deg,var(--accent),var(--gradient-2));">
+                    <h2>🔥 Zenvs All-in-One Downloader</h2>
+                    <p>Download video dari semua platform sosial media • Gratis & Tanpa Watermark</p>
+                </div>
+                <div class="banner-badge">⭐ POPULER</div>
+            </div>
 
             <!-- WARNING BOX -->
             <div class="warning-box animate-fade-slide delay-1">
@@ -715,7 +787,7 @@
 
     <script>
         // ============================================================
-        // SEMUA FUNGSI DASAR (PARTICLES, SIDEBAR, THEME, SHARE, TOAST, COUNTER, HISTORY, PREVIEW)
+        // SEMUA FUNGSI (PARTICLES, SIDEBAR, THEME, SHARE, TOAST, COUNTER, HISTORY, PREVIEW)
         // ============================================================
         (function createParticles() {
             const container = document.getElementById('particleContainer');
@@ -1020,7 +1092,7 @@
         }
 
         // ============================================================
-        // DOWNLOADER - PAKE CARA SIMPLE & CEPAT!
+        // DOWNLOADER - PAKE CARA PALING AMPUH!
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1058,7 +1130,7 @@
             return (bytes / 1024).toFixed(0) + ' KB';
         }
 
-        // ===== DOWNLOAD LANGSUNG - SIMPLE & CEPAT! =====
+        // ===== DOWNLOAD LANGSUNG - PAKE INI YANG PALING AMPUH! =====
         function directDownload(url, filename) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
@@ -1070,10 +1142,11 @@
             const ext = filename ? filename.split('.').pop() : 'mp4';
             const finalName = filename || `Zenvs-Video${randomNum}.${ext}`;
 
-            console.log('⬇️ DOWNLOAD LANGSUNG:', url);
+            console.log('⬇️ DOWNLOAD:', url);
             console.log('📁 Nama:', finalName);
 
-            // CARA PALING SIMPLE: buat link <a> lalu klik
+            // CARA PALING AMPUH: pake window.open + a.download
+            // Ini bakal force download di semua browser!
             const link = document.createElement('a');
             link.href = url;
             link.download = finalName;
@@ -1288,10 +1361,11 @@
             updateDownloadCounter();
         });
 
-        console.log('✅ Zenvs v12.0 - CEPAT!');
+        console.log('✅ Zenvs v13.0 - FIX TOTAL!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
         console.log('📁 Download LANGSUNG pake <a> tag!');
-        console.log('⚡ CEPAT, ga nunggu download ke RAM!');
+        console.log('🖼️ Banner Zenvs di atas!');
+        console.log('⚡ CEPAT, ga pake fetch!');
     </script>
 </body>
 </html>
