@@ -326,6 +326,7 @@
             border: 2px solid var(--border);
             border-radius: 8px;
             flex-shrink: 0;
+            background: #d6cdc2;
         }
         .history-item .info { flex: 1; min-width: 0; }
         .history-item .info .title {
@@ -371,7 +372,7 @@
         .download-counter i { color: var(--accent); }
         .download-counter .count { color: var(--accent); font-size: 1rem; }
 
-        /* ===== BANNER ZENVS ===== */
+        /* BANNER */
         .banner-zenvs {
             width: 100%;
             border-radius: 16px;
@@ -787,7 +788,7 @@
 
     <script>
         // ============================================================
-        // SEMUA FUNGSI (PARTICLES, SIDEBAR, THEME, SHARE, TOAST, COUNTER, HISTORY, PREVIEW)
+        // SEMUA FUNGSI
         // ============================================================
         (function createParticles() {
             const container = document.getElementById('particleContainer');
@@ -995,18 +996,20 @@
         }
         function saveHistory(videoData) {
             const history = getHistory();
-            history.unshift({
+            const item = {
                 id: Date.now(),
-                title: videoData.title || 'Video',
+                title: videoData.title || 'Video Zenvs',
                 author: videoData.author || 'Unknown',
                 thumbnail: videoData.thumbnail || 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
                 url: videoData.url || '',
                 date: new Date().toLocaleString()
-            });
+            };
+            history.unshift(item);
             if (history.length > 20) history.pop();
             localStorage.setItem('zenvs-history', JSON.stringify(history));
             renderHistory();
         }
+
         function renderHistory() {
             const container = document.getElementById('historyContainer');
             if (!container) return;
@@ -1026,6 +1029,7 @@
                 </div>
             `).join('');
         }
+
         function reDownload(url) {
             if (url) {
                 document.getElementById('urlInput').value = url;
@@ -1092,7 +1096,7 @@
         }
 
         // ============================================================
-        // DOWNLOADER - PAKE CARA PALING AMPUH!
+        // DOWNLOADER
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1130,23 +1134,17 @@
             return (bytes / 1024).toFixed(0) + ' KB';
         }
 
-        // ===== DOWNLOAD LANGSUNG - PAKE INI YANG PALING AMPUH! =====
-        function directDownload(url, filename) {
+        // ===== DOWNLOAD LANGSUNG =====
+        function directDownload(url, filename, videoData) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
                 return;
             }
 
-            // Generate nama file dengan angka random
             const randomNum = Math.floor(Math.random() * 9000) + 1000;
             const ext = filename ? filename.split('.').pop() : 'mp4';
             const finalName = filename || `Zenvs-Video${randomNum}.${ext}`;
 
-            console.log('⬇️ DOWNLOAD:', url);
-            console.log('📁 Nama:', finalName);
-
-            // CARA PALING AMPUH: pake window.open + a.download
-            // Ini bakal force download di semua browser!
             const link = document.createElement('a');
             link.href = url;
             link.download = finalName;
@@ -1158,12 +1156,22 @@
             incrementDownloadCount();
             showNotif(`✅ Download: ${finalName}`);
 
-            saveHistory({
-                title: finalName,
-                author: 'Zenvs',
-                thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
-                url: url
-            });
+            // SIMPAN HISTORY DENGAN DATA LENGKAP
+            if (videoData) {
+                saveHistory({
+                    title: videoData.title || finalName,
+                    author: videoData.author || 'Zenvs',
+                    thumbnail: videoData.thumbnail || 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                    url: url
+                });
+            } else {
+                saveHistory({
+                    title: finalName,
+                    author: 'Zenvs',
+                    thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                    url: url
+                });
+            }
         }
 
         // ===== PROSES AMBIL DATA DARI API =====
@@ -1209,6 +1217,15 @@
                     const d = data.result;
                     let html = '';
 
+                    // Data video buat history
+                    const videoData = {
+                        title: d.title || 'Video Zenvs',
+                        author: d.author || d.unique_id || 'Unknown',
+                        thumbnail: d.thumbnail || 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                        url: url
+                    };
+
+                    // UPDATE PREVIEW
                     const previewThumb = document.getElementById('previewThumb');
                     const previewAuthor = document.getElementById('previewAuthor');
                     const previewTitle = document.getElementById('previewTitle');
@@ -1255,7 +1272,7 @@
                                             class="dl-btn" style="flex:0;width:auto;padding:0.4rem 0.8rem;border-radius:10px;background:var(--bg-card);color:var(--text);">
                                         <i class="fa-solid fa-play" style="color:var(--accent);"></i>
                                     </button>
-                                    <button onclick="directDownload('${media.url}', '${fileName}')" 
+                                    <button onclick="directDownload('${media.url}', '${fileName}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
                                             class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                             style="flex:1;animation-delay:${idx*0.05}s;">
                                         <span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span>
@@ -1272,7 +1289,7 @@
                             const randomNum = Math.floor(Math.random() * 9000) + 1000;
                             const fileName = `Zenvs-Audio${randomNum}.${ext}`;
                             html += `
-                                <button onclick="directDownload('${media.url}', '${fileName}')" 
+                                <button onclick="directDownload('${media.url}', '${fileName}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
                                         class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                         style="animation-delay:${(idx+5)*0.05}s;">
                                     <span><i class="fa-solid fa-music mr-2"></i> ${label}</span>
@@ -1296,7 +1313,7 @@
                                                  onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';">
                                             <span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span>
                                         </div>
-                                        <button onclick="directDownload('${img.url}', '${fileName}')" 
+                                        <button onclick="directDownload('${img.url}', '${fileName}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
                                                 class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" 
                                                 style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> 
                                             <i class="fa-solid fa-download"></i> Download Foto
@@ -1310,6 +1327,8 @@
                         if (resultArea) resultArea.classList.remove('hidden');
                         if (featuresRow) featuresRow.classList.add('hidden');
                         
+                        // SAVE HISTORY
+                        saveHistory(videoData);
                         renderHistory();
                         showNotif('Media berhasil ditemukan!');
                     } else {
@@ -1361,11 +1380,11 @@
             updateDownloadCounter();
         });
 
-        console.log('✅ Zenvs v13.0 - FIX TOTAL!');
+        console.log('✅ Zenvs v14.0 - FIX HISTORY & PREVIEW!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
-        console.log('📁 Download LANGSUNG pake <a> tag!');
-        console.log('🖼️ Banner Zenvs di atas!');
-        console.log('⚡ CEPAT, ga pake fetch!');
+        console.log('📁 Download LANGSUNG!');
+        console.log('📜 History dengan gambar & judul!');
+        console.log('🖼️ Preview thumbnail, judul, author!');
     </script>
 </body>
 </html>
