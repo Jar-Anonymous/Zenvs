@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* ===== CSS SINGKAT TAPI LENGKAP ===== */
         * { font-family: 'Space Grotesk', 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
         :root { --bg: #f0ebe5; --bg-card: rgba(255,251,247,0.80); --bg-card-solid: #faf6f0; --text: #1a1716; --text-muted: #6b6560; --border: #1a1716; --shadow: #1a1716; --accent: #dc2626; --accent-hover: #b91c1c; --accent-glow: rgba(220,38,38,0.35); --card-hover: #f0ebe3; --scrollbar: #d6cdc2; --scrollbar-thumb: #1a1716; --glow: rgba(220,38,38,0.25); --gradient-1: #dc2626; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
         [data-theme="dark"] { --bg: #0d0d0d; --bg-card: rgba(28,28,28,0.92); --bg-card-solid: #1a1a1a; --text: #f5efe8; --text-muted: #8a8480; --border: #3a3a3a; --shadow: #3a3a3a; --accent: #ef4444; --accent-hover: #dc2626; --accent-glow: rgba(239,68,68,0.30); --card-hover: #2a2a2a; --scrollbar: #2a2a2a; --scrollbar-thumb: #5a5a5a; --glow: rgba(239,68,68,0.25); --gradient-1: #ef4444; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
@@ -458,7 +457,6 @@
         }
         .fab-main:hover .fab-tooltip { opacity: 1; }
 
-        /* Responsive FAB */
         @media (max-width: 480px) {
             .fab-main { width: 56px; height: 56px; font-size: 1.4rem; }
             .fab-tooltip { display: none; }
@@ -1178,7 +1176,7 @@
         }
 
         // ============================================================
-        // 12. DOWNLOADER
+        // 12. DOWNLOADER - FIXED! LANGSUNG DOWNLOAD
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1262,74 +1260,42 @@
             }, 600);
         }
 
-        // ===== DOWNLOAD =====
-        function downloadFile(url, filename) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            incrementDownloadCount();
-            showNotif(`Download selesai: ${filename}`);
-        }
-
-        async function directDownload(url, label, extension, videoData) {
+        // ===== DOWNLOAD LANGSUNG - PAKE INI! =====
+        function directDownload(url, filename) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
                 return;
             }
 
+            // Generate nama file
             const randomNum = Math.floor(Math.random() * 9000) + 1000;
-            const ext = extension || 'mp4';
-            const filename = `Zenvs-Video${randomNum}.${ext}`;
+            const ext = filename ? filename.split('.').pop() : 'mp4';
+            const finalName = filename || `Zenvs-Video${randomNum}.${ext}`;
             
-            console.log(`⬇️ Download: ${filename}`);
+            console.log('⬇️ Download langsung:', url);
+            console.log('📁 Nama file:', finalName);
             
-            const btn = event && event.currentTarget ? event.currentTarget : null;
-            let origText = '';
-            if (btn) {
-                origText = btn.innerHTML;
-                btn.innerHTML = `<span class="btn-spinner"></span> Mendownload...`;
-                btn.disabled = true;
-            }
-
-            const progressInterval = startProgress();
-            playClickSound();
-
-            try {
-                const response = await fetch(url, { mode: 'cors', headers: { 'Accept': '*/*' } });
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const blobUrl = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = filename;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-                    
-                    if (videoData) saveHistory(videoData);
-                    incrementDownloadCount();
-                    showNotif(`Download selesai: ${filename}`);
-                } else {
-                    downloadFile(url, filename);
-                    if (videoData) saveHistory(videoData);
-                }
-                if (progressInterval) completeProgress(progressInterval);
-            } catch (error) {
-                console.error('Download error:', error);
-                if (progressInterval) completeProgress(progressInterval);
-                downloadFile(url, filename);
-                if (videoData) saveHistory(videoData);
-            } finally {
-                if (btn) {
-                    btn.innerHTML = origText;
-                    btn.disabled = false;
-                }
-            }
+            // CARA PALING SIMPLE: buka link di tab baru dengan atribut download
+            // Ini akan trigger download langsung
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = finalName;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            incrementDownloadCount();
+            showNotif(`✅ Download dimulai: ${finalName}`);
+            
+            // Simpan ke history
+            const videoData = {
+                title: finalName,
+                author: 'Zenvs Download',
+                thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
+                url: url
+            };
+            saveHistory(videoData);
         }
 
         // ===== PROSES AMBIL DATA DARI API =====
@@ -1422,6 +1388,8 @@
                             const badgeClass = isHD ? 'hd' : (isNoWatermark ? 'sd' : 'sd');
                             const badgeText = isHD ? 'HD' : (isNoWatermark ? 'NW' : 'SD');
                             const ext = media.extension || 'mp4';
+                            const randomNum = Math.floor(Math.random() * 9000) + 1000;
+                            const fileName = `Zenvs-Video${randomNum}.${ext}`;
                             
                             html += `
                                 <div style="display:flex;gap:8px;align-items:center;">
@@ -1429,7 +1397,7 @@
                                             class="dl-btn" style="flex:0;width:auto;padding:0.4rem 0.8rem;border-radius:10px;background:var(--bg-card);color:var(--text);">
                                         <i class="fa-solid fa-play" style="color:var(--accent);"></i>
                                     </button>
-                                    <button onclick="directDownload('${media.url}', '${label}', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
+                                    <button onclick="directDownload('${media.url}', '${fileName}')" 
                                             class="dl-btn dl-btn-video text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                             style="flex:1;animation-delay:${idx*0.05}s;">
                                         <span><i class="fa-solid fa-video mr-2"></i> ${label} ${size}</span>
@@ -1443,8 +1411,10 @@
                         bestAudios.forEach((media, idx) => {
                             const label = media.quality || 'Audio';
                             const ext = media.extension || 'mp3';
+                            const randomNum = Math.floor(Math.random() * 9000) + 1000;
+                            const fileName = `Zenvs-Audio${randomNum}.${ext}`;
                             html += `
-                                <button onclick="directDownload('${media.url}', '${label}', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
+                                <button onclick="directDownload('${media.url}', '${fileName}')" 
                                         class="dl-btn dl-btn-audio text-sm flex items-center justify-between gap-2 cursor-pointer" 
                                         style="animation-delay:${(idx+5)*0.05}s;">
                                     <span><i class="fa-solid fa-music mr-2"></i> ${label}</span>
@@ -1456,6 +1426,8 @@
                         if (images.length > 0) {
                             images.forEach((img, idx) => {
                                 const ext = 'jpg';
+                                const randomNum = Math.floor(Math.random() * 9000) + 1000;
+                                const fileName = `Zenvs-Photo${randomNum}.${ext}`;
                                 html += `
                                     <div class="flex items-center justify-between" 
                                          style="background:var(--bg-card);backdrop-filter:blur(12px);padding:0.6rem 0.8rem;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);gap:0.8rem;border-radius:12px;animation-delay:${(idx+10)*0.05}s;">
@@ -1466,7 +1438,7 @@
                                                  onerror="this.onerror=null; this.src='https://placehold.co/100x100/1a1716/faf6f0?text=Foto';">
                                             <span class="text-sm font-extrabold truncate" style="color:var(--text);">Foto #${idx+1}</span>
                                         </div>
-                                        <button onclick="directDownload('${img.url}', 'foto', '${ext}', ${JSON.stringify(videoData).replace(/"/g, '&quot;')})" 
+                                        <button onclick="directDownload('${img.url}', '${fileName}')" 
                                                 class="dl-btn dl-btn-primary text-sm flex items-center gap-1.5 cursor-pointer flex-shrink-0" 
                                                 style="width:auto;padding:0.4rem 1.2rem;border-radius:10px;"> 
                                             <i class="fa-solid fa-download"></i> Download Foto
@@ -1527,7 +1499,6 @@
             const container = document.getElementById('fabContainer');
             if (!container) return;
 
-            // Restore posisi
             const savedPos = localStorage.getItem('zenvs-fab-position');
             if (savedPos) {
                 try {
@@ -1541,12 +1512,10 @@
                 } catch (e) {}
             }
 
-            // Touch events
             container.addEventListener('touchstart', onDragStart, { passive: false });
             container.addEventListener('touchmove', onDragMove, { passive: false });
             container.addEventListener('touchend', onDragEnd, { passive: false });
 
-            // Mouse events
             container.addEventListener('mousedown', onDragStart);
             document.addEventListener('mousemove', onDragMove);
             document.addEventListener('mouseup', onDragEnd);
@@ -1655,14 +1624,13 @@
             updateDownloadCounter();
         });
 
-        console.log('✅ Zenvs v8.0 - FIXED!');
+        console.log('✅ Zenvs v9.0 - FIXED TOTAL!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
-        console.log('📁 Nama file: Zenvs-Video(Random).mp4');
+        console.log('📁 Download LANGSUNG, ga pake fetch error!');
         console.log('📊 Download Counter aktif!');
         console.log('📜 History per user (localStorage)!');
         console.log('▶️ Preview Video!');
-        console.log('🔄 FAB Draggable SHARE!');
-        console.log('❌ Batch Download Dihapus!');
+        console.log('🔄 FAB Draggable SHARE - KLIK LANGSUNG BUKA SHARE!');
     </script>
 </body>
 </html>
