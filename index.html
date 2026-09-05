@@ -222,7 +222,7 @@
         .info-modal-box .info-close-btn { background: var(--border); color: var(--bg-card); border: 3px solid var(--border); box-shadow: 6px 6px 0 var(--shadow); padding: 0.7rem 2rem; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 12px; width: 100%; }
         .info-modal-box .info-close-btn:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--shadow); background: var(--accent-hover); color: white; }
 
-        /* ===== PREVIEW MODAL ===== */
+        /* PREVIEW MODAL */
         .preview-modal {
             position: fixed;
             top: 0;
@@ -292,7 +292,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== HISTORY ===== */
+        /* HISTORY */
         .history-container {
             margin-top: 12px;
             max-height: 300px;
@@ -349,7 +349,7 @@
         }
         .history-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.3; }
 
-        /* ===== DOWNLOAD COUNTER ===== */
+        /* DOWNLOAD COUNTER */
         .download-counter {
             display: flex;
             align-items: center;
@@ -371,7 +371,7 @@
         .download-counter i { color: var(--accent); }
         .download-counter .count { color: var(--accent); font-size: 1rem; }
 
-        /* ===== SPEED INDICATOR ===== */
+        /* SPEED INDICATOR */
         .speed-indicator {
             display: none;
             align-items: center;
@@ -391,76 +391,6 @@
         .speed-indicator i { color: var(--accent); animation: pulse 1s ease-in-out infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .speed-indicator .speed-value { color: var(--accent); font-weight: 800; }
-
-        /* ===== FAB DRAGGABLE - SHARE ===== */
-        .fab-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 9999;
-            cursor: grab;
-            touch-action: none;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .fab-container:active { cursor: grabbing; }
-        .fab-main {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            border: 3px solid var(--border);
-            box-shadow: 8px 8px 0 var(--shadow), 0 0 50px rgba(37,211,102,0.3);
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-        }
-        .fab-main:hover {
-            transform: scale(1.08) translate(-4px, -4px);
-            box-shadow: 12px 12px 0 var(--shadow), 0 0 70px rgba(37,211,102,0.4);
-        }
-        .fab-main:active { transform: scale(0.92); }
-        .fab-main .pulse-ring {
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 3px solid #25D366;
-            animation: fabPulse 2s ease-out infinite;
-            opacity: 0;
-        }
-        @keyframes fabPulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        .fab-tooltip {
-            position: absolute;
-            right: 76px;
-            background: var(--bg-card-solid);
-            border: 2px solid var(--border);
-            box-shadow: 4px 4px 0 var(--shadow);
-            padding: 4px 14px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .fab-main:hover .fab-tooltip { opacity: 1; }
-
-        @media (max-width: 480px) {
-            .fab-main { width: 56px; height: 56px; font-size: 1.4rem; }
-            .fab-tooltip { display: none; }
-        }
     </style>
 </head>
 <body>
@@ -814,15 +744,6 @@
         </div>
     </div>
 
-    <!-- FLOATING ACTION BUTTON - DRAGGABLE SHARE -->
-    <div class="fab-container" id="fabContainer">
-        <div class="fab-main" id="fabMain" onclick="openShareModal()">
-            <div class="pulse-ring"></div>
-            <i class="fa-solid fa-share-nodes"></i>
-            <span class="fab-tooltip">Bagikan Zenvs</span>
-        </div>
-    </div>
-
     <script>
         // ============================================================
         // 1. PARTICLES
@@ -1114,7 +1035,7 @@
             const container = document.createElement('div');
             container.style.cssText = `
                 position: fixed;
-                bottom: 100px;
+                bottom: 28px;
                 right: 28px;
                 background: var(--bg-card-solid);
                 border: 3px solid var(--border);
@@ -1176,7 +1097,7 @@
         }
 
         // ============================================================
-        // 12. DOWNLOADER - FIXED! LANGSUNG DOWNLOAD
+        // 12. DOWNLOADER - FIXED! LANGSUNG DOWNLOAD NO RIBET
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1260,23 +1181,22 @@
             }, 600);
         }
 
-        // ===== DOWNLOAD LANGSUNG - PAKE INI! =====
+        // ===== DOWNLOAD LANGSUNG - SIMPLE =====
         function directDownload(url, filename) {
             if (!url) {
                 showNotif('URL tidak valid!', 'fa-solid fa-circle-exclamation', '#dc2626');
                 return;
             }
 
-            // Generate nama file
+            // Generate nama file dengan angka random
             const randomNum = Math.floor(Math.random() * 9000) + 1000;
             const ext = filename ? filename.split('.').pop() : 'mp4';
             const finalName = filename || `Zenvs-Video${randomNum}.${ext}`;
             
-            console.log('⬇️ Download langsung:', url);
-            console.log('📁 Nama file:', finalName);
+            console.log('⬇️ Download:', url);
+            console.log('📁 Nama:', finalName);
             
-            // CARA PALING SIMPLE: buka link di tab baru dengan atribut download
-            // Ini akan trigger download langsung
+            // CARA PALING SIMPLE: buat link <a> lalu klik
             const link = document.createElement('a');
             link.href = url;
             link.download = finalName;
@@ -1286,16 +1206,15 @@
             document.body.removeChild(link);
             
             incrementDownloadCount();
-            showNotif(`✅ Download dimulai: ${finalName}`);
+            showNotif(`✅ Download: ${finalName}`);
             
-            // Simpan ke history
-            const videoData = {
+            // Simpan history
+            saveHistory({
                 title: finalName,
-                author: 'Zenvs Download',
+                author: 'Zenvs',
                 thumbnail: 'https://placehold.co/100x100/1a1716/faf6f0?text=Z',
                 url: url
-            };
-            saveHistory(videoData);
+            });
         }
 
         // ===== PROSES AMBIL DATA DARI API =====
@@ -1344,12 +1263,6 @@
                 if (data.status && data.result) {
                     const d = data.result;
                     let html = '';
-                    let videoData = {
-                        title: d.title || 'Video Zenvs',
-                        author: d.author || d.unique_id || '@user',
-                        thumbnail: d.thumbnail || '',
-                        url: url
-                    };
 
                     const previewThumb = document.getElementById('previewThumb');
                     const previewAuthor = document.getElementById('previewAuthor');
@@ -1448,8 +1361,6 @@
                             });
                         }
 
-                        saveHistory(videoData);
-
                         if (contentList) contentList.innerHTML = html;
                         if (resultArea) resultArea.classList.remove('hidden');
                         if (featuresRow) featuresRow.classList.add('hidden');
@@ -1488,116 +1399,7 @@
         }
 
         // ============================================================
-        // 13. FLOATING BUTTON - DRAGGABLE SHARE
-        // ============================================================
-        let isDragging = false;
-        let dragStartX, dragStartY;
-        let fabStartX, fabStartY;
-        let hasMoved = false;
-
-        function initFabDrag() {
-            const container = document.getElementById('fabContainer');
-            if (!container) return;
-
-            const savedPos = localStorage.getItem('zenvs-fab-position');
-            if (savedPos) {
-                try {
-                    const pos = JSON.parse(savedPos);
-                    const maxX = window.innerWidth - 80;
-                    const maxY = window.innerHeight - 80;
-                    container.style.left = Math.min(Math.max(0, pos.x), maxX) + 'px';
-                    container.style.top = Math.min(Math.max(0, pos.y), maxY) + 'px';
-                    container.style.right = 'auto';
-                    container.style.bottom = 'auto';
-                } catch (e) {}
-            }
-
-            container.addEventListener('touchstart', onDragStart, { passive: false });
-            container.addEventListener('touchmove', onDragMove, { passive: false });
-            container.addEventListener('touchend', onDragEnd, { passive: false });
-
-            container.addEventListener('mousedown', onDragStart);
-            document.addEventListener('mousemove', onDragMove);
-            document.addEventListener('mouseup', onDragEnd);
-
-            window.addEventListener('resize', function() {
-                const pos = JSON.parse(localStorage.getItem('zenvs-fab-position') || '{"x":0,"y":0}');
-                const maxX = window.innerWidth - 80;
-                const maxY = window.innerHeight - 80;
-                if (pos.x > maxX || pos.y > maxY) {
-                    const newPos = { x: Math.min(pos.x, maxX), y: Math.min(pos.y, maxY) };
-                    localStorage.setItem('zenvs-fab-position', JSON.stringify(newPos));
-                    container.style.left = newPos.x + 'px';
-                    container.style.top = newPos.y + 'px';
-                }
-            });
-        }
-
-        function onDragStart(e) {
-            const container = document.getElementById('fabContainer');
-            if (!container) return;
-            
-            const target = e.target.closest('.fab-main');
-            if (target) {
-                hasMoved = false;
-                isDragging = true;
-                const touch = e.touches ? e.touches[0] : e;
-                dragStartX = touch.clientX;
-                dragStartY = touch.clientY;
-                const rect = container.getBoundingClientRect();
-                fabStartX = rect.left;
-                fabStartY = rect.top;
-                container.style.cursor = 'grabbing';
-                container.style.transition = 'none';
-                e.preventDefault();
-            }
-        }
-
-        function onDragMove(e) {
-            if (!isDragging) return;
-            const container = document.getElementById('fabContainer');
-            if (!container) return;
-            
-            const touch = e.touches ? e.touches[0] : e;
-            const dx = touch.clientX - dragStartX;
-            const dy = touch.clientY - dragStartY;
-            
-            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-                hasMoved = true;
-            }
-            
-            let newX = fabStartX + dx;
-            let newY = fabStartY + dy;
-            
-            const maxX = window.innerWidth - 80;
-            const maxY = window.innerHeight - 80;
-            newX = Math.max(0, Math.min(newX, maxX));
-            newY = Math.max(0, Math.min(newY, maxY));
-            
-            container.style.left = newX + 'px';
-            container.style.top = newY + 'px';
-            container.style.right = 'auto';
-            container.style.bottom = 'auto';
-            
-            e.preventDefault();
-        }
-
-        function onDragEnd(e) {
-            if (!isDragging) return;
-            const container = document.getElementById('fabContainer');
-            if (!container) return;
-            
-            isDragging = false;
-            container.style.cursor = 'grab';
-            container.style.transition = '';
-            
-            const rect = container.getBoundingClientRect();
-            const pos = { x: rect.left, y: rect.top };
-            localStorage.setItem('zenvs-fab-position', JSON.stringify(pos));
-        }
-
-        // ============================================================
-        // 14. KEYBOARD SHORTCUTS
+        // 13. KEYBOARD SHORTCUTS
         // ============================================================
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); processDownload(); }
@@ -1606,7 +1408,7 @@
         });
 
         // ============================================================
-        // 15. EVENT LISTENER
+        // 14. EVENT LISTENER
         // ============================================================
         const urlInput = document.getElementById('urlInput');
         if (urlInput) {
@@ -1616,21 +1418,20 @@
         }
 
         // ============================================================
-        // 16. INIT
+        // 15. INIT
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
-            initFabDrag();
             renderHistory();
             updateDownloadCounter();
         });
 
-        console.log('✅ Zenvs v9.0 - FIXED TOTAL!');
+        console.log('✅ Zenvs v10.0 - FINAL!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
-        console.log('📁 Download LANGSUNG, ga pake fetch error!');
-        console.log('📊 Download Counter aktif!');
-        console.log('📜 History per user (localStorage)!');
-        console.log('▶️ Preview Video!');
-        console.log('🔄 FAB Draggable SHARE - KLIK LANGSUNG BUKA SHARE!');
+        console.log('📁 Download LANGSUNG!');
+        console.log('📊 Download Counter!');
+        console.log('📜 History!');
+        console.log('▶️ Preview!');
+        console.log('❌ FAB SHARE DIHAPUS!');
     </script>
 </body>
 </html>
