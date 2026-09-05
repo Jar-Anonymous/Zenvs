@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
+        /* ===== CSS SINGKAT TAPI LENGKAP ===== */
         * { font-family: 'Space Grotesk', 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
         :root { --bg: #f0ebe5; --bg-card: rgba(255,251,247,0.80); --bg-card-solid: #faf6f0; --text: #1a1716; --text-muted: #6b6560; --border: #1a1716; --shadow: #1a1716; --accent: #dc2626; --accent-hover: #b91c1c; --accent-glow: rgba(220,38,38,0.35); --card-hover: #f0ebe3; --scrollbar: #d6cdc2; --scrollbar-thumb: #1a1716; --glow: rgba(220,38,38,0.25); --gradient-1: #dc2626; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
         [data-theme="dark"] { --bg: #0d0d0d; --bg-card: rgba(28,28,28,0.92); --bg-card-solid: #1a1a1a; --text: #f5efe8; --text-muted: #8a8480; --border: #3a3a3a; --shadow: #3a3a3a; --accent: #ef4444; --accent-hover: #dc2626; --accent-glow: rgba(239,68,68,0.30); --card-hover: #2a2a2a; --scrollbar: #2a2a2a; --scrollbar-thumb: #5a5a5a; --glow: rgba(239,68,68,0.25); --gradient-1: #ef4444; --gradient-2: #f59e0b; --gradient-3: #8b5cf6; }
@@ -222,93 +223,7 @@
         .info-modal-box .info-close-btn { background: var(--border); color: var(--bg-card); border: 3px solid var(--border); box-shadow: 6px 6px 0 var(--shadow); padding: 0.7rem 2rem; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 12px; width: 100%; }
         .info-modal-box .info-close-btn:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--shadow); background: var(--accent-hover); color: white; }
 
-        /* ===== FITUR BARU ===== */
-
-        /* 1. Download Counter */
-        .download-counter {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            box-shadow: 4px 4px 0 var(--shadow);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text);
-            transition: all 0.3s ease;
-        }
-        .download-counter:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 var(--shadow);
-        }
-        .download-counter i { color: var(--accent); }
-        .download-counter .count { color: var(--accent); font-size: 1rem; }
-
-        /* 2. Speed Indicator */
-        .speed-indicator {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            box-shadow: 3px 3px 0 var(--shadow);
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-top: 8px;
-            transition: all 0.3s ease;
-        }
-        .speed-indicator.active { display: inline-flex; }
-        .speed-indicator i { color: var(--accent); animation: pulse 1s ease-in-out infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .speed-indicator .speed-value { color: var(--accent); font-weight: 800; }
-
-        /* 3. Batch Download */
-        .batch-area {
-            display: none;
-            margin-top: 12px;
-            animation: fadeSlideUp 0.4s ease;
-        }
-        .batch-area.active { display: block; }
-        .batch-area textarea {
-            min-height: 80px;
-            resize: vertical;
-            font-size: 0.85rem;
-        }
-        .batch-area .batch-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .batch-area .batch-actions .neo-btn {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.8rem;
-            flex: 1;
-            min-width: 100px;
-        }
-        .batch-toggle {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 0;
-            transition: all 0.3s ease;
-        }
-        .batch-toggle:hover { color: var(--accent); }
-        .batch-toggle i { transition: transform 0.3s ease; }
-        .batch-toggle.active i { transform: rotate(180deg); }
-
-        /* 4. Preview Video Modal */
+        /* ===== PREVIEW MODAL ===== */
         .preview-modal {
             position: fixed;
             top: 0;
@@ -378,7 +293,7 @@
             color: var(--text-muted);
         }
 
-        /* 5. History */
+        /* ===== HISTORY ===== */
         .history-container {
             margin-top: 12px;
             max-height: 300px;
@@ -435,7 +350,50 @@
         }
         .history-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.3; }
 
-        /* 6. Floating Action Button - Draggable */
+        /* ===== DOWNLOAD COUNTER ===== */
+        .download-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 4px 4px 0 var(--shadow);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        .download-counter:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 var(--shadow);
+        }
+        .download-counter i { color: var(--accent); }
+        .download-counter .count { color: var(--accent); font-size: 1rem; }
+
+        /* ===== SPEED INDICATOR ===== */
+        .speed-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            box-shadow: 3px 3px 0 var(--shadow);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+        .speed-indicator.active { display: inline-flex; }
+        .speed-indicator i { color: var(--accent); animation: pulse 1s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .speed-indicator .speed-value { color: var(--accent); font-weight: 800; }
+
+        /* ===== FAB DRAGGABLE - SHARE ===== */
         .fab-container {
             position: fixed;
             bottom: 30px;
@@ -451,9 +409,9 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            background: linear-gradient(135deg, #25D366, #128C7E);
             border: 3px solid var(--border);
-            box-shadow: 8px 8px 0 var(--shadow), 0 0 50px var(--accent-glow);
+            box-shadow: 8px 8px 0 var(--shadow), 0 0 50px rgba(37,211,102,0.3);
             color: white;
             font-size: 1.8rem;
             cursor: pointer;
@@ -466,14 +424,14 @@
         }
         .fab-main:hover {
             transform: scale(1.08) translate(-4px, -4px);
-            box-shadow: 12px 12px 0 var(--shadow), 0 0 70px var(--accent-glow);
+            box-shadow: 12px 12px 0 var(--shadow), 0 0 70px rgba(37,211,102,0.4);
         }
         .fab-main:active { transform: scale(0.92); }
         .fab-main .pulse-ring {
             position: absolute;
             inset: -8px;
             border-radius: 50%;
-            border: 3px solid var(--accent);
+            border: 3px solid #25D366;
             animation: fabPulse 2s ease-out infinite;
             opacity: 0;
         }
@@ -482,44 +440,13 @@
             100% { transform: scale(1.5); opacity: 0; }
         }
 
-        .fab-menu {
+        .fab-tooltip {
             position: absolute;
-            bottom: 80px;
-            right: 0;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .fab-menu.open { display: flex; }
-        .fab-menu .fab-item {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--bg-card-solid);
-            border: 3px solid var(--border);
-            box-shadow: 6px 6px 0 var(--shadow);
-            color: var(--text);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto;
-            position: relative;
-        }
-        .fab-menu .fab-item:hover {
-            transform: translate(-4px, -4px) scale(1.05);
-            box-shadow: 10px 10px 0 var(--shadow);
-        }
-        .fab-menu .fab-item .tooltip {
-            position: absolute;
-            right: 60px;
+            right: 76px;
             background: var(--bg-card-solid);
             border: 2px solid var(--border);
             box-shadow: 4px 4px 0 var(--shadow);
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 8px;
             font-size: 0.7rem;
             font-weight: 700;
@@ -529,74 +456,12 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
-        .fab-menu .fab-item:hover .tooltip { opacity: 1; }
-        .fab-menu .fab-item .badge-count {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: var(--accent);
-            color: white;
-            font-size: 0.55rem;
-            font-weight: 800;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            box-shadow: 2px 2px 0 var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .fab-menu .fab-item.share-item { background: linear-gradient(135deg, #25D366, #128C7E); color: white; }
-        .fab-menu .fab-item.history-item { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .fab-menu .fab-item.theme-item { background: linear-gradient(135deg, #f59e0b, #f97316); color: white; }
-        .fab-menu .fab-item.close-item { background: var(--accent); color: white; }
-
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(20px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        .fab-main:hover .fab-tooltip { opacity: 1; }
 
         /* Responsive FAB */
         @media (max-width: 480px) {
             .fab-main { width: 56px; height: 56px; font-size: 1.4rem; }
-            .fab-menu .fab-item { width: 42px; height: 42px; font-size: 1rem; }
-            .fab-menu { bottom: 70px; gap: 8px; }
-            .fab-menu .fab-item .tooltip { display: none; }
-        }
-
-        /* ===== BATCH PROGRESS ===== */
-        .batch-progress {
-            display: none;
-            margin-top: 10px;
-            padding: 12px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 4px 4px 0 var(--shadow);
-        }
-        .batch-progress.active { display: block; }
-        .batch-progress .batch-bar {
-            width: 100%;
-            height: 6px;
-            background: var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-        .batch-progress .batch-bar .batch-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent), var(--gradient-2));
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        .batch-progress .batch-status {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
+            .fab-tooltip { display: none; }
         }
     </style>
 </head>
@@ -615,7 +480,6 @@
                 <span class="brand-text">Zenvs</span>
             </a>
             <div class="flex items-center gap-2">
-                <!-- Download Counter di Header -->
                 <div class="download-counter" id="downloadCounter">
                     <i class="fa-solid fa-download"></i>
                     <span class="count" id="downloadCount">0</span>
@@ -824,35 +688,6 @@
                     </button>
                 </div>
 
-                <!-- Batch Download Toggle -->
-                <button class="batch-toggle" id="batchToggle" onclick="toggleBatch()">
-                    <i class="fa-solid fa-layer-group"></i> Download Banyak Link (Batch)
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-
-                <!-- Batch Area -->
-                <div class="batch-area" id="batchArea">
-                    <textarea id="batchInput" class="neo-input" placeholder="Paste multiple links, satu per baris&#10;Contoh:&#10;https://tiktok.com/...&#10;https://youtube.com/...&#10;https://instagram.com/..." rows="3"></textarea>
-                    <div class="batch-actions">
-                        <button onclick="processBatchDownload()" class="neo-btn" style="flex:2;">
-                            <i class="fa-solid fa-play"></i> Download Semua
-                        </button>
-                        <button onclick="clearBatch()" class="neo-btn" style="flex:1;background:var(--bg-card);color:var(--text);box-shadow:4px 4px 0 var(--shadow);">
-                            <i class="fa-solid fa-trash"></i> Hapus
-                        </button>
-                    </div>
-                    <!-- Batch Progress -->
-                    <div class="batch-progress" id="batchProgress">
-                        <div class="batch-status">
-                            <span id="batchStatusText">Memproses 0/0</span>
-                            <span id="batchPercent">0%</span>
-                        </div>
-                        <div class="batch-bar">
-                            <div class="batch-fill" id="batchFill"></div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Speed Indicator -->
                 <div class="speed-indicator" id="speedIndicator">
                     <i class="fa-solid fa-gauge-high"></i>
@@ -981,35 +816,12 @@
         </div>
     </div>
 
-    <!-- FLOATING ACTION BUTTON - DRAGGABLE -->
+    <!-- FLOATING ACTION BUTTON - DRAGGABLE SHARE -->
     <div class="fab-container" id="fabContainer">
-        <!-- Pulse Ring -->
-        <div class="fab-main" id="fabMain" onclick="toggleFabMenu()">
+        <div class="fab-main" id="fabMain" onclick="openShareModal()">
             <div class="pulse-ring"></div>
-            <i class="fa-solid fa-bolt" id="fabIcon"></i>
-        </div>
-        <div class="fab-menu" id="fabMenu">
-            <!-- Share -->
-            <div class="fab-item share-item" onclick="openShareModal(); closeFabMenu();">
-                <i class="fa-solid fa-share-nodes"></i>
-                <span class="tooltip">Bagikan</span>
-            </div>
-            <!-- History -->
-            <div class="fab-item history-item" onclick="scrollToHistory(); closeFabMenu();">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span class="tooltip">Riwayat</span>
-                <span class="badge-count" id="historyBadge">0</span>
-            </div>
-            <!-- Theme -->
-            <div class="fab-item theme-item" onclick="toggleTheme(); closeFabMenu();">
-                <i class="fa-solid fa-moon" id="fabThemeIcon"></i>
-                <span class="tooltip">Mode</span>
-            </div>
-            <!-- Close -->
-            <div class="fab-item close-item" onclick="closeFabMenu();">
-                <i class="fa-solid fa-xmark"></i>
-                <span class="tooltip">Tutup</span>
-            </div>
+            <i class="fa-solid fa-share-nodes"></i>
+            <span class="fab-tooltip">Bagikan Zenvs</span>
         </div>
     </div>
 
@@ -1066,9 +878,7 @@
             const newTheme = current === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
             const icon = document.getElementById('themeIcon');
-            const fabIcon = document.getElementById('fabThemeIcon');
             if (icon) icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            if (fabIcon) fabIcon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
             localStorage.setItem('zenvs-theme', newTheme);
             playClickSound();
         }
@@ -1076,9 +886,7 @@
             const saved = localStorage.getItem('zenvs-theme') || 'light';
             document.documentElement.setAttribute('data-theme', saved);
             const icon = document.getElementById('themeIcon');
-            const fabIcon = document.getElementById('fabThemeIcon');
             if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            if (fabIcon) fabIcon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         })();
 
         // ============================================================
@@ -1262,7 +1070,6 @@
             if (history.length > 20) history.pop();
             localStorage.setItem('zenvs-history', JSON.stringify(history));
             renderHistory();
-            updateHistoryBadge();
         }
 
         function renderHistory() {
@@ -1294,15 +1101,6 @@
             `).join('');
         }
 
-        function updateHistoryBadge() {
-            const badge = document.getElementById('historyBadge');
-            if (badge) {
-                const count = getHistory().length;
-                badge.textContent = count;
-                badge.style.display = count > 0 ? 'flex' : 'none';
-            }
-        }
-
         function reDownload(url) {
             if (url) {
                 document.getElementById('urlInput').value = url;
@@ -1311,114 +1109,8 @@
             }
         }
 
-        function scrollToHistory() {
-            const historyContainer = document.getElementById('historyContainer');
-            if (historyContainer) {
-                historyContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-            const resultArea = document.getElementById('resultArea');
-            if (resultArea && resultArea.classList.contains('hidden')) {
-                showNotif('Belum ada riwayat, download dulu!');
-            }
-        }
-
         // ============================================================
-        // 10. BATCH DOWNLOAD
-        // ============================================================
-        function toggleBatch() {
-            const area = document.getElementById('batchArea');
-            const toggle = document.getElementById('batchToggle');
-            if (!area || !toggle) return;
-            area.classList.toggle('active');
-            toggle.classList.toggle('active');
-            playClickSound();
-        }
-
-        let batchTotal = 0;
-        let batchDone = 0;
-        let isBatchRunning = false;
-
-        async function processBatchDownload() {
-            const textarea = document.getElementById('batchInput');
-            if (!textarea) return;
-            const links = textarea.value.split('\n').filter(l => l.trim() && l.startsWith('http'));
-            
-            if (links.length === 0) {
-                showError('Masukkan minimal 1 link yang valid!');
-                return;
-            }
-
-            if (isBatchRunning) {
-                showNotif('⏳ Batch sedang berjalan, tunggu selesai!', 'fa-solid fa-spinner', '#f59e0b');
-                return;
-            }
-
-            isBatchRunning = true;
-            batchTotal = links.length;
-            batchDone = 0;
-
-            const progress = document.getElementById('batchProgress');
-            const status = document.getElementById('batchStatusText');
-            const percent = document.getElementById('batchPercent');
-            const fill = document.getElementById('batchFill');
-            
-            if (progress) progress.classList.add('active');
-            if (status) status.textContent = `Memproses 0/${batchTotal}`;
-            if (percent) percent.textContent = '0%';
-            if (fill) fill.style.width = '0%';
-
-            showNotif(`⏳ Memproses ${batchTotal} link...`, 'fa-solid fa-spinner', '#f59e0b');
-
-            for (let i = 0; i < links.length; i++) {
-                const link = links[i].trim();
-                batchDone = i + 1;
-                const pct = Math.round((batchDone / batchTotal) * 100);
-                
-                if (status) status.textContent = `Memproses ${batchDone}/${batchTotal}`;
-                if (percent) percent.textContent = `${pct}%`;
-                if (fill) fill.style.width = `${pct}%`;
-
-                try {
-                    // Proses download satu per satu
-                    await processSingleDownload(link);
-                    // Tunggu sebentar biar ga overload
-                    await new Promise(r => setTimeout(r, 1000));
-                } catch (e) {
-                    console.error('Batch error:', e);
-                }
-            }
-
-            isBatchRunning = false;
-            if (status) status.textContent = `✅ Selesai! ${batchTotal} link diproses`;
-            if (percent) percent.textContent = '100%';
-            if (fill) fill.style.width = '100%';
-            
-            showNotif(`✅ Selesai! ${batchTotal} video didownload!`);
-            
-            setTimeout(() => {
-                if (progress) progress.classList.remove('active');
-            }, 3000);
-        }
-
-        async function processSingleDownload(url) {
-            // Simulasi proses download single
-            // Di sini Anda bisa panggil fungsi download yang sebenarnya
-            // Untuk demo, kita simulasikan
-            return new Promise((resolve) => {
-                setTimeout(resolve, 1500);
-            });
-        }
-
-        function clearBatch() {
-            const textarea = document.getElementById('batchInput');
-            if (textarea) textarea.value = '';
-            const progress = document.getElementById('batchProgress');
-            if (progress) progress.classList.remove('active');
-            playClickSound();
-        }
-
-        // ============================================================
-        // 11. NOTIFICATION
+        // 10. NOTIFICATION
         // ============================================================
         function showNotif(text, icon = 'fa-solid fa-check-circle', color = '#28a745') {
             const container = document.createElement('div');
@@ -1455,7 +1147,7 @@
         }
 
         // ============================================================
-        // 12. PREVIEW VIDEO
+        // 11. PREVIEW VIDEO
         // ============================================================
         function openPreview(url, title, author, duration) {
             const modal = document.getElementById('previewModal');
@@ -1486,7 +1178,7 @@
         }
 
         // ============================================================
-        // 13. DOWNLOADER
+        // 12. DOWNLOADER
         // ============================================================
         function showError(msg) {
             const box = document.getElementById('errorBox');
@@ -1619,38 +1311,19 @@
                     document.body.removeChild(link);
                     setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
                     
-                    // Save history
-                    if (videoData) {
-                        saveHistory({
-                            title: videoData.title || filename,
-                            author: videoData.author || 'Unknown',
-                            thumbnail: videoData.thumbnail || '',
-                            url: url
-                        });
-                    }
-                    
+                    if (videoData) saveHistory(videoData);
                     incrementDownloadCount();
                     showNotif(`Download selesai: ${filename}`);
                 } else {
                     downloadFile(url, filename);
-                    if (videoData) saveHistory({
-                        title: videoData.title || filename,
-                        author: videoData.author || 'Unknown',
-                        thumbnail: videoData.thumbnail || '',
-                        url: url
-                    });
+                    if (videoData) saveHistory(videoData);
                 }
                 if (progressInterval) completeProgress(progressInterval);
             } catch (error) {
                 console.error('Download error:', error);
                 if (progressInterval) completeProgress(progressInterval);
                 downloadFile(url, filename);
-                if (videoData) saveHistory({
-                    title: videoData.title || filename,
-                    author: videoData.author || 'Unknown',
-                    thumbnail: videoData.thumbnail || '',
-                    url: url
-                });
+                if (videoData) saveHistory(videoData);
             } finally {
                 if (btn) {
                     btn.innerHTML = origText;
@@ -1712,7 +1385,6 @@
                         url: url
                     };
 
-                    // Update preview
                     const previewThumb = document.getElementById('previewThumb');
                     const previewAuthor = document.getElementById('previewAuthor');
                     const previewTitle = document.getElementById('previewTitle');
@@ -1728,7 +1400,6 @@
                         const audios = d.medias.filter(m => m.type === 'audio');
                         const images = d.medias.filter(m => m.type === 'image');
 
-                        // VIDEO
                         const sortedVideos = videos.sort((a, b) => {
                             const qA = a.quality || '';
                             const qB = b.quality || '';
@@ -1768,7 +1439,6 @@
                             `;
                         });
 
-                        // AUDIO
                         const bestAudios = audios.slice(0, 3);
                         bestAudios.forEach((media, idx) => {
                             const label = media.quality || 'Audio';
@@ -1783,7 +1453,6 @@
                             `;
                         });
 
-                        // IMAGES
                         if (images.length > 0) {
                             images.forEach((img, idx) => {
                                 const ext = 'jpg';
@@ -1807,7 +1476,6 @@
                             });
                         }
 
-                        // Save to history
                         saveHistory(videoData);
 
                         if (contentList) contentList.innerHTML = html;
@@ -1815,7 +1483,6 @@
                         if (featuresRow) featuresRow.classList.add('hidden');
                         
                         renderHistory();
-                        updateHistoryBadge();
                         showNotif('Media berhasil ditemukan!');
                     } else {
                         showError('Tidak ada media yang ditemukan.');
@@ -1849,7 +1516,7 @@
         }
 
         // ============================================================
-        // 14. FLOATING ACTION BUTTON - DRAGGABLE
+        // 13. FLOATING BUTTON - DRAGGABLE SHARE
         // ============================================================
         let isDragging = false;
         let dragStartX, dragStartY;
@@ -1860,12 +1527,11 @@
             const container = document.getElementById('fabContainer');
             if (!container) return;
 
-            // Restore position dari localStorage
+            // Restore posisi
             const savedPos = localStorage.getItem('zenvs-fab-position');
             if (savedPos) {
                 try {
                     const pos = JSON.parse(savedPos);
-                    // Pastikan posisi tidak keluar layar
                     const maxX = window.innerWidth - 80;
                     const maxY = window.innerHeight - 80;
                     container.style.left = Math.min(Math.max(0, pos.x), maxX) + 'px';
@@ -1875,17 +1541,16 @@
                 } catch (e) {}
             }
 
-            // Touch events untuk mobile
+            // Touch events
             container.addEventListener('touchstart', onDragStart, { passive: false });
             container.addEventListener('touchmove', onDragMove, { passive: false });
             container.addEventListener('touchend', onDragEnd, { passive: false });
 
-            // Mouse events untuk desktop
+            // Mouse events
             container.addEventListener('mousedown', onDragStart);
             document.addEventListener('mousemove', onDragMove);
             document.addEventListener('mouseup', onDragEnd);
 
-            // Window resize untuk menjaga posisi
             window.addEventListener('resize', function() {
                 const pos = JSON.parse(localStorage.getItem('zenvs-fab-position') || '{"x":0,"y":0}');
                 const maxX = window.innerWidth - 80;
@@ -1903,10 +1568,8 @@
             const container = document.getElementById('fabContainer');
             if (!container) return;
             
-            // Jangan drag jika klik di FAB main (biar tetap bisa click)
             const target = e.target.closest('.fab-main');
             if (target) {
-                // Jika hanya click tanpa drag, biarkan toggle menu
                 hasMoved = false;
                 isDragging = true;
                 const touch = e.touches ? e.touches[0] : e;
@@ -1918,12 +1581,6 @@
                 container.style.cursor = 'grabbing';
                 container.style.transition = 'none';
                 e.preventDefault();
-                return;
-            }
-            
-            // Jika klik di menu item, jangan drag
-            if (e.target.closest('.fab-item')) {
-                return;
             }
         }
 
@@ -1943,7 +1600,6 @@
             let newX = fabStartX + dx;
             let newY = fabStartY + dy;
             
-            // Batasi agar tidak keluar layar
             const maxX = window.innerWidth - 80;
             const maxY = window.innerHeight - 80;
             newX = Math.max(0, Math.min(newX, maxX));
@@ -1966,79 +1622,22 @@
             container.style.cursor = 'grab';
             container.style.transition = '';
             
-            // Simpan posisi
             const rect = container.getBoundingClientRect();
-            const pos = {
-                x: rect.left,
-                y: rect.top
-            };
+            const pos = { x: rect.left, y: rect.top };
             localStorage.setItem('zenvs-fab-position', JSON.stringify(pos));
-            
-            // Jika tidak ada pergerakan (hanya klik), biarkan toggle menu
-            if (!hasMoved) {
-                // Toggle menu akan di-handle oleh onclick di fab-main
-            }
         }
-
-        // Fungsi toggle FAB menu
-        let isFabOpen = false;
-
-        function toggleFabMenu() {
-            if (isDragging && hasMoved) {
-                hasMoved = false;
-                return;
-            }
-            const menu = document.getElementById('fabMenu');
-            const icon = document.getElementById('fabIcon');
-            if (!menu) return;
-            
-            isFabOpen = !isFabOpen;
-            menu.classList.toggle('open');
-            if (icon) {
-                icon.className = isFabOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bolt';
-            }
-            playClickSound();
-        }
-
-        function closeFabMenu() {
-            const menu = document.getElementById('fabMenu');
-            const icon = document.getElementById('fabIcon');
-            if (menu) menu.classList.remove('open');
-            if (icon) icon.className = 'fa-solid fa-bolt';
-            isFabOpen = false;
-        }
-
-        // Inisialisasi FAB drag
-        document.addEventListener('DOMContentLoaded', function() {
-            initFabDrag();
-            renderHistory();
-            updateHistoryBadge();
-            updateDownloadCounter();
-        });
 
         // ============================================================
-        // 15. KEYBOARD SHORTCUTS
+        // 14. KEYBOARD SHORTCUTS
         // ============================================================
         document.addEventListener('keydown', (e) => {
-            // Ctrl+Enter = Download
-            if (e.ctrlKey && e.key === 'Enter') {
-                e.preventDefault();
-                processDownload();
-            }
-            // Ctrl+R = Reset
-            if (e.ctrlKey && e.key === 'r') {
-                e.preventDefault();
-                resetForm();
-            }
-            // Escape = Close preview
-            if (e.key === 'Escape') {
-                closePreview();
-                closeFabMenu();
-            }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); processDownload(); }
+            if (e.ctrlKey && e.key === 'r') { e.preventDefault(); resetForm(); }
+            if (e.key === 'Escape') { closePreview(); }
         });
 
         // ============================================================
-        // 16. EVENT LISTENER
+        // 15. EVENT LISTENER
         // ============================================================
         const urlInput = document.getElementById('urlInput');
         if (urlInput) {
@@ -2047,14 +1646,23 @@
             });
         }
 
-        console.log('✅ Zenvs v7.0 - ALL FEATURES!');
+        // ============================================================
+        // 16. INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            initFabDrag();
+            renderHistory();
+            updateDownloadCounter();
+        });
+
+        console.log('✅ Zenvs v8.0 - FIXED!');
         console.log('📡 API: https://api.nexray.eu.cc/downloader/aio');
         console.log('📁 Nama file: Zenvs-Video(Random).mp4');
         console.log('📊 Download Counter aktif!');
         console.log('📜 History per user (localStorage)!');
-        console.log('📦 Batch Download!');
         console.log('▶️ Preview Video!');
-        console.log('🔄 FAB Draggable!');
+        console.log('🔄 FAB Draggable SHARE!');
+        console.log('❌ Batch Download Dihapus!');
     </script>
 </body>
 </html>
