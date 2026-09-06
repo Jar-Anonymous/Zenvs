@@ -935,7 +935,7 @@
         .download-counter .count { color: var(--accent); font-size: 1rem; }
 
         /* ============================================================
-           BANNER ZENVS - PAKE PNG DARI INTERNET!
+           BANNER ZENVS - PAKE LINK GITHUB!
            ============================================================ */
         .banner-zenvs {
             width: 100%;
@@ -947,9 +947,6 @@
             background: linear-gradient(135deg, var(--accent), var(--gradient-2), var(--gradient-3));
             position: relative;
             min-height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .banner-zenvs:hover {
             transform: translate(-4px, -4px);
@@ -961,24 +958,6 @@
             display: block;
             object-fit: cover;
             max-height: 200px;
-        }
-        .banner-zenvs .banner-content {
-            padding: 30px 24px;
-            text-align: center;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 2;
-        }
-        .banner-zenvs .banner-content h2 {
-            font-weight: 900;
-            font-size: 2rem;
-            letter-spacing: -1px;
-        }
-        .banner-zenvs .banner-content p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-top: 4px;
         }
         .banner-zenvs .banner-badge {
             position: absolute;
@@ -997,19 +976,33 @@
             letter-spacing: 0.5px;
             z-index: 3;
         }
-        .banner-zenvs .banner-overlay-img {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.2);
-            z-index: 1;
+        .banner-zenvs .banner-fallback {
+            display: none;
+            padding: 30px 24px;
+            text-align: center;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            min-height: 140px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .banner-zenvs .banner-fallback h2 {
+            font-weight: 900;
+            font-size: 1.8rem;
+        }
+        .banner-zenvs .banner-fallback p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 4px;
         }
         @media (max-width: 480px) {
             .banner-zenvs { min-height: 120px; }
-            .banner-zenvs .banner-content h2 { font-size: 1.3rem; }
-            .banner-zenvs .banner-content p { font-size: 0.7rem; }
-            .banner-zenvs .banner-content { padding: 20px 16px; }
-            .banner-zenvs .banner-badge { font-size: 0.55rem; padding: 2px 10px; top: 10px; right: 10px; }
             .banner-zenvs img { max-height: 120px; }
+            .banner-zenvs .banner-fallback h2 { font-size: 1.3rem; }
+            .banner-zenvs .banner-fallback p { font-size: 0.7rem; }
+            .banner-zenvs .banner-fallback { padding: 20px 16px; min-height: 100px; }
+            .banner-zenvs .banner-badge { font-size: 0.55rem; padding: 2px 10px; top: 10px; right: 10px; }
         }
 
         /* ============================================================
@@ -1036,7 +1029,7 @@
     ============================================================ -->
     <header class="header-brutal">
         <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between" style="height:68px;">
-            <a href="#" class="flex items-center gap-3 font-black tracking-tight" style="text-decoration:none;">
+            <a href="index.html" class="flex items-center gap-3 font-black tracking-tight" style="text-decoration:none;">
                 <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/kajwnsksnskkwkakaoakshs-msjxbsjsnsjsnsnksnzmzmzklsowjwkwjaokqka.png"
                      alt="Zenvs Logo" class="brand-logo-img" />
                 <span class="brand-text">Zenvs</span>
@@ -1075,11 +1068,11 @@
             <button class="sidebar-close" onclick="closeSidebar()">✕</button>
         </div>
         <nav class="sidebar-nav">
-            <a href="#" class="active" data-page="downloader" onclick="switchPage('downloader')"><i class="fa-solid fa-download"></i> Downloader</a>
-            <a href="#" data-page="berita" onclick="switchPage('berita')"><i class="fa-solid fa-newspaper"></i> Berita</a>
-            <a href="#" data-page="info" onclick="switchPage('info')"><i class="fa-solid fa-circle-info"></i> Info</a>
-            <a href="#" data-page="fakedana" onclick="switchPage('fakedana')"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
-            <a href="#" data-page="zenvs-ai" onclick="switchPage('zenvs-ai')"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
+            <a href="index.html" class="active"><i class="fa-solid fa-download"></i> Downloader</a>
+            <a href="berita.html"><i class="fa-solid fa-newspaper"></i> Berita</a>
+            <a href="info.html"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="fakedana.html"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
+            <a href="zenvs-ai.html"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
             <hr class="sidebar-divider" />
             <a onclick="openShareModal()"><i class="fa-solid fa-share-nodes" style="color:var(--accent);"></i> Bagikan Zenvs</a>
             <a onclick="openChannelWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> Channel WhatsApp</a>
@@ -1153,11 +1146,11 @@
     ============================================================ -->
     <div class="main-container" style="padding-top:6px;">
         <div class="nav-menu">
-            <a href="index.html" class="nav-link active" data-page="downloader" onclick="switchPage('downloader')"><i class="fa-solid fa-download"></i> Downloader</a>
-            <a href="berita.html" class="nav-link" data-page="berita" onclick="switchPage('berita')"><i class="fa-solid fa-newspaper"></i> Berita</a>
-            <a href="info.html" class="nav-link" data-page="info" onclick="switchPage('info')"><i class="fa-solid fa-circle-info"></i> Info</a>
-            <a href="fakedana.html" class="nav-link" data-page="fakedana" onclick="switchPage('fakedana')"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
-            <a href="zenvs-ai.html" class="nav-link" data-page="zenvs-ai" onclick="switchPage('zenvs-ai')"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-download"></i> Downloader</a>
+            <a href="berita.html" class="nav-link"><i class="fa-solid fa-newspaper"></i> Berita</a>
+            <a href="info.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> Info</a>
+            <a href="fakedana.html" class="nav-link"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
+            <a href="zenvs-ai.html" class="nav-link"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
         </div>
     </div>
 
@@ -1185,11 +1178,13 @@
             <div class="content-wrapper">
 
                 <!-- ============================================================
-                BANNER ZENVS - PAKE PNG DARI INTERNET!
+                BANNER ZENVS - PAKE LINK GITHUB!
                 ============================================================ -->
                 <div class="banner-zenvs animate-fade-slide delay-1">
-                    <div class="banner-overlay-img"></div>
-                    <div class="banner-content">
+                    <img src="https://raw.githubusercontent.com/Jar-Anonymous/Zenvs/refs/heads/main/banner-Zenvspdjdjdjdjjxndj.png" 
+                         alt="Zenvs Banner" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="banner-fallback" style="display:none;">
                         <h2>🔥 Zenvs All-in-One Downloader</h2>
                         <p>Download video dari semua platform sosial media • Gratis & Tanpa Watermark</p>
                     </div>
@@ -1517,24 +1512,9 @@
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT - SEMUA FUNGSI
     ============================================================ -->
     <script>
-        // ============================================================
-        // SWITCH PAGE
-        // ============================================================
-        function switchPage(page) {
-            document.querySelectorAll('.page-container').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById('page-' + page);
-            if (target) target.classList.remove('hidden');
-            document.querySelectorAll('.nav-link, .sidebar-nav a[data-page]').forEach(el => {
-                el.classList.remove('active');
-                if (el.dataset.page === page) el.classList.add('active');
-            });
-            closeSidebar();
-            playClickSound();
-        }
-
         // ============================================================
         // KONFIGURASI API
         // ============================================================
@@ -1933,7 +1913,6 @@
                 progress += Math.random() * 5 + 2;
                 if (progress > 95) progress = 95;
                 fill.style.width = progress + '%';
-                // Update speed
                 const speedVal = document.getElementById('speedValue');
                 const percentEl = document.getElementById('progressPercent');
                 if (speedVal) {
@@ -2047,7 +2026,6 @@
             if (skeleton) skeleton.classList.remove('hidden');
             if (resultArea) resultArea.classList.add('hidden');
 
-            // Start progress bar
             const progressInterval = startProgress();
 
             let data = null;
@@ -2073,7 +2051,6 @@
                     }
                 }
 
-                // Complete progress
                 if (progressInterval) completeProgress(progressInterval);
 
                 // ============================================================
@@ -2303,9 +2280,9 @@
         console.log('✅ Zenvs v18.0 - FIX TOTAL!');
         console.log('📡 API: VKr + NexRay fallback');
         console.log('📊 Progress Bar & Speed Indicator JALAN!');
-        console.log('🖼️ Banner pake gradient + teks (kalo PNG ga ada)');
+        console.log('🖼️ Banner pake link GitHub!');
         console.log('📁 Download LANGSUNG!');
-        console.log('📑 Tab navigasi BISA dibuka!');
+        console.log('📑 Tab navigasi pake link terpisah!');
         console.log('👤 Username & judul keluar!');
     </script>
 </body>
