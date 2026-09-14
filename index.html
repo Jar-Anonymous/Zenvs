@@ -1,351 +1,1034 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-    <title>Zenvs · All-in-One Downloader</title>
-    <meta name="description" content="Download video dari YouTube, TikTok, Instagram, Facebook, Twitter, dan lainnya. Gratis, tanpa watermark!" />
-    <meta name="keywords" content="zenvs, downloader, video, youtube, tiktok, instagram, facebook" />
-    <meta name="author" content="Jar-Anonym" />
-    <meta property="og:title" content="Zenvs · All-in-One Downloader" />
-    <meta property="og:description" content="Download video dari semua platform sosial media. Gratis, tanpa watermark!" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://zenvs.vercel.app" />
-    <link rel="canonical" href="https://zenvs.vercel.app" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clear Repost TikTok — Jalankan Nyata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.08);
+    --text: #f2f2f7;
+    --muted: #8a8a9a;
+    --cyan: #00f2ea;
+    --pink: #ff0050;
+    --purple: #a855f7;
+    --gradient: linear-gradient(135deg, #00f2ea 0%, #a855f7 50%, #ff0050 100%);
+    --gradient-2: linear-gradient(90deg, #00f2ea, #a855f7, #ff0050, #00f2ea);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
 
-    <!-- ===== CSS ===== -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/animations.css" />
-    <link rel="stylesheet" href="css/effects.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
+  /* Background */
+  .bg-wrap {
+    position: fixed; inset: 0; z-index: -2; overflow: hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0,242,234,0.12), transparent 45%),
+      radial-gradient(circle at 85% 70%, rgba(168,85,247,0.14), transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(255,0,80,0.10), transparent 50%),
+      var(--bg);
+  }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 75%);
+    animation: gridShift 40s linear infinite;
+  }
+  @keyframes gridShift {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 60px 60px, 60px 60px; }
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.45; will-change: transform; }
+  .orb-1 { width: 480px; height: 480px; background: #00f2ea; top: -120px; left: -120px; animation: float1 18s ease-in-out infinite; }
+  .orb-2 { width: 520px; height: 520px; background: #a855f7; bottom: -180px; right: -140px; animation: float2 22s ease-in-out infinite; }
+  .orb-3 { width: 380px; height: 380px; background: #ff0050; top: 45%; left: 45%; animation: float3 20s ease-in-out infinite; }
+  @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(120px,80px) scale(1.15); } }
+  @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-140px,-90px) scale(1.1); } }
+  @keyframes float3 { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-40%,-60%) scale(1.25); } }
 
-    <!-- ===== FONTS & ICONS ===== -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    background: rgba(5,5,7,0.4);
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  nav.scrolled {
+    padding: 12px 32px;
+    background: rgba(5,5,7,0.75);
+    border-bottom-color: var(--border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--gradient);
+    display: grid; place-items: center;
+    position: relative; overflow: hidden;
+    box-shadow: 0 0 24px rgba(0,242,234,0.4);
+  }
+  .logo-mark::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.6) 50%, transparent 60%);
+    transform: translateX(-100%);
+    animation: shine 3s ease-in-out infinite;
+  }
+  @keyframes shine { 0%,60% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .logo-mark svg { width: 18px; height: 18px; color: #050507; z-index: 1; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; position: relative; transition: color 0.3s; }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1.5px; background: var(--gradient);
+    transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 140px 32px 80px;
+    position: relative;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 16px; border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(12px);
+    font-size: 12.5px; color: var(--muted);
+    margin-bottom: 28px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.8s 0.1s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  .badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--cyan); box-shadow: 0 0 12px var(--cyan);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(42px, 8vw, 92px);
+    font-weight: 700; line-height: 1.02;
+    letter-spacing: -0.045em;
+    margin-bottom: 24px; max-width: 1100px;
+  }
+  h1 .line { display: block; overflow: hidden; }
+  h1 .line span { display: inline-block; transform: translateY(110%); animation: riseUp 1s cubic-bezier(0.22,1,0.36,1) forwards; }
+  h1 .line:nth-child(1) span { animation-delay: 0.15s; }
+  h1 .line:nth-child(2) span { animation-delay: 0.30s; }
+  h1 .line:nth-child(3) span { animation-delay: 0.45s; }
+  @keyframes riseUp { to { transform: translateY(0); } }
+
+  .gradient-text {
+    background: var(--gradient-2); background-size: 300% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; animation: gradShift 6s ease-in-out infinite;
+  }
+  @keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--muted); max-width: 620px;
+    margin: 0 auto 40px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.9s 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .cta-row {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.9s 0.85s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  .btn {
+    position: relative;
+    padding: 15px 30px; border-radius: 14px;
+    font-size: 14.5px; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer;
+    font-family: inherit;
+    display: inline-flex; align-items: center; gap: 10px;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .btn-primary {
+    background: var(--gradient); color: #050507;
+    box-shadow: 0 8px 32px rgba(0,242,234,0.25);
+  }
+  .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 48px rgba(168,85,247,0.45); }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+    transform: translateX(-100%); transition: transform 0.7s;
+  }
+  .btn-primary:hover::before { transform: translateX(100%); }
+  .btn-ghost {
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .btn-ghost:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+
+  /* Control card — NYATA */
+  .control-card {
+    margin-top: 60px;
+    width: 100%; max-width: 560px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: rgba(10,10,15,0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 60px rgba(0,242,234,0.08);
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 1s 1s cubic-bezier(0.4,0,0.2,1) forwards;
+    text-align: left;
+  }
+  .cc-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .cc-title { margin-left: 12px; font-size: 12px; color: var(--muted); font-family: 'Space Grotesk', monospace; }
+
+  .cc-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .field input, .field select {
+    width: 100%; padding: 11px 13px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text); font-family: inherit; font-size: 13.5px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--cyan); }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .btn-run {
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 14.5px; font-weight: 700;
+    background: var(--gradient); color: #050507;
+    border: none; cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 8px 28px rgba(0,242,234,0.3);
+    transition: all 0.3s;
+  }
+  .btn-run:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(168,85,247,0.45); }
+
+  .btn-copy {
+    padding: 11px;
+    border-radius: 10px;
+    font-size: 13px; font-weight: 600;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text); cursor: pointer; font-family: inherit;
+    transition: all 0.25s;
+  }
+  .btn-copy:hover { background: rgba(255,255,255,0.1); }
+
+  .hint {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(0,242,234,0.04);
+    border: 1px solid rgba(0,242,234,0.15);
+  }
+  .hint b { color: var(--cyan); }
+  .hint.warn {
+    background: rgba(255,0,80,0.06);
+    border-color: rgba(255,0,80,0.25);
+  }
+  .hint.warn b { color: var(--pink); }
+
+  .status-line {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    min-height: 40px;
+  }
+  .status-line.ok { color: var(--cyan); border-color: rgba(0,242,234,0.3); background: rgba(0,242,234,0.06); }
+  .status-line.err { color: #ff6b8a; border-color: rgba(255,0,80,0.3); background: rgba(255,0,80,0.06); }
+
+  /* Features */
+  section { padding: 120px 32px; position: relative; }
+  .section-head { text-align: center; margin-bottom: 72px; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 700; letter-spacing: -0.035em; line-height: 1.08;
+    max-width: 760px; margin: 0 auto 18px;
+  }
+  .section-desc { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 22px; max-width: 1180px; margin: 0 auto;
+  }
+  .feature {
+    padding: 32px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--card);
+    backdrop-filter: blur(16px);
+    position: relative; overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .feature:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,242,234,0.3);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,242,234,0.08);
+  }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(0,242,234,0.08);
+    border: 1px solid rgba(0,242,234,0.2);
+    display: grid; place-items: center;
+    margin-bottom: 20px; transition: all 0.4s;
+  }
+  .feature:hover .feature-icon { background: rgba(0,242,234,0.15); transform: scale(1.08) rotate(-4deg); }
+  .feature-icon svg { width: 22px; height: 22px; stroke: var(--cyan); fill: none; }
+  .feature h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 600;
+    margin-bottom: 10px; letter-spacing: -0.02em;
+  }
+  .feature p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+  /* Steps */
+  .steps { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+  .step {
+    display: flex; gap: 24px; padding: 28px 32px;
+    border-radius: 20px; border: 1px solid var(--border);
+    background: var(--card); backdrop-filter: blur(16px);
+    align-items: flex-start;
+    transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .step:hover { border-color: rgba(168,85,247,0.35); transform: translateX(6px); }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--gradient);
+    display: grid; place-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 18px; color: #050507;
+    flex-shrink: 0;
+  }
+  .step-body h3 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .step-body p { color: var(--muted); font-size: 14px; }
+
+  /* Footer */
+  footer {
+    padding: 40px 32px; text-align: center;
+    color: var(--muted); font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Cursor glow */
+  .cursor-glow {
+    position: fixed;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,242,234,0.08), transparent 70%);
+    pointer-events: none; z-index: -1;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+  }
+
+  @media (max-width: 720px) {
+    nav { padding: 14px 18px; }
+    .nav-links { display: none; }
+    section { padding: 80px 20px; }
+    .hero { padding: 120px 20px 60px; }
+  }
+</style>
 </head>
 <body>
 
-    <!-- ============================================================
-    BACKGROUND EFFECTS
-    ============================================================ -->
-    <div class="glow-orb"></div>
-    <div class="glow-orb"></div>
-    <div class="glow-orb"></div>
-    <div class="grid-lines"></div>
-    <div class="noise-overlay"></div>
-    <div class="particle-container" id="particleContainer"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
 
-    <!-- ============================================================
-    HEADER PREMIUM
-    ============================================================ -->
-    <header class="header-premium">
-        <div class="max-w-4xl mx-auto px-4" style="height:68px;display:flex;align-items:center;justify-content:space-between;">
-            <a href="index.html" class="logo-premium">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-download"></i>
-                </div>
-                <span class="logo-text">Zenvs</span>
-            </a>
-            <div class="flex items-center gap-3">
-                <div class="download-counter" id="downloadCounter">
-                    <i class="fa-solid fa-download"></i>
-                    <span class="count" id="downloadCount">0</span>
-                </div>
-                <button onclick="toggleSidebar()" class="hamburger-btn" id="hamburgerBtn">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <button onclick="toggleTheme()" class="theme-toggle" id="themeToggle">
-                    <i id="themeIcon" class="fa-solid fa-moon"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+<div class="bg-wrap">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
 
-    <!-- ============================================================
-    SIDEBAR
-    ============================================================ -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-brand">
-                <div class="logo-icon" style="width:36px;height:36px;font-size:1rem;">
-                    <i class="fa-solid fa-download"></i>
-                </div>
-                <span>Zenvs</span>
-            </div>
-            <button class="sidebar-close" onclick="closeSidebar()">✕</button>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="index.html" class="active"><i class="fa-solid fa-download"></i> Downloader</a>
-            <a href="berita.html"><i class="fa-solid fa-newspaper"></i> Berita</a>
-            <a href="info.html"><i class="fa-solid fa-circle-info"></i> Info</a>
-            <a href="fakedana.html"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
-            <a href="zenvs-ai.html"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
-            <hr class="sidebar-divider" />
-            <a onclick="openShareModal()"><i class="fa-solid fa-share-nodes" style="color:var(--accent-1);"></i> Bagikan</a>
-            <a onclick="openChannelWA()"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> Channel WA</a>
-            <a onclick="openAbout()"><i class="fa-solid fa-user-astronaut"></i> Tentang</a>
-        </nav>
-        <div class="sidebar-footer">
-            <p>© 2026 Zenvs</p>
-        </div>
+<nav id="nav">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
     </div>
+    <span>Clear Repost</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Fitur</a>
+    <a href="#how">Cara Kerja</a>
+  </div>
+  <a href="#run" class="btn btn-primary" style="padding:9px 20px;border-radius:999px;font-size:13px;">Jalankan</a>
+</nav>
 
-    <!-- ============================================================
-    SHARE MODAL
-    ============================================================ -->
-    <div class="share-overlay" id="shareOverlay" onclick="if(event.target===this) closeShareModal()">
-        <div class="share-modal glass-premium">
-            <div class="share-logo">
-                <i class="fa-solid fa-download" style="font-size:2rem;color:var(--accent-1);"></i>
-            </div>
-            <h3>Bagikan Zenvs</h3>
-            <p class="share-desc">Download video dari semua platform sosial media. Gratis, tanpa watermark! 🚀</p>
-            <button class="native-share-btn" onclick="nativeShare()">
-                <i class="fa-solid fa-share-nodes"></i> Bagikan
-            </button>
-            <div class="share-grid">
-                <button class="share-btn" onclick="copyLink()"><i class="fa-solid fa-copy"></i><span>Salin</span></button>
-                <button class="share-btn" onclick="shareTo('whatsapp')"><i class="fa-brands fa-whatsapp"></i><span>WA</span></button>
-                <button class="share-btn" onclick="shareTo('telegram')"><i class="fa-brands fa-telegram"></i><span>Tele</span></button>
-                <button class="share-btn" onclick="shareTo('facebook')"><i class="fa-brands fa-facebook"></i><span>FB</span></button>
-                <button class="share-btn" onclick="shareTo('twitter')"><i class="fa-brands fa-twitter"></i><span>X</span></button>
-                <button class="share-btn" onclick="shareTo('email')"><i class="fa-solid fa-envelope"></i><span>Email</span></button>
-            </div>
-            <button class="share-close-btn" onclick="closeShareModal()">Tutup</button>
-        </div>
+<!-- HERO + CONTROL -->
+<section class="hero" id="run">
+  <div class="badge">
+    <span class="badge-dot"></span>
+    <span>Versi 2.0 — Benar-benar bekerja, bukan demo</span>
+  </div>
+
+  <h1>
+    <span class="line"><span>Bersihkan</span></span>
+    <span class="line"><span>Repost TikTok <span class="gradient-text">Sekali Klik.</span></span></span>
+  </h1>
+
+  <p class="hero-sub">
+    Hapus semua repost lama tanpa capek scroll satu per satu. Filter kata kunci, jeda otomatis, dan laporan lengkap — semua berjalan langsung di browser kamu.
+  </p>
+
+  <div class="cta-row">
+    <a href="#run" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Mulai Sekarang
+    </a>
+    <a href="#how" class="btn btn-ghost">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      Cara Kerja
+    </a>
+  </div>
+
+  <!-- CONTROL CARD NYATA -->
+  <div class="control-card">
+    <div class="cc-head">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="cc-title">Clear Repost TikTok — Kontrol</span>
     </div>
+    <div class="cc-body">
 
-    <!-- ============================================================
-    INFO MODAL
-    ============================================================ -->
-    <div class="info-modal-overlay" id="infoModal" onclick="if(event.target===this) closeInfoModal()">
-        <div class="info-modal-box glass-premium">
-            <div class="info-icon" id="infoIcon">👨‍💻</div>
-            <h3 id="infoTitle">Tentang Pembuat</h3>
-            <p id="infoDesc">Zenvs dibuat oleh Jar, Fullstack Developer.</p>
-            <button class="info-close-btn" onclick="closeInfoModal()">Tutup</button>
+      <div class="hint" id="contextHint">
+        <b>Status:</b> memeriksa halaman…
+      </div>
+
+      <div class="field">
+        <label for="keywords">Filter kata kunci (opsional)</label>
+        <input type="text" id="keywords" placeholder="lucu, kucing, tutorial (pisah koma)" />
+      </div>
+
+      <div class="field">
+        <label for="intervalMode">Jeda antar request</label>
+        <select id="intervalMode">
+          <option value="range">Rentang acak (aman)</option>
+          <option value="set">Nilai tetap (acak dari daftar)</option>
+        </select>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="minSec">Min (detik)</label>
+          <input type="number" id="minSec" value="1" min="0" step="0.5" />
         </div>
-    </div>
-
-    <!-- ============================================================
-    PREVIEW MODAL
-    ============================================================ -->
-    <div class="preview-modal" id="previewModal" onclick="if(event.target===this) closePreview()">
-        <div class="preview-content glass-premium">
-            <button class="preview-close" onclick="closePreview()">✕</button>
-            <div class="preview-title" id="previewTitle">Video</div>
-            <video id="previewVideo" controls autoplay></video>
-            <div class="preview-info">
-                <span id="previewAuthorModal">@user</span>
-                <span id="previewDuration">00:00</span>
-            </div>
+        <div class="field">
+          <label for="maxSec">Max (detik)</label>
+          <input type="number" id="maxSec" value="3" min="0" step="0.5" />
         </div>
-    </div>
+      </div>
 
-    <!-- ============================================================
-    TOAST OVERLAY
-    ============================================================ -->
-    <div class="toast-overlay" id="toastOverlay">
-        <div class="toast-modal glass-premium" id="toastContent">
-            <!-- Dynamic content -->
+      <div class="row-2">
+        <div class="field">
+          <label for="pagePause">Jeda antar halaman (detik)</label>
+          <input type="number" id="pagePause" value="5" min="0" />
         </div>
-    </div>
-
-    <!-- ============================================================
-    COPY SUCCESS
-    ============================================================ -->
-    <div id="copySuccess" class="copy-success hidden">
-        <i class="fa-solid fa-check-circle" style="color:#28a745;"></i> Berhasil disalin!
-    </div>
-
-    <!-- ============================================================
-    MAIN CONTENT
-    ============================================================ -->
-    <div class="main-container">
-
-        <!-- ===== NAVIGATION ===== -->
-        <div class="nav-menu">
-            <a href="index.html" class="nav-link-premium active"><i class="fa-solid fa-download"></i> Downloader</a>
-            <a href="berita.html" class="nav-link-premium"><i class="fa-solid fa-newspaper"></i> Berita</a>
-            <a href="info.html" class="nav-link-premium"><i class="fa-solid fa-circle-info"></i> Info</a>
-            <a href="fakedana.html" class="nav-link-premium"><i class="fa-solid fa-money-bill-wave"></i> Fake Dana</a>
-            <a href="zenvs-ai.html" class="nav-link-premium"><i class="fa-solid fa-brain"></i> Zenvs AI</a>
+        <div class="field">
+          <label for="exportType">Format laporan</label>
+          <select id="exportType">
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+          </select>
         </div>
+      </div>
 
-        <!-- ===== BANNER ===== -->
-        <div class="banner-zenvs animate-fade-slide delay-1">
-            <img src="banner-Zenvspdjdjdjdjjxndj.png" 
-                 alt="Zenvs Banner" 
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="banner-fallback" style="display:none;">
-                <h2>🔥 Zenvs All-in-One Downloader</h2>
-                <p>Download video dari semua platform • Gratis & Tanpa Watermark</p>
-            </div>
-            <div class="banner-badge">⭐ POPULER</div>
-        </div>
+      <button class="btn-run" id="copyBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy Script &amp; Panduan
+      </button>
 
-        <!-- ===== WARNING ===== -->
-        <div class="warning-box animate-fade-slide delay-1">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <div class="warn-text">
-                <strong>Peringatan:</strong> Dilarang mengunduh konten ilegal. Gunakan dengan bijak.
-            </div>
-        </div>
+      <div class="status-line" id="statusLine">
+        Siap. Baca panduan di bawah untuk menjalankan.
+      </div>
 
-        <!-- ===== HERO ===== -->
-        <div class="hero-premium animate-fade-slide delay-2">
-            <div class="badge-hero">🚀 All-in-One</div>
-            <h1>
-                Download dari <br />
-                <span class="highlight">Semua Sosial Media</span>
-            </h1>
-            <p>YouTube, TikTok, Instagram, Facebook, Twitter, dan lainnya. Cukup satu link!</p>
-        </div>
-
-        <!-- ===== PLATFORM GRID ===== -->
-        <div class="platform-grid animate-fade-slide delay-3">
-            <div class="platform-item"><i class="fa-brands fa-youtube"></i><span>YouTube</span></div>
-            <div class="platform-item"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></div>
-            <div class="platform-item"><i class="fa-brands fa-instagram"></i><span>IG</span></div>
-            <div class="platform-item"><i class="fa-brands fa-facebook"></i><span>FB</span></div>
-            <div class="platform-item"><i class="fa-brands fa-twitter"></i><span>X</span></div>
-            <div class="platform-item"><i class="fa-brands fa-whatsapp"></i><span>WA</span></div>
-        </div>
-
-        <!-- ===== STEPS ===== -->
-        <div class="glass-premium p-4 animate-fade-slide delay-3">
-            <h3 class="font-black text-sm uppercase tracking-wider mb-3 flex items-center gap-2" style="color:var(--text-muted);">
-                <i class="fa-solid fa-list-check" style="color:var(--accent-1);"></i> Cara Pakai
-            </h3>
-            <div class="step-item">
-                <div class="step-number">1</div>
-                <div class="step-text">Salin link video dari platform favoritmu</div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">2</div>
-                <div class="step-text">Tempel link di kolom di bawah</div>
-            </div>
-            <div class="step-item" style="border-bottom:none;">
-                <div class="step-number" style="background:linear-gradient(135deg,#28a745,#20c997);">✓</div>
-                <div class="step-text">Download langsung! Tanpa watermark.</div>
-            </div>
-        </div>
-
-        <!-- ===== INPUT ===== -->
-        <div class="glass-premium p-4 sm:p-5 w-full text-left animate-fade-slide delay-4">
-            <div class="flex flex-col sm:flex-row gap-3">
-                <div class="relative flex-1">
-                    <input type="text" id="urlInput" placeholder="Tempel link YouTube, TikTok, IG, dll..." class="input-premium" />
-                    <button onclick="pasteText()" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 paste-btn">
-                        <i class="fa-solid fa-paste"></i>
-                    </button>
-                </div>
-                <button onclick="processDownload()" id="btnAction" class="btn-premium flex items-center justify-center gap-2 flex-shrink-0">
-                    <i class="fa-solid fa-download"></i> Ambil
-                </button>
-            </div>
-
-            <!-- Progress -->
-            <div id="progressContainer" class="progress-container">
-                <div id="progressFill" class="progress-fill"></div>
-            </div>
-            <div class="speed-indicator" id="speedIndicator">
-                <i class="fa-solid fa-gauge-high"></i>
-                <span class="speed-value" id="speedValue">0</span> MB/s
-                <span id="progressPercent">0%</span>
-            </div>
-
-            <!-- Error -->
-            <div id="errorBox" class="hidden mt-3 error-box text-sm flex items-center gap-3 text-left">
-                <i class="fa-solid fa-circle-exclamation text-lg"></i>
-                <span id="errorText">Pesan error...</span>
-            </div>
-
-            <!-- Loading -->
-            <div id="loading" class="hidden py-4 text-center">
-                <div class="neo-loader"></div>
-                <p class="text-sm font-bold mt-3" style="color:var(--text);">Sedang mengambil media...</p>
-            </div>
-
-            <!-- Skeleton -->
-            <div id="skeletonContainer" class="hidden">
-                <div class="skeleton"><div class="thumb"></div><div style="flex:1;"><div class="line w70"></div><div class="line w50"></div></div></div>
-                <div class="skeleton"><div class="thumb"></div><div style="flex:1;"><div class="line w70"></div><div class="line w50"></div></div></div>
-            </div>
-        </div>
-
-        <!-- ===== RESULT ===== -->
-        <div id="resultArea" class="hidden glass-premium p-4 sm:p-5 text-left w-full">
-            <div class="flex flex-col space-y-4">
-                <div class="flex items-center gap-4 result-preview">
-                    <img id="previewThumb" src="" alt="Thumbnail" class="preview-img" />
-                    <div class="overflow-hidden flex-1">
-                        <span id="previewAuthor" class="result-author">@username</span>
-                        <p id="previewTitle" class="result-title">Judul video...</p>
-                        <p id="previewMeta" class="result-meta">Durasi: -- | Author: --</p>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="result-label"><i class="fa-solid fa-download" style="color:var(--accent-1);"></i> Pilihan Unduh</h3>
-                    <div id="contentList" class="result-scroll space-y-2.5"></div>
-                </div>
-
-                <div>
-                    <h3 class="result-label"><i class="fa-solid fa-clock-rotate-left" style="color:var(--accent-1);"></i> Riwayat</h3>
-                    <div id="historyContainer" class="history-container"></div>
-                </div>
-
-                <button onclick="resetForm()" class="reset-btn flex items-center justify-center gap-2 mt-1">
-                    <i class="fa-solid fa-rotate-left"></i> Ambil Lagi
-                </button>
-            </div>
-        </div>
-
-        <!-- ===== INFO GRID ===== -->
-        <div class="info-grid animate-fade-slide delay-5">
-            <div class="info-item"><i class="fa-solid fa-shield-halved" style="color:var(--accent-1);"></i><span class="title">Tanpa Watermark</span><span class="desc">Video bersih</span></div>
-            <div class="info-item"><i class="fa-solid fa-bolt" style="color:var(--accent-4);"></i><span class="title">Super Cepat</span><span class="desc">Proses instan</span></div>
-            <div class="info-item"><i class="fa-solid fa-mobile-screen"></i><span class="title">Semua Perangkat</span><span class="desc">HP & PC</span></div>
-            <div class="info-item"><i class="fa-solid fa-music" style="color:#28a745;"></i><span class="title">Audio MP3</span><span class="desc">Ekstrak musik</span></div>
-        </div>
-
-        <!-- ===== FEATURES ===== -->
-        <div id="featuresRow" class="features-grid">
-            <div class="feat-item"><i class="fa-solid fa-link" style="color:var(--accent-1);"></i><span>Semua Platform</span></div>
-            <div class="feat-item"><i class="fa-solid fa-bolt" style="color:var(--accent-4);"></i><span>Super Cepat</span></div>
-            <div class="feat-item"><i class="fa-solid fa-gem" style="color:var(--accent-3);"></i><span>Gratis</span></div>
-        </div>
-
-        <!-- ===== FOOTER ===== -->
-        <footer class="footer-premium">
-            <div class="copy">
-                <i class="fa-regular fa-copyright"></i> 2026 Zenvs · Made with <i class="fa-solid fa-heart" style="color:var(--accent-3);"></i>
-            </div>
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-github"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-        </footer>
+      <div class="hint warn">
+        <b>Penting:</b> Script hanya berjalan di tab <b>tiktok.com</b> tempat kamu sudah login. Tidak bisa jalan di halaman ini karena browser melarang akses lintas-domain.
+      </div>
 
     </div>
+  </div>
+</section>
 
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
-    <script src="js/main.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/counter.js"></script>
-    <script src="js/history.js"></script>
-    <script src="js/downloader.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/effects.js"></script>
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-head">
+    <div class="section-eyebrow">Fitur Utama</div>
+    <h2 class="section-title">Semua yang kamu butuhkan untuk feed yang bersih</h2>
+    <p class="section-desc">Dirancang untuk kecepatan, keamanan, dan ketenangan pikiran. Tanpa drama, tanpa repot.</p>
+  </div>
 
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <h3>Hapus Massal Sekali Klik</h3>
+      <p>Iterasi otomatis lewat setiap halaman repost dengan paginasi cerdas. Tidak perlu scroll manual lagi.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg></div>
+      <h3>Filter Kata Kunci</h3>
+      <p>Hanya hapus repost yang deskripsinya mengandung kata tertentu. Pisahkan dengan koma, bebas sebanyak apa pun.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <h3>Jeda Acak Anti-Spam</h3>
+      <p>Interval acak antar request meniru perilaku manusia. Aman dari rate-limit, tetap efisien.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+      <h3>Laporan JSON &amp; CSV</h3>
+      <p>Setiap item yang berhasil maupun gagal dicatat. Unduh kapan saja untuk audit atau backup.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
+      <h3>Panel Melayang In-Page</h3>
+      <p>Panel elegan muncul di pojok kanan atas TikTok. Bisa di-drag, bisa dijeda, langsung di atas halaman.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Berhenti Otomatis Aman</h3>
+      <p>Jika gagal 5x berturut-turut (misal sesi habis), proses dihentikan. Tidak ada kehilangan data tak sengaja.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="section-head">
+    <div class="section-eyebrow">Cara Kerja</div>
+    <h2 class="section-title">Empat langkah, feed kamu bersih</h2>
+    <p class="section-desc">Tanpa install ribet, tanpa login manual di situs pihak ketiga.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Isi konfigurasi &amp; klik "Copy Script"</h3>
+        <p>Atur filter kata kunci, jeda, dan format laporan di kontrol di atas. Script akan otomatis menyesuaikan.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Buka TikTok di tab lain</h3>
+        <p>Login seperti biasa di tiktok.com. Pastikan kamu sudah login agar script bisa membaca <code>secUid</code> kamu.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Tekan F12 → Console → Paste → Enter</h3>
+        <p>DevTools terbuka, buka tab Console, tempel script yang tadi dicopy, tekan Enter. Panel melayang akan muncul di pojok kanan atas.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Biarkan bekerja &amp; unduh laporan</h3>
+        <p>Setelah selesai, unduh laporan JSON atau CSV berisi semua item yang dihapus dan yang gagal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2024 Clear Repost TikTok. Dibuat dengan ❤️ untuk feed yang lebih bersih.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============================================================
+     Cursor glow
+     ============================================================ */
+  const glow = document.getElementById("cursorGlow");
+  let gx = window.innerWidth / 2, gy = window.innerHeight / 2;
+  let tx = gx, ty = gy;
+  window.addEventListener("mousemove", (e) => { tx = e.clientX; ty = e.clientY; });
+  (function animateGlow() {
+    gx += (tx - gx) * 0.08;
+    gy += (ty - gy) * 0.08;
+    glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateGlow);
+  })();
+
+  /* ============================================================
+     Navbar scrolled state
+     ============================================================ */
+  const nav = document.getElementById("nav");
+  window.addEventListener("scroll", () => {
+    nav.classList.toggle("scrolled", window.scrollY > 30);
+  }, { passive: true });
+
+  /* ============================================================
+     Parallax orb
+     ============================================================ */
+  const orbs = document.querySelectorAll(".orb");
+  document.addEventListener("mousemove", (e) => {
+    const cx = (e.clientX / window.innerWidth - 0.5);
+    const cy = (e.clientY / window.innerHeight - 0.5);
+    orbs.forEach((orb, i) => {
+      const depth = (i + 1) * 12;
+      orb.style.marginLeft = (cx * depth) + "px";
+      orb.style.marginTop = (cy * depth) + "px";
+    });
+  });
+
+  /* ============================================================
+     Cek apakah halaman ini adalah TikTok
+     ============================================================ */
+  const hint = document.getElementById("contextHint");
+  const isTikTok = /(^|\.)tiktok\.com$/i.test(location.hostname);
+
+  if (isTikTok) {
+    hint.innerHTML = '<b>Status:</b> ✅ Kamu sedang di TikTok. Klik tombol di bawah untuk meng-copy script, lalu paste di Console (F12).';
+    hint.style.background = 'rgba(0,242,234,0.06)';
+  } else {
+    hint.innerHTML = '<b>Status:</b> ℹ️ Kamu tidak sedang di TikTok. Script tetap bisa di-copy, tapi harus dijalankan di tab tiktok.com.';
+    hint.style.background = 'rgba(255,255,255,0.03)';
+  }
+
+  /* ============================================================
+     Generate script yang akan dijalankan di TikTok
+     (ini script asli kamu, dimodifikasi agar standalone)
+     ============================================================ */
+  function buildInjectableScript(config) {
+    const configJSON = JSON.stringify(config);
+    return `(function(){
+  "use strict";
+  const CONFIG = ${configJSON};
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const I18N = {
+    panelTitle: "Clear Repost TikTok",
+    panelClose: "Tutup",
+    statusPreparing: "Mempersiapkan…",
+    statusWaiting: "Mengidentifikasi akun…",
+    statusListing: "Mendaftar repost…",
+    statusNone: "Tidak ada repost ditemukan.",
+    statusDone: "Selesai! Semua repost sudah diproses.",
+    statusPaused: "Dijeda",
+    statusResuming: "Melanjutkan…",
+    statusBetweenPages: "Jeda sebelum halaman berikutnya…",
+    statusErrorNoAccount: "Tidak dapat mengidentifikasi akun. Pastikan sudah login di TikTok.",
+    statusErrorRemove: "Gagal menghapus $1$",
+    statusStoppedFailures: "Dihentikan: $1$ kegagalan berturut-turut. Unduh laporan.",
+    statusPageRemoving: "Halaman $1$: menghapus $2$ dari $3$…",
+    btnPause: "Jeda",
+    btnResume: "Lanjut",
+    btnDownloadReport: "Unduh Laporan",
+    statsPages: "Halaman",
+    statsRemoved: "Terhapus",
+    statsFailed: "Gagal",
+    statsListed: "Terdaftar",
+  };
+
+  function getSecUid() {
+    try {
+      const el = document.getElementById("__UNIVERSAL_DATA_FOR_REHYDRATION__");
+      if (el) {
+        const data = JSON.parse(el.textContent);
+        const user = data?.__DEFAULT_SCOPE__?.["webapp.user-detail"]?.userInfo?.user;
+        if (user?.secUid) return user.secUid;
+      }
+      const w = window.__UNIVERSAL_DATA_FOR_REHYDRATION__;
+      if (w) {
+        const u = w?.__DEFAULT_SCOPE__?.["webapp.user-detail"]?.userInfo?.user;
+        if (u?.secUid) return u.secUid;
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  async function getRepostItems(cursor, secUid) {
+    const params = new URLSearchParams({
+      aid: "1988", count: "30", coverFormat: "2",
+      cursor: String(cursor), needPinnedItemIds: "true",
+      post_item_list_request_type: "0", secUid,
+    });
+    const res = await fetch("https://www.tiktok.com/api/repost/item_list/?" + params.toString(), {
+      method: "GET", headers: { accept: "*/*" }, credentials: "include",
+    });
+    const raw = await res.text();
+    let json;
+    try { json = JSON.parse(raw); } catch(e) { console.error("Bukan JSON:", raw.slice(0,200)); return null; }
+    if (json.status_code !== 0) { console.error("getRepostItems error:", json); return null; }
+    const items = (json.itemList || []).map((e) => ({
+      id: e.id,
+      authorName: "@" + (e.author?.uniqueId ?? ""),
+      desc: e.desc || "",
+      url: "https://www.tiktok.com/@" + (e.author?.uniqueId ?? "") + "/video/" + e.id,
+    }));
+    return { hasMore: !!json.hasMore, nextCursor: json.cursor != null ? String(json.cursor) : null, items };
+  }
+
+  async function removeRepostItem(itemId, retries = 2) {
+    const params = new URLSearchParams({ aid: "1988", item_id: String(itemId) });
+    const url = "https://www.tiktok.com/tiktok/v1/upvote/delete?" + params.toString();
+    let lastErr;
+    for (let a = 1; a <= retries; a++) {
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+          body: "", credentials: "include",
+        });
+        const raw = await res.text();
+        let json;
+        try { json = JSON.parse(raw); } catch(e) { throw new Error("Bukan JSON: " + raw.slice(0,100)); }
+        if (json.status_code !== 0) throw new Error("removeRepost error: " + JSON.stringify(json));
+        return true;
+      } catch(e) { lastErr = e; if (a < retries) await sleep(2000); }
+    }
+    throw lastErr;
+  }
+
+  function parseKeywords(str) {
+    if (!str || !String(str).trim()) return [];
+    return String(str).split(",").map(s => s.trim()).filter(Boolean).map(s => s.toLowerCase());
+  }
+  function matchesKeywords(desc, kw) {
+    if (kw.length === 0) return true;
+    const t = (desc || "").toLowerCase();
+    return kw.some(k => t.includes(k));
+  }
+  function randomDelayMs(cfg) {
+    if (cfg.requestIntervalMode === "set") {
+      const arr = cfg.requestIntervalSet || [1,3,5];
+      const v = arr[Math.floor(Math.random() * arr.length)] ?? 1;
+      return Math.max(0, v) * 1000;
+    }
+    const { min = 1, max = 3 } = cfg.requestIntervalRange || {};
+    const a = Math.max(0, min), b = Math.max(a, max);
+    return (a + Math.random() * (b - a)) * 1000;
+  }
+  function substitute(str, vals) {
+    if (!str || !vals) return str || "";
+    let s = str;
+    vals.forEach((v,i) => { s = s.replace(new RegExp("\\\\$" + (i+1) + "\\\\$", "g"), String(v)); });
+    return s;
+  }
+
+  function createPanel() {
+    const id = "clear-repost-tiktok-panel";
+    const existing = document.getElementById(id);
+    if (existing) existing.remove();
+    const panel = document.createElement("div");
+    panel.id = id;
+    panel.innerHTML = \`
+      <div class="crt-header">
+        <span class="crt-title">\${I18N.panelTitle}</span>
+        <button type="button" class="crt-close">×</button>
+      </div>
+      <div class="crt-status">\${I18N.statusPreparing}</div>
+      <div class="crt-stats"></div>
+      <div class="crt-actions">
+        <button type="button" class="crt-btn crt-pause">\${I18N.btnPause}</button>
+        <button type="button" class="crt-btn crt-download" disabled>\${I18N.btnDownloadReport}</button>
+      </div>
+    \`;
+    Object.assign(panel.style, {
+      position: "fixed", top: "16px", right: "16px",
+      width: "320px", maxWidth: "calc(100vw - 32px)",
+      background: "#0d0d0d", border: "1px solid #2a2a2a",
+      borderLeft: "3px solid #00f2ea",
+      borderRadius: "12px",
+      boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+      zIndex: "2147483647",
+      fontFamily: "system-ui, -apple-system, sans-serif",
+      fontSize: "13px", color: "#f2f2f2", overflow: "hidden",
+    });
+    const style = document.createElement("style");
+    style.textContent = \`
+      #clear-repost-tiktok-panel .crt-header { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; background:#161616; border-bottom:1px solid #2a2a2a; cursor:move; user-select:none; }
+      #clear-repost-tiktok-panel .crt-title { font-weight:600; font-size:13px; color:#00f2ea; }
+      #clear-repost-tiktok-panel .crt-close { background:none; border:none; color:#888; cursor:pointer; font-size:20px; line-height:1; }
+      #clear-repost-tiktok-panel .crt-close:hover { color:#fff; }
+      #clear-repost-tiktok-panel .crt-status { padding:12px 14px; min-height:20px; font-size:13px; line-height:1.4; color:#e0e0e0; }
+      #clear-repost-tiktok-panel .crt-stats { padding:0 14px 10px; color:#888; font-size:12px; }
+      #clear-repost-tiktok-panel .crt-actions { display:flex; gap:8px; padding:12px 14px; border-top:1px solid #2a2a2a; }
+      #clear-repost-tiktok-panel .crt-btn { padding:9px 14px; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:500; font-family:inherit; }
+      #clear-repost-tiktok-panel .crt-pause { background:#ff0050; color:#fff; flex:1; }
+      #clear-repost-tiktok-panel .crt-pause.resumed { background:#00f2ea; color:#0d0d0d; }
+      #clear-repost-tiktok-panel .crt-pause:disabled { opacity:0.4; cursor:not-allowed; }
+      #clear-repost-tiktok-panel .crt-download { background:#1c1c1c; color:#f2f2f2; border:1px solid #2a2a2a; flex:1; }
+      #clear-repost-tiktok-panel .crt-download:disabled { opacity:0.5; cursor:not-allowed; }
+    \`;
+    (document.head || document.documentElement).appendChild(style);
+    document.documentElement.appendChild(panel);
+
+    const header = panel.querySelector(".crt-header");
+    let sx=0, sy=0, st=0, sl=0;
+    header.onmousedown = (e) => {
+      e.preventDefault();
+      const r = panel.getBoundingClientRect();
+      sx = e.clientX; sy = e.clientY; st = r.top; sl = r.left;
+      panel.style.top = st + "px"; panel.style.left = sl + "px"; panel.style.right = "auto";
+      const mv = (ev) => { panel.style.top = Math.max(0, st + ev.clientY - sy) + "px"; panel.style.left = Math.max(0, sl + ev.clientX - sx) + "px"; };
+      const up = () => { document.removeEventListener("mousemove", mv); document.removeEventListener("mouseup", up); };
+      document.addEventListener("mousemove", mv);
+      document.addEventListener("mouseup", up);
+    };
+    return panel;
+  }
+
+  function updatePanel(panel, st) {
+    const s = panel.querySelector(".crt-status");
+    const t = panel.querySelector(".crt-stats");
+    const p = panel.querySelector(".crt-pause");
+    const d = panel.querySelector(".crt-download");
+    if (s) s.textContent = st.status || "—";
+    if (t) {
+      const parts = [];
+      if (st.pages != null) parts.push(I18N.statsPages + ": " + st.pages);
+      if (st.removed != null) parts.push(I18N.statsRemoved + ": " + st.removed);
+      if (st.failed > 0) parts.push(I18N.statsFailed + ": " + st.failed);
+      if (st.totalListed != null) parts.push(I18N.statsListed + ": " + st.totalListed);
+      t.textContent = parts.join(" · ");
+    }
+    if (p) {
+      p.textContent = st.paused ? I18N.btnResume : I18N.btnPause;
+      p.classList.toggle("resumed", !!st.paused);
+      p.disabled = !!st.disablePause;
+    }
+    if (d) {
+      d.disabled = !st.reportReady;
+      const total = (st.removed||0) + (st.failed||0);
+      d.textContent = st.reportReady && total > 0
+        ? I18N.btnDownloadReport + " (" + (st.removed||0) + (st.failed > 0 ? ", " + st.failed + " gagal" : "") + ")"
+        : I18N.btnDownloadReport;
+    }
+  }
+
+  function buildReport(removed, failed, format) {
+    if (format === "csv") {
+      const h = ["id","authorName","desc","url","status"];
+      const row = (i, s) => [i.id, i.authorName, (i.desc||"").replace(/\\s+/g," ").replace(/"/g,'""'), i.url, s];
+      const rows = removed.map(i => row(i, "removed")).concat(failed.map(i => row(i, "failed")));
+      return h.join(",") + "\\n" + rows.map(r => r.map(v => '"' + v + '"').join(",")).join("\\n");
+    }
+    return JSON.stringify({ removed, failed }, null, 2);
+  }
+  function download(content, format) {
+    const ext = format === "csv" ? "csv" : "json";
+    const mime = format === "csv" ? "text/csv;charset=utf-8" : "application/json;charset=utf-8";
+    const blob = new Blob([content], { type: mime });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "clear-repost-tiktok-" + Date.now() + "." + ext;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  (async function run() {
+    const panel = createPanel();
+    const state = {
+      status: I18N.statusPreparing, pages: 0, removed: 0, failed: 0,
+      totalListed: 0, paused: false, reportReady: false,
+      reportItems: [], reportFailedItems: [], disablePause: false,
+    };
+    const kw = parseKeywords(CONFIG.keywordsFilter || "");
+    const fmt = CONFIG.exportFileType || "json";
+
+    const pauseBtn = panel.querySelector(".crt-pause");
+    const dlBtn = panel.querySelector(".crt-download");
+    const closeBtn = panel.querySelector(".crt-close");
+
+    pauseBtn.onclick = () => {
+      state.paused = !state.paused;
+      state.status = state.paused ? I18N.statusPaused : I18N.statusResuming;
+      updatePanel(panel, state);
+    };
+    dlBtn.onclick = () => {
+      const c = buildReport(state.reportItems, state.reportFailedItems, fmt);
+      download(c, fmt);
+    };
+    closeBtn.onclick = () => panel.remove();
+
+    const setStatus = (s) => { state.status = s; updatePanel(panel, state); };
+
+    setStatus(I18N.statusWaiting);
+    let secUid = getSecUid();
+    if (!secUid) {
+      for (let i = 0; i < 12; i++) { await sleep(1500); secUid = getSecUid(); if (secUid) break; }
+    }
+    if (!secUid) {
+      state.paused = true; state.disablePause = true;
+      setStatus(I18N.statusErrorNoAccount);
+      return;
+    }
+
+    setStatus(I18N.statusListing);
+    let cursor = "0", page = 1;
+    const pagePause = Math.max(0, CONFIG.pagePauseSeconds ?? 5) * 1000;
+
+    while (true) {
+      while (state.paused) await sleep(500);
+      const res = await getRepostItems(cursor, secUid);
+      if (!res || !res.items || res.items.length === 0) {
+        setStatus(I18N.statusNone); state.reportReady = true; updatePanel(panel, state);
+        break;
+      }
+      state.pages = page;
+      state.totalListed += res.items.length;
+      const cand = res.items.filter(it => matchesKeywords(it.desc, kw));
+      setStatus(substitute(I18N.statusPageRemoving, [page, cand.length, res.items.length]));
+      updatePanel(panel, state);
+
+      let fails = 0, stopped = false;
+      for (const item of cand) {
+        while (state.paused) await sleep(500);
+        try {
+          await removeRepostItem(item.id);
+          fails = 0;
+          state.removed++; state.reportItems.push(item); state.reportReady = true;
+          state.status = item.authorName + " – " + (item.desc || "").slice(0,25) + "…";
+          updatePanel(panel, state);
+        } catch(e) {
+          fails++; state.failed++; state.reportFailedItems.push(item); state.reportReady = true;
+          setStatus(substitute(I18N.statusErrorRemove, [item.id]));
+          if (fails >= 5) {
+            state.paused = true; state.disablePause = true;
+            setStatus(substitute(I18N.statusStoppedFailures, [5]));
+            stopped = true; break;
+          }
+        }
+        await sleep(randomDelayMs(CONFIG));
+      }
+      if (stopped) { updatePanel(panel, state); break; }
+      if (!res.hasMore || !res.nextCursor) {
+        setStatus(I18N.statusDone); state.reportReady = true; updatePanel(panel, state); break;
+      }
+      cursor = res.nextCursor; page++;
+      setStatus(I18N.statusBetweenPages + " " + page);
+      await sleep(pagePause);
+    }
+  })();
+})();`;
+  }
+
+  /* ============================================================
+     Tombol Copy — generate script sesuai config lalu copy
+     ============================================================ */
+  const copyBtn = document.getElementById("copyBtn");
+  const statusLine = document.getElementById("statusLine");
+
+  copyBtn.addEventListener("click", async () => {
+    // Kumpulkan config dari form
+    const intervalMode = document.getElementById("intervalMode").value;
+    const minSec = parseFloat(document.getElementById("minSec").value) || 1;
+    const maxSec = parseFloat(document.getElementById("maxSec").value) || 3;
+    const pagePause = parseFloat(document.getElementById("pagePause").value) || 5;
+    const exportType = document.getElementById("exportType").value;
+    const keywordsFilter = document.getElementById("keywords").value;
+
+    const config = {
+      keywordsFilter,
+      requestIntervalMode: intervalMode,
+      requestIntervalRange: { min: minSec, max: maxSec },
+      requestIntervalSet: [minSec, maxSec, (minSec + maxSec) / 2],
+      pagePauseSeconds: pagePause,
+      exportFileType: exportType,
+    };
+
+    const script = buildInjectableScript(config);
+
+    try {
+      await navigator.clipboard.writeText(script);
+      statusLine.className = "status-line ok";
+      statusLine.innerHTML = "✅ Script berhasil di-copy! Sekarang buka tab <b>tiktok.com</b> → F12 → Console → Paste → Enter.";
+    } catch (e) {
+      // Fallback
+      const ta = document.createElement("textarea");
+      ta.value = script;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      statusLine.className = "status-line ok";
+      statusLine.innerHTML = "✅ Script di-copy (fallback). Buka <b>tiktok.com</b> → F12 → Console → Paste → Enter.";
+    }
+  });
+
+  /* ============================================================
+     Reveal on scroll sederhana
+     ============================================================ */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".feature, .step, .section-head").forEach((el) => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(30px)";
+    el.style.transition = "opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)";
+    io.observe(el);
+  });
+
+})();
+</script>
 </body>
 </html>
